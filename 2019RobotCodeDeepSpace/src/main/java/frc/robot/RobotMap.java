@@ -31,8 +31,8 @@ public class RobotMap {
 
 	//GYROS//
   	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
-  	public static Encoder leftDrive = new Encoder(0, 1);
-  	public static Encoder rightDrive = new Encoder(2,3);
+  	public static Encoder leftDriveEncoder = new Encoder(0, 1);
+  	public static Encoder rightDriveEncoder = new Encoder(2,3);
 
 	//MISC//
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel(1);

@@ -24,7 +24,15 @@ public class DriveNoPID extends Command {
      	DriveController controller = chooser.getSelected();
     	if(controller.getReversedDirection())
     		reversed = !reversed;
-    	drive.arcadeDrive((reversed)?-controller.getMoveRequest():controller.getMoveRequest(), controller.getTurnRequest(), controller.getSpeedLimiter());
+        drive.arcadeDrive((reversed)?-controller.getMoveRequest()
+                                    : controller.getMoveRequest(), controller.getTurnRequest(), controller.getSpeedLimiter());
+        
+        /*if(controller.getReversedDirection())
+    		reversed = !reversed;
+        drive.driveCartesian((reversed) ? -controller.getMoveRequest()
+                                    :controller.getMoveRequest(), controller.getStrafeRequest(), controller.getTurnRequest(), controller.getSpeedLimiter());
+        
+        TODO: Uncomment this if we decide on Mecanum Drive and delete the other block*/
     }
 
     @Override

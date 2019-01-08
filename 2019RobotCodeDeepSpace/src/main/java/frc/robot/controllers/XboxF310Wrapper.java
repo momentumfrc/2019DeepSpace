@@ -28,6 +28,14 @@ public class XboxF310Wrapper implements DriveController {
     }
 
     @Override
+    public double getStrafeRequest() {
+        double strafeRequest = xbox.getX(XboxController.Hand.kLeft);
+        strafeRequest = Utils.deadzone(strafeRequest, DEADZONE);
+        strafeRequest = Utils.curve(strafeRequest, MOVE_CURVE);
+        return strafeRequest;
+    }
+
+    @Override
     public double getTurnRequest() {
         double turnRequest = xbox.getX(XboxController.Hand.kRight);
         turnRequest = Utils.deadzone(turnRequest, DEADZONE);
