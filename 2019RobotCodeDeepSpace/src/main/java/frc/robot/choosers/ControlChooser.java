@@ -11,7 +11,7 @@ public class ControlChooser extends SendableChooser<DriveController> {
         addDefault("Xbox Main, F310 Secondary", new XboxF310Wrapper());
 
         SmartDashboard.putData(NAME,this);
-        }
+    }
 
     
 }

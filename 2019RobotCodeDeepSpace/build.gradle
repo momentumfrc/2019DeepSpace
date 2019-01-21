@@ -40,11 +40,16 @@ def includeDesktopSupport = false
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
+    maven {
+        url "https://raw.githubusercontent.com/momentumfrc/Momentum-Tools/master/mvn-repo"
+    }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+    implementation group: 'org.usfirst.frc.team4999', name: 'momentum-pid', version: '1.0'
+    implementation group: 'org.usfirst.frc.team4999', name: 'neopixel-leds', version: '1.0'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
