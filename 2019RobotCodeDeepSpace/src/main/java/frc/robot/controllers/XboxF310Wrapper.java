@@ -2,7 +2,11 @@ package frc.robot.controllers;
 
 import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
+
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class XboxF310Wrapper implements DriveController {
 
@@ -18,6 +22,11 @@ public class XboxF310Wrapper implements DriveController {
     private int currentSpeed = SPEEDS.length - 1;
 
 
+    private static final double MAX_ARM_SPEED = 1;
+    private static final double MIN_ARM_SPEED = 0;
+
+
+
     //XBOX CONTROLS//
     @Override
     public double getMoveRequest() {
@@ -25,14 +34,6 @@ public class XboxF310Wrapper implements DriveController {
         moveRequest = Utils.deadzone(moveRequest, DEADZONE);
     	moveRequest = Utils.curve(moveRequest, MOVE_CURVE);
         return moveRequest;
-    }
-
-    @Override
-    public double getStrafeRequest() {
-        double strafeRequest = xbox.getX(XboxController.Hand.kLeft);
-        strafeRequest = Utils.deadzone(strafeRequest, DEADZONE);
-        strafeRequest = Utils.curve(strafeRequest, MOVE_CURVE);
-        return strafeRequest;
     }
 
     @Override
@@ -57,6 +58,20 @@ public class XboxF310Wrapper implements DriveController {
     @Override
     public boolean getReversedDirection() {
         return xbox.getBButtonPressed();
+    }
+
+    @Override
+    public double getArmSpeed() {
+        double rT = xbox.getTriggerAxis(Hand.kRight);
+        double lT = xbox.getTriggerAxis(Hand.kLeft);
+        if (rT >= .5) {
+            return MAX_ARM_SPEED;
+        } else if(lT >= .5) {
+            return -MAX_ARM_SPEED;
+        } else {
+            return 0;
+        }
+
     }
     //F310 CONTROLS//
     //TODO: When mechanisms decided up add the controls for the F310

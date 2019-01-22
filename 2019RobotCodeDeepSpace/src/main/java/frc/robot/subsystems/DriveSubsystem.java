@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.commands.DriveNoPID;
 import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
@@ -26,7 +25,6 @@ public class DriveSubsystem extends Subsystem {
   private SpeedControllerGroup rightside = new SpeedControllerGroup(RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
-  private MecanumDrive driveM = new MecanumDrive(RobotMap.leftFrontMotor, RobotMap.leftBackMotor, RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
   public DriveSubsystem(){
     super("Drive Subsytem");
@@ -50,13 +48,6 @@ public class DriveSubsystem extends Subsystem {
     double l_m = Utils.clip(leftSide * speedLimiter, -1, 1);
     double r_m = Utils.clip(rightSide * speedLimiter, -1, 1);
     drive.tankDrive(l_m, r_m);
-  }
-
-  public void driveCartesian(double moveRequest, double turnRequest, double strafeRequest, double speedLimiter){
-    double m_r = Utils.clip(moveRequest, -1, 1) * speedLimiter;
-    double t_r = Utils.clip(turnRequest, -1, 1) * speedLimiter;
-    double s_r = Utils.clip(strafeRequest, -1, 1) * speedLimiter;
-    driveM.driveCartesian(m_r, s_r, t_r);
   }
 
   public void stop(){
