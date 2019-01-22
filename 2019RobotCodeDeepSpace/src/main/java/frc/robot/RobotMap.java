@@ -43,8 +43,6 @@ public class RobotMap {
 
 	//ARM// 
 	public static CANSparkMax armMotor = new CANSparkMax(1, MotorType.kBrushless);
-	public static CANEncoder armEncoder = new CANEncoder(armMotor);
-	public static CANPIDController armPID = new CANPIDController(armMotor);
 
 	//WRIST//
 

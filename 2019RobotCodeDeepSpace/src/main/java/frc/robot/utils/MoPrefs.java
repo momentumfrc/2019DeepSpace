@@ -10,6 +10,7 @@ public class MoPrefs{
     //Encoder dip switch settings = 100 = 0 1 1 1
 
     public static final double MAX_ARM_ROTATION = 180;
+    public static final double MIN_ARM_ROTATION = 1;
 
     public static final double MAX_MOTOR_TEMP = 10;
 
@@ -26,6 +27,10 @@ public class MoPrefs{
 
     public static double getMaxArmRotation(){
         return getDouble("MAX_ARM_ROTATION", MAX_ARM_ROTATION);
+    }
+
+    public static double getMinArmRotation() {
+        return getDouble("MIN_ARM_ROTATION", MIN_ARM_ROTATION);
     }
 
     public static double getMaxMotorTemp(){
