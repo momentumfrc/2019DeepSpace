@@ -6,10 +6,14 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
+import com.revrobotics.CANSparkMax;
+
 public class PIDFactory extends MomentumPIDFactoryBase {
 	
 	private static final String MOVE_FILE = "movePID.properties";
 	private static final String TURN_FILE = "turnPID.properties";
+
+	private static final String ARM_FILE = "armPID.properties";
 	
 	public static MomentumPID getMovePID() {
 		String path = LOCATION + MOVE_FILE;
@@ -46,6 +50,12 @@ public class PIDFactory extends MomentumPIDFactoryBase {
 		};
 		source.setPIDSourceType(PIDSourceType.kDisplacement);
 		return loadPID("TurnPID",path, source, null);
+	}
+
+	public static SendableCANPIDController getArmPID() {
+		String path = LOCATION + ARM_FILE;
+		CANSparkMax max = RobotMap.armMotor;
+		return loadCANPID("ArmPID", path, max);
 	}
 
 }

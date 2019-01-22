@@ -1,3 +1,4 @@
 {
-    "java.saveActions.organizeImports": true
+    "java.saveActions.organizeImports": true,
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

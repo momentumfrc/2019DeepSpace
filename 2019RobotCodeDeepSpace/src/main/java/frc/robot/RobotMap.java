@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controllers.LogitechF310;
 import com.kauailabs.navx.frc.AHRS;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 
 
 
@@ -30,9 +33,12 @@ public class RobotMap {
 	public static LogitechF310 f310 = new LogitechF310(1);
 
 	//GYROS//
-  	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
-  	public static Encoder leftDriveEncoder = new Encoder(0, 1);
-  	public static Encoder rightDriveEncoder = new Encoder(2,3);
+	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
+	public static Encoder leftDriveEncoder = new Encoder(0, 1);
+	public static Encoder rightDriveEncoder = new Encoder(2,3);
+
+	//EXAMPLE ARM MOTOR//
+	public static CANSparkMax armMotor = new CANSparkMax(0, MotorType.kBrushless);
 
 	//MISC//
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel(1);
