@@ -3,6 +3,8 @@ package frc.robot.controllers;
 import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
 
+import java.util.Map;
+
 import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,8 +24,9 @@ public class XboxF310Wrapper implements DriveController {
     private int currentSpeed = SPEEDS.length - 1;
 
 
-    private static final double MAX_ARM_SPEED = 1;
-    private static final double MIN_ARM_SPEED = 0;
+    private static final double MAX_ARM_SPEED = .8;
+    private static final double MAX_WRIST_SPEED = .8;
+
 
 
 
@@ -61,18 +64,25 @@ public class XboxF310Wrapper implements DriveController {
     }
 
     @Override
-    public double getArmSpeed() {
+    public double getArmUp() {
         double rT = xbox.getTriggerAxis(Hand.kRight);
-        double lT = xbox.getTriggerAxis(Hand.kLeft);
-        if (rT >= .5) {
-            return MAX_ARM_SPEED;
-        } else if(lT >= .5) {
-            return -MAX_ARM_SPEED;
-        } else {
-            return 0;
-        }
-
+        double RightT = Utils.map(rT, 0, 1, 0, MAX_ARM_SPEED);
+        return RightT;
     }
+    
+    @Override
+    public double getArmDown() {
+        double lT = xbox.getTriggerAxis(Hand.kLeft);
+        double LeftT = Utils.map(lT, 0, 1, 0, -MAX_ARM_SPEED);
+        return LeftT;
+    }
+
     //F310 CONTROLS//
-    //TODO: When mechanisms decided up add the controls for the F310
+
+    @Override
+    public double getWristSpeed() {
+        double val = Utils.clip(logitech.getY(Hand.kLeft) + logitech.getY(Hand.kRight), -1, 1);
+		return Utils.map(val, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
+    }
+
 }

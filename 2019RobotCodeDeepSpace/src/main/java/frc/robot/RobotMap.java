@@ -45,6 +45,7 @@ public class RobotMap {
 	public static CANSparkMax armMotor = new CANSparkMax(1, MotorType.kBrushless);
 
 	//WRIST//
+	public static CANSparkMax wristMotor = new CANSparkMax(1,MotorType.kBrushless);
 
 	//INTAKE//
 	public static VictorSP intakeMotorTop = new VictorSP(5);

@@ -17,7 +17,7 @@ public class Arm extends Subsystem {
     private CANEncoder e_Arm = m_Arm.getEncoder();
     private SendableCANPIDController pid_Arm = PIDFactory.getArmPID();
 
-    private static final double GEAR_RATIO = 1 / 100; // TODO set ratio once gearbox is chosen 
+    private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
 
     
     // This will only run once. So posArm will only contain the arm's position when it first starts
@@ -49,14 +49,11 @@ public class Arm extends Subsystem {
 
     // This name is misleading. It makes it sound like the method stops the arm, when really it checks the motor temperature
     public void stopArm(double speed){
+        m_Arm.set(0);
         // This way we check the motor temperature using the most up-to-date value
         // But this check will only run whenever Arm.stopArm() is called
         // So really, a trigger should be set up so that it becomes true whenever RobotMap.armMotor.getMotorTemperature() > MoPrefs.getMaxMotorTemp()
-        // And then that trigger would be set up in OI to turn the motor off when it triggers
-        double motorTemp = m_Arm.getMotorTemperature();
-        if(motorTemp >= MoPrefs.getMaxMotorTemp()){
-            m_Arm.set(0);
-        }
+        // And then that trigger would be set up in OI to turn the motor off when it triggers        
     }
 
     private double calculateArmDegrees() {

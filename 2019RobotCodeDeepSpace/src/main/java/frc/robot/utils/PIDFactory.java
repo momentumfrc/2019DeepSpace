@@ -14,6 +14,7 @@ public class PIDFactory extends MomentumPIDFactoryBase {
 	private static final String TURN_FILE = "turnPID.properties";
 
 	private static final String ARM_FILE = "armPID.properties";
+	private static final String WRIST_FILE = "wristPID.properties";
 	
 	public static MomentumPID getMovePID() {
 		String path = LOCATION + MOVE_FILE;
@@ -56,6 +57,12 @@ public class PIDFactory extends MomentumPIDFactoryBase {
 		String path = LOCATION + ARM_FILE;
 		CANSparkMax max = RobotMap.armMotor;
 		return loadCANPID("ArmPID", path, max);
+	}
+
+	public static SendableCANPIDController getWristPID() {
+		String path = LOCATION + WRIST_FILE;
+		CANSparkMax max = RobotMap.wristMotor;
+		return loadCANPID("wristPID", path, max);
 	}
 
 }
