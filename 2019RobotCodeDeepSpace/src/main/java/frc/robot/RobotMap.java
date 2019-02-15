@@ -20,12 +20,19 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
 public class RobotMap {
 	//DRIVE//
-	public static VictorSP leftFrontMotor = new VictorSP(1);
-	public static VictorSP rightFrontMotor = new VictorSP(2);
-	public static VictorSP leftBackMotor = new VictorSP(3);
-	public static VictorSP rightBackMotor = new VictorSP(4);
+	public static VictorSP leftFrontMotor = new VictorSP(0);
+	public static VictorSP rightFrontMotor = new VictorSP(1);
+	public static VictorSP leftBackMotor = new VictorSP(2);
+	public static VictorSP rightBackMotor = new VictorSP(3);
+
+	/*public static VictorSPX leftFrontMotor = new VictorSPX(1);
+	public static VictorSPX rightFrontMotor = new VictorSPX(2);
+	public static VictorSPX leftBackMotor = new VictorSPX(3);
+	public static VictorSPX rightBackMotor = new VictorSPX(4);*/
+
 
 	public static Encoder leftDriveEncoder = new Encoder(0, 1);
 	public static Encoder rightDriveEncoder = new Encoder(2,3);
@@ -38,9 +45,6 @@ public class RobotMap {
 	//GYROS//
 	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
-	//MISC//
-	public static PowerDistributionPanel pdp = new PowerDistributionPanel(1);
-
 	//ARM// 
 	public static CANSparkMax armMotor = new CANSparkMax(1, MotorType.kBrushless);
 
@@ -52,4 +56,14 @@ public class RobotMap {
 	public static VictorSP intakeMotorBottom = new VictorSP(6);
 
 	public static DoubleSolenoid hatchKicker = new DoubleSolenoid(1, 2);
+
+	//PDP//
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+	
+	public static final int LF_DRIVE_MOTOR_PDP = 0;
+	public static final int LB_DRIVE_MOTOR_PDP = 1;
+	public static final int RF_DRIVE_MOTOR_PDP = 15;
+	public static final int RB_DRIVE_MOTOR_PDP = 14;
+
+	public static final int ARM_PDP = 4;
 }

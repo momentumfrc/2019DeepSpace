@@ -16,6 +16,7 @@ public class Arm extends Subsystem {
     private CANSparkMax m_Arm = RobotMap.armMotor;
     private CANEncoder e_Arm = m_Arm.getEncoder();
     private SendableCANPIDController pid_Arm = PIDFactory.getArmPID();
+    public double ArmPos_Zero;
 
     private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
 
@@ -34,12 +35,22 @@ public class Arm extends Subsystem {
         addChild(pid_Arm);
     }
 
+    public void setArmNoLimits(double speed){
+        m_Arm.set(speed);
+    }
+
+    public void ArmPosZero(){
+        ArmPos_Zero == e_Arm.getPostion();
+        return ArmPos_Zero;
+    }
+
     public void setArmMotor(double speed){
         double arm_pos = calculateArmDegrees();
-        if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()){
+        double zero_pos = ArmPosZero();
+        if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + zero_pos){
             System.out.format("Arm at max rotation (%d)", arm_pos);
             m_Arm.set(0);
-        } else if(speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()){
+        } else if(speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - zero_pos){
             System.out.format("Arm at min rotation (%d)", arm_pos);
             m_Arm.set(0);
         } else {
@@ -64,5 +75,11 @@ public class Arm extends Subsystem {
     @Override
     protected void initDefaultCommand() {
     }
+
+    /* Blocked out until REV adds the ability to zero the encoder...
+    public void reset(){
+        e_Arm.SetpointOut(0);
+    }s
+    */
 
 }

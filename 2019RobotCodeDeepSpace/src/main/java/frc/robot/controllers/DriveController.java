@@ -10,6 +10,11 @@ public interface  DriveController {
 
 	abstract public boolean getReversedDirection();
 
-	abstract public double getArmSpeed();
+	abstract public double getArmUp();
+
+	abstract public double getArmDown();
+
+	abstract public double getWristSpeed();
+
 	
 }

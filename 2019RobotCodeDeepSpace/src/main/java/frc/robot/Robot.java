@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Arm;
+import frc.robot.commandssandstorm.StartingSequence;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,10 +27,11 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static ControlChooser controlChooser = new ControlChooser();
+  public static Arm arm = new Arm();
   public static OI m_oi;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private Command sandCommand = new  StartingSequence();
+  SendableChooser<Command> SandstormChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -82,19 +85,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+  m_autonomousCommand = SandstormChooser.getSelected();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    Scheduler.getInstance().removeAll();
+		new DriveNoPID().start();
   }
 
   /**
@@ -103,6 +97,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    
   }
 
   @Override
