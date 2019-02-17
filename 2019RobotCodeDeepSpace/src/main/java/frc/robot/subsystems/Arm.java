@@ -16,7 +16,7 @@ public class Arm extends Subsystem {
     private CANSparkMax m_Arm = RobotMap.armMotor;
     private CANEncoder e_Arm = m_Arm.getEncoder();
     private SendableCANPIDController pid_Arm = PIDFactory.getArmPID();
-    public double ArmPos_Zero;
+    public double ArmPos_Zero = e_Arm.getPosition();
 
     private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
 
@@ -39,8 +39,7 @@ public class Arm extends Subsystem {
         m_Arm.set(speed);
     }
 
-    public void ArmPosZero(){
-        ArmPos_Zero == e_Arm.getPostion();
+    public double ArmPosZero(){
         return ArmPos_Zero;
     }
 
@@ -59,7 +58,7 @@ public class Arm extends Subsystem {
     }
 
     // This name is misleading. It makes it sound like the method stops the arm, when really it checks the motor temperature
-    public void stopArm(double speed){
+    public void stop(){
         m_Arm.set(0);
         // This way we check the motor temperature using the most up-to-date value
         // But this check will only run whenever Arm.stopArm() is called
@@ -69,7 +68,7 @@ public class Arm extends Subsystem {
 
     private double calculateArmDegrees() {
         return e_Arm.getPosition() * GEAR_RATIO * 360;
-    }
+    } 
 
 
     @Override

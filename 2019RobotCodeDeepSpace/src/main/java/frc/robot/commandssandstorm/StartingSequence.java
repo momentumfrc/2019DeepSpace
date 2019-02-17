@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Arm;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveSubsystem;
 
 /*
 *This is to release the prop at the start of the match so we can zero the elbow 
@@ -11,6 +12,7 @@ import frc.robot.Robot;
 public class StartingSequence extends Command{
     
     private Arm arm = Robot.arm;
+    private DriveSubsystem drive = Robot.driveSystem;
     private static final double CUTOFF_TIME = .5;
 
     Timer time = new Timer();
@@ -34,7 +36,7 @@ public class StartingSequence extends Command{
     }
 
     protected void end(){
-        arm.stopArm();
+        arm.stop();
     }
 
     protected void interuppted(){

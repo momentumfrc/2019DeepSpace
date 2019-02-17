@@ -40,8 +40,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Auto mode", SandstormChooser);
+    SmartDashboard.putData("Control Chooser", controlChooser);
     
     
   }
@@ -85,8 +85,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-  m_autonomousCommand = SandstormChooser.getSelected();
-
     Scheduler.getInstance().removeAll();
 		new DriveNoPID().start();
   }
@@ -97,7 +95,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    
+    new DriveNoPID().start();
   }
 
   @Override
@@ -112,6 +110,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    new DriveNoPID().start();
+
   }
 
   /**

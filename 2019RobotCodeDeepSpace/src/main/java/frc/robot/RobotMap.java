@@ -40,7 +40,7 @@ public class RobotMap {
 
 	//CONTROLLERS//
 	public static XboxController xbox = new XboxController(0);
-	public static LogitechF310 f310 = new LogitechF310(1);
+	public static LogitechF310 f310 = new LogitechF310(2);
 
 	//GYROS//
 	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
@@ -49,7 +49,7 @@ public class RobotMap {
 	public static CANSparkMax armMotor = new CANSparkMax(1, MotorType.kBrushless);
 
 	//WRIST//
-	public static CANSparkMax wristMotor = new CANSparkMax(1,MotorType.kBrushless);
+	public static CANSparkMax wristMotor = new CANSparkMax(1, MotorType.kBrushless);
 
 	//INTAKE//
 	public static VictorSP intakeMotorTop = new VictorSP(5);

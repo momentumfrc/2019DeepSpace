@@ -15,10 +15,6 @@ import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
 
 //import org.usfirst.frc.team4999.pid;
-
-/**
- * An example subsystem. You can replace me with your own Subsystem.
- */
 public class DriveSubsystem extends Subsystem {
 
   private SpeedControllerGroup leftside = new SpeedControllerGroup(RobotMap.leftFrontMotor, RobotMap.leftBackMotor);
