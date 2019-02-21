@@ -19,27 +19,32 @@ public class StartingSequence extends Command{
     
 
     public StartingSequence(){
-        requires(drive);
+        requires(arm);
     }
 
+    @Override
     protected void initialize(){
         time.reset();
         time.start();
     }
 
+    @Override
     protected void execute(){
         arm.setArmMotor(-.1);
     }
 
+    @Override
     protected boolean isFinished(){
         return time.hasPeriodPassed(CUTOFF_TIME);
     }
 
+    @Override
     protected void end(){
         arm.stop();
     }
 
-    protected void interuppted(){
+    @Override
+    protected void interrupted(){
         end();
     }
 }

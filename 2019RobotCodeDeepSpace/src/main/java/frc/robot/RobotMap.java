@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controllers.LogitechF310;
 import com.kauailabs.navx.frc.AHRS;
@@ -51,7 +50,8 @@ public class RobotMap {
 	public static VictorSP intakeMotorTop = new VictorSP(4);
 	public static VictorSP intakeMotorBottom = new VictorSP(5);
 
-	public static DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
+	public static DoubleSolenoid hatchKicker = new DoubleSolenoid(0,1);
+	public static DoubleSolenoid hatchGrabber = new DoubleSolenoid(2,3);
 
 	//PDP//
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -63,4 +63,6 @@ public class RobotMap {
 
 	public static final int ARM_PDP = 13;
 	public static final int WRIST_PDP = 14;
+	public static final int INTAKE_UPPER_PDP = 2;
+	public static final int INTAKE_LOWER_PDP = 3;
 }

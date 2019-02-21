@@ -39,13 +39,13 @@ public class Arm extends Subsystem {
         m_Arm.set(speed);
     }
 
-    public double ArmPosZero(){
+    public double armPosZero(){
         return ArmPos_Zero;
     }
 
     public void setArmMotor(double speed){
         double arm_pos = calculateArmDegrees();
-        double zero_pos = ArmPosZero();
+        double zero_pos = armPosZero();
         if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + zero_pos){
             System.out.format("Arm at max rotation (%d)", arm_pos);
             m_Arm.set(0);

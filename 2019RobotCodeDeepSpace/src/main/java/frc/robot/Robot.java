@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   public static Arm arm = new Arm();
   public static OI m_oi;
 
-  private Command sandCommand = new  StartingSequence();
+  private Command sandCommand = new StartingSequence();
   SendableChooser<Command> SandstormChooser = new SendableChooser<>();
 
   /**

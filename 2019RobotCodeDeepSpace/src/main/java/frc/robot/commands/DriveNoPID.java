@@ -11,28 +11,19 @@ public class DriveNoPID extends Command {
     private DriveSubsystem drive = Robot.driveSystem;
     private ControlChooser chooser = Robot.controlChooser;
 
-    private boolean reversed;
-
-    public DriveNoPID(){
+    public DriveNoPID() {
         requires(drive);
     }
 
+    @Override
     protected void initialize() {
     }
 
+    @Override
     protected void execute() {
-     	DriveController controller = chooser.getSelected();
-    	if(controller.getReversedDirection())
-    		reversed = !reversed;
-        drive.arcadeDrive((reversed)?-controller.getMoveRequest()
-                                    : controller.getMoveRequest(), controller.getTurnRequest(), controller.getSpeedLimiter());
-        
-        /*if(controller.getReversedDirection())
-    		reversed = !reversed;
-        drive.driveCartesian((reversed) ? -controller.getMoveRequest()
-                                    :controller.getMoveRequest(), controller.getStrafeRequest(), controller.getTurnRequest(), controller.getSpeedLimiter());
-        
-        TODO: Uncomment this if we decide on Mecanum Drive and delete the other block*/
+        DriveController controller = chooser.getSelected();
+        double moveRequest = controller.getMoveRequest() * (controller.getReversedDirection() ? -1.0 : 1.0);
+        drive.arcadeDrive(moveRequest, controller.getTurnRequest(), controller.getSpeedLimiter());
     }
 
     @Override
@@ -40,12 +31,14 @@ public class DriveNoPID extends Command {
         return false;
     }
 
+    @Override
     public void end() {
         drive.stop();
-    } 
+    }
 
-    public void interrupted(){
+    @Override
+    public void interrupted() {
         end();
     }
-    
+
 }
