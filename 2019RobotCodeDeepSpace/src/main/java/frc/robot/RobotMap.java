@@ -9,29 +9,29 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controllers.LogitechF310;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class RobotMap {
 	//DRIVE//
+	/*
 	public static VictorSP leftFrontMotor = new VictorSP(0);
-	public static VictorSP rightFrontMotor = new VictorSP(1);
-	public static VictorSP leftBackMotor = new VictorSP(2);
+	public static VictorSP leftBackMotor = new VictorSP(1);
+	public static VictorSP rightFrontMotor = new VictorSP(2);
 	public static VictorSP rightBackMotor = new VictorSP(3);
-
-	/*public static VictorSPX leftFrontMotor = new VictorSPX(1);
-	public static VictorSPX rightFrontMotor = new VictorSPX(2);
-	public static VictorSPX leftBackMotor = new VictorSPX(3);
-	public static VictorSPX rightBackMotor = new VictorSPX(4);*/
+	*/
+	public static PWMVictorSPX leftFrontMotor = new PWMVictorSPX(0);
+	public static PWMVictorSPX leftBackMotor = new PWMVictorSPX(1);
+	public static PWMVictorSPX rightFrontMotor = new PWMVictorSPX(2);
+	public static PWMVictorSPX rightBackMotor = new PWMVictorSPX(3);
 
 
 	public static Encoder leftDriveEncoder = new Encoder(0, 1);
