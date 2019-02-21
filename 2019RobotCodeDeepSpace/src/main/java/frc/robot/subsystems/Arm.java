@@ -19,8 +19,9 @@ public class Arm extends Subsystem {
     public double ArmPos_Zero = e_Arm.getPosition();
 
     private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
+    private double armOffset;
 
-    
+
     // This will only run once. So posArm will only contain the arm's position when it first starts
     // public double rotArmMotor = e_Arm.getPosition(); //Number of rotations the motor has done 
     // public double rotArm = rotArmMotor * GEAR_RATIO; //Number of rotatins the arm has done
@@ -39,17 +40,20 @@ public class Arm extends Subsystem {
         m_Arm.set(speed);
     }
 
-    public double armPosZero(){
-        return ArmPos_Zero;
+    public double getArmPos() {
+        return e_Arm.getPosition() - armOffset;
+    }
+
+    public void zeroArm() {
+        armOffset = e_Arm.getPosition();
     }
 
     public void setArmMotor(double speed){
         double arm_pos = calculateArmDegrees();
-        double zero_pos = armPosZero();
-        if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + zero_pos){
+        if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + armOffset){
             System.out.format("Arm at max rotation (%d)", arm_pos);
             m_Arm.set(0);
-        } else if(speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - zero_pos){
+        } else if(speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - armOffset){
             System.out.format("Arm at min rotation (%d)", arm_pos);
             m_Arm.set(0);
         } else {

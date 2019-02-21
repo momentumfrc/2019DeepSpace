@@ -6,7 +6,6 @@ import frc.robot.Robot;
 import frc.robot.utils.PDPWrapper;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.arm.ArmNoLimits;
 
 public class ZeroArm extends Command {
     private static final double CUTOFF_TIME = 5;//cut off if taking too long aka something is going on 
@@ -35,6 +34,6 @@ public class ZeroArm extends Command {
     }
 
     protected void end(){
-        arm.armPosZero();
+        arm.zeroArm();
     }
 }
