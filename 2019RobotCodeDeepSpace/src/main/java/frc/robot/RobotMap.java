@@ -27,7 +27,7 @@ public class RobotMap {
 	public static PWMVictorSPX rightBackMotor = new PWMVictorSPX(3);
 
 	// ENCODERS//
-	public static Encoder leftDriveEncoder = new Encoder(0, 1, false); //TODO One set of the Encoder cables is reversed on the Rio, set those encoders to reversed here 
+	public static Encoder leftDriveEncoder = new Encoder(0, 1, false); //TODO One of the encoders is reversed on the robot, set that encoder to reversed here 
 	public static Encoder rightDriveEncoder = new Encoder(2, 3, false);
 
 	// CONTROLLERS//
