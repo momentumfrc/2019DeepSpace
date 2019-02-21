@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,8 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm;
-import frc.robot.commandssandstorm.StartingSequence;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,9 +29,9 @@ public class Robot extends TimedRobot {
   public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static ControlChooser controlChooser = new ControlChooser();
   public static Arm arm = new Arm();
+  public static Wrist wrist = new Wrist();
   public static OI m_oi;
 
-  private Command sandCommand = new StartingSequence();
   SendableChooser<Command> SandstormChooser = new SendableChooser<>();
 
   /**

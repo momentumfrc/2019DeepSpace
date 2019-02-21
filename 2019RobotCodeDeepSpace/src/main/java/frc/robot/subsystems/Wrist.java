@@ -10,13 +10,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
 
-
 public class Wrist extends Subsystem {
 
     private CANSparkMax m_Wrist = RobotMap.wristMotor;
     private CANEncoder e_Wrist = m_Wrist.getEncoder();
     private SendableCANPIDController pid_Wrist = PIDFactory.getWristPID();
-    public double WristPos_Zero;
+    public double wristOffset;
 
     private static final double GEAR_RATIO = 1 / 32; // 16:1 CIM Sport into a 32:16 Chain and Sprocket
 
@@ -26,36 +25,50 @@ public class Wrist extends Subsystem {
         addChild(pid_Wrist);
     }
 
-    public void setWristNoLimits(double speed){
+    /*
+     * Allows the wrist to be controlled with raw input
+     */
+    public void setWristNoLimits(double speed) {
         m_Wrist.set(speed);
     }
 
-    public void WristPosZero(){
-        //e_Wrist.getPosition() == WristPos_Zero;
+    /*
+     * Get the current position of the Wrist relative to the offset/zero position
+     */
+    public double getWristPos() {
+        return e_Wrist.getPosition() - wristOffset;
     }
 
-    public void setArmMotor(double speed){
+    /*
+     * Defines the current position of the Wrist as the offset/zero positon
+     */
+    public void ZeroWrist() {
+        wristOffset = e_Wrist.getPosition();
+    }
+
+    public void setArmMotor(double speed) {
         double wrist_pos = calculateWristDegrees();
-        if(speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()){
+        if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
             System.out.format("Wrist at max rotation (%d)", wrist_pos);
             m_Wrist.set(0);
-        } else if(speed < 0 && wrist_pos <= MoPrefs.getMinWristRotation()){
+        } else if (speed < 0 && wrist_pos <= MoPrefs.getMinWristRotation()) {
             System.out.format("Wrist at min rotation (%d)", wrist_pos);
             m_Wrist.set(0);
         } else {
-    		m_Wrist.set(speed);
+            m_Wrist.set(speed);
         }
     }
 
-    
-    public void stopWrist(double speed){
-        m_Wrist.set(0);    
+    public void stopWrist(double speed) {
+        m_Wrist.set(0);
     }
 
+    /*
+     * Define the Wrist's position in degrees instead of the native rotations
+     */
     private double calculateWristDegrees() {
-        return e_Wrist.getPosition() * GEAR_RATIO * 360;
+        return getWristPos() * GEAR_RATIO * 360;
     }
-
 
     @Override
     protected void initDefaultCommand() {

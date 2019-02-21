@@ -10,25 +10,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
 
-
 public class Arm extends Subsystem {
 
     private CANSparkMax m_Arm = RobotMap.armMotor;
     private CANEncoder e_Arm = m_Arm.getEncoder();
     private SendableCANPIDController pid_Arm = PIDFactory.getArmPID();
-    public double ArmPos_Zero = e_Arm.getPosition();
+    public double armOffset;
 
     private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
-    private double armOffset;
-
-
-    // This will only run once. So posArm will only contain the arm's position when it first starts
-    // public double rotArmMotor = e_Arm.getPosition(); //Number of rotations the motor has done 
-    // public double rotArm = rotArmMotor * GEAR_RATIO; //Number of rotatins the arm has done
-    // public double posArm = rotArm *360;
-
-    // If you define the variable motorTemp like this, it will only be set once. So it'll only ever hold the temperature from when the motor first turns on
-    // private double motorTemp = m_Arm.getMotorTemperature();
 
     public Arm() {
         super("Arm");
@@ -36,53 +25,58 @@ public class Arm extends Subsystem {
         addChild(pid_Arm);
     }
 
-    public void setArmNoLimits(double speed){
+    /*
+     * Allows the wrist to be controlled with raw input
+     */
+    public void setArmNoLimits(double speed) {
         m_Arm.set(speed);
     }
 
+    /*
+     * Get the current position of the Arm relative to the offset/zero position
+     */
     public double getArmPos() {
         return e_Arm.getPosition() - armOffset;
     }
 
+    /*
+     * Defines the current position of the Arm as the offset/zero positon
+     */
     public void zeroArm() {
         armOffset = e_Arm.getPosition();
     }
 
-    public void setArmMotor(double speed){
+    public void setArmMotor(double speed) {
         double arm_pos = calculateArmDegrees();
-        if(speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + armOffset){
+        if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + armOffset) {
             System.out.format("Arm at max rotation (%d)", arm_pos);
             m_Arm.set(0);
-        } else if(speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - armOffset){
+        } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - armOffset) {
             System.out.format("Arm at min rotation (%d)", arm_pos);
             m_Arm.set(0);
         } else {
-    		m_Arm.set(speed);
-    	}
+            m_Arm.set(speed);
+        }
     }
 
-    // This name is misleading. It makes it sound like the method stops the arm, when really it checks the motor temperature
-    public void stop(){
+    public void stop() {
         m_Arm.set(0);
-        // This way we check the motor temperature using the most up-to-date value
-        // But this check will only run whenever Arm.stopArm() is called
-        // So really, a trigger should be set up so that it becomes true whenever RobotMap.armMotor.getMotorTemperature() > MoPrefs.getMaxMotorTemp()
-        // And then that trigger would be set up in OI to turn the motor off when it triggers        
     }
 
+    /*
+     * Define the Arm's position in degrees instead of the native rotations
+     */
     private double calculateArmDegrees() {
-        return e_Arm.getPosition() * GEAR_RATIO * 360;
-    } 
-
+        return getArmPos() * GEAR_RATIO * 360;
+    }
 
     @Override
     protected void initDefaultCommand() {
     }
 
-    /* Blocked out until REV adds the ability to zero the encoder...
-    public void reset(){
-        e_Arm.SetpointOut(0);
-    }s
-    */
+    /*
+     * Blocked out until REV adds the ability to zero the encoder... public void
+     * reset(){ e_Arm.SetpointOut(0); }s
+     */
 
 }
