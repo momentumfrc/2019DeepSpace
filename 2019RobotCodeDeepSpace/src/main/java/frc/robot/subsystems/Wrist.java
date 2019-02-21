@@ -16,13 +16,15 @@ public class Wrist extends Subsystem {
     private CANEncoder e_Wrist = m_Wrist.getEncoder();
     private SendableCANPIDController pid_Wrist = PIDFactory.getWristPID();
     public double wristOffset;
+    public SendableCANPIDController pid;
 
     private static final double GEAR_RATIO = 1 / 32; // 16:1 CIM Sport into a 32:16 Chain and Sprocket
 
     public Wrist() {
         super("Wrist");
+        pid = pid_Wrist;
         addChild(m_Wrist);
-        addChild(pid_Wrist);
+        addChild(pid);
     }
 
     /*
@@ -46,7 +48,7 @@ public class Wrist extends Subsystem {
         wristOffset = e_Wrist.getPosition();
     }
 
-    public void setArmMotor(double speed) {
+    public void setWristMotor(double speed) {
         double wrist_pos = calculateWristDegrees();
         if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
             System.out.format("Wrist at max rotation (%d)", wrist_pos);
@@ -70,6 +72,9 @@ public class Wrist extends Subsystem {
         return getWristPos() * GEAR_RATIO * 360;
     }
 
+    public void drivePID(){
+        setWristMotor(pid.get());
+    }
     @Override
     protected void initDefaultCommand() {
     }

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
+import org.usfirst.frc.team4999.pid.MomentumPID;
 import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 import frc.robot.utils.PIDFactory;
 
@@ -16,13 +17,15 @@ public class Arm extends Subsystem {
     private CANEncoder e_Arm = m_Arm.getEncoder();
     private SendableCANPIDController pid_Arm = PIDFactory.getArmPID();
     public double armOffset;
+    public SendableCANPIDController pid;
 
     private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
 
     public Arm() {
         super("Arm");
+        pid = pid_Arm;
         addChild(m_Arm);
-        addChild(pid_Arm);
+        addChild(pid);
     }
 
     /*
@@ -68,6 +71,10 @@ public class Arm extends Subsystem {
      */
     private double calculateArmDegrees() {
         return getArmPos() * GEAR_RATIO * 360;
+    }
+
+    public void drivePID(){
+        setArmMotor(pid.get());
     }
 
     @Override

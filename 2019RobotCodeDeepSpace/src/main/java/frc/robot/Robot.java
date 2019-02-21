@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm;
 
@@ -30,6 +31,7 @@ public class Robot extends TimedRobot {
   public static ControlChooser controlChooser = new ControlChooser();
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
+  public static Intake intakeCargo = new Intake();
   public static OI m_oi;
 
   SendableChooser<Command> SandstormChooser = new SendableChooser<>();
