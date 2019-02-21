@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controllers.LogitechF310;
 import com.kauailabs.navx.frc.AHRS;
@@ -22,20 +23,15 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class RobotMap {
 	//DRIVE//
-	/*
-	public static VictorSP leftFrontMotor = new VictorSP(0);
-	public static VictorSP leftBackMotor = new VictorSP(1);
-	public static VictorSP rightFrontMotor = new VictorSP(2);
-	public static VictorSP rightBackMotor = new VictorSP(3);
-	*/
 	public static PWMVictorSPX leftFrontMotor = new PWMVictorSPX(0);
 	public static PWMVictorSPX leftBackMotor = new PWMVictorSPX(1);
 	public static PWMVictorSPX rightFrontMotor = new PWMVictorSPX(2);
 	public static PWMVictorSPX rightBackMotor = new PWMVictorSPX(3);
 
 
-	public static Encoder leftDriveEncoder = new Encoder(0, 1);
-	public static Encoder rightDriveEncoder = new Encoder(2,3);
+	//ENCODERS//
+	public static Encoder leftDriveEncoder = new Encoder(0,1,false);  // One of these will be backward.  Change the boolean on the backward one.
+	public static Encoder rightDriveEncoder = new Encoder(2,3,false);
 	
 
 	//CONTROLLERS//
@@ -46,16 +42,16 @@ public class RobotMap {
 	public static AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
 	//ARM// 
-	public static CANSparkMax armMotor = new CANSparkMax(1, MotorType.kBrushless);
+	public static CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);
 
 	//WRIST//
-	public static CANSparkMax wristMotor = new CANSparkMax(1, MotorType.kBrushless);
+	public static CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
 
 	//INTAKE//
-	public static VictorSP intakeMotorTop = new VictorSP(5);
-	public static VictorSP intakeMotorBottom = new VictorSP(6);
+	public static VictorSP intakeMotorTop = new VictorSP(4);
+	public static VictorSP intakeMotorBottom = new VictorSP(5);
 
-	public static DoubleSolenoid hatchKicker = new DoubleSolenoid(1, 2);
+	public static DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
 
 	//PDP//
 	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -65,5 +61,6 @@ public class RobotMap {
 	public static final int RF_DRIVE_MOTOR_PDP = 15;
 	public static final int RB_DRIVE_MOTOR_PDP = 14;
 
-	public static final int ARM_PDP = 4;
+	public static final int ARM_PDP = 13;
+	public static final int WRIST_PDP = 14;
 }
