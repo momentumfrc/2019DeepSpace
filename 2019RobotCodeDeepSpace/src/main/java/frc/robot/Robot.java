@@ -7,9 +7,17 @@
 
 package frc.robot;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import org.usfirst.frc.team4999.pid.SendableCANPIDController;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
@@ -32,7 +40,9 @@ public class Robot extends TimedRobot {
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
   public static Intake intakeCargo = new Intake();
-  public static OI m_oi;
+  public static TestMax testMax = new TestMax();
+  public static OI m_oi; 
+  
 
   SendableChooser<Command> SandstormChooser = new SendableChooser<>();
 
@@ -46,7 +56,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", SandstormChooser);
     SmartDashboard.putData("Control Chooser", controlChooser);
     
-    
+    testMax.robotInit();
   }
 
   /**

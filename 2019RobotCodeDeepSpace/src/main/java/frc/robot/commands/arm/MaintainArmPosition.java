@@ -13,7 +13,7 @@ public class MaintainArmPosition extends Command {
 
     protected void initialize() {
         arm.pid.enable();
-        arm.pid.setSetpoint(arm.getArmPos());
+        arm.pid.setSetpoint((0));
     }
 
     protected void execute(){

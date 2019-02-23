@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-
-import org.usfirst.frc.team4999.pid.MomentumPID;
 import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 import frc.robot.utils.PIDFactory;
 
@@ -36,25 +34,18 @@ public class Arm extends Subsystem {
     }
 
     /*
-     * Get the current position of the Arm relative to the offset/zero position
-     */
-    public double getArmPos() {
-        return e_Arm.getPosition() - armOffset;
-    }
-
-    /*
      * Defines the current position of the Arm as the offset/zero positon
      */
     public void zeroArm() {
-        armOffset = e_Arm.getPosition();
+        e_Arm.setPosition(0);
     }
 
     public void setArmMotor(double speed) {
         double arm_pos = calculateArmDegrees();
-        if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation() + armOffset) {
+        if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
             System.out.format("Arm at max rotation (%d)", arm_pos);
             m_Arm.set(0);
-        } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation() - armOffset) {
+        } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()) {
             System.out.format("Arm at min rotation (%d)", arm_pos);
             m_Arm.set(0);
         } else {
@@ -69,8 +60,8 @@ public class Arm extends Subsystem {
     /*
      * Define the Arm's position in degrees instead of the native rotations
      */
-    private double calculateArmDegrees() {
-        return getArmPos() * GEAR_RATIO * 360;
+    public double calculateArmDegrees() {
+        return e_Arm.getPosition() * GEAR_RATIO * 360;
     }
 
     public void drivePID(){
@@ -80,10 +71,5 @@ public class Arm extends Subsystem {
     @Override
     protected void initDefaultCommand() {
     }
-
-    /*
-     * Blocked out until REV adds the ability to zero the encoder... public void
-     * reset(){ e_Arm.SetpointOut(0); }s
-     */
 
 }
