@@ -11,6 +11,8 @@ public class DriveNoPID extends Command {
     private DriveSubsystem drive = Robot.driveSystem;
     private ControlChooser chooser = Robot.controlChooser;
 
+    private double headTailDirection = 1.0; // positive 1 for forward, -1 for reverse
+
     public DriveNoPID() {
         requires(drive);
     }
@@ -22,7 +24,9 @@ public class DriveNoPID extends Command {
     @Override
     protected void execute() {
         DriveController controller = chooser.getSelected();
-        double moveRequest = controller.getMoveRequest() * (controller.getReversedDirection() ? -1.0 : 1.0);
+        if (controller.getReversedDirection())
+            headTailDirection = -headTailDirection;
+        double moveRequest = controller.getMoveRequest() * headTailDirection;
         drive.arcadeDrive(moveRequest, controller.getTurnRequest(), controller.getSpeedLimiter());
     }
 

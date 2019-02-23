@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", SandstormChooser);
     SmartDashboard.putData("Control Chooser", controlChooser);
     
-    testMax.robotInit();
+    testMax.init();
   }
 
   /**
@@ -122,7 +122,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
   }
 
   /**
@@ -130,6 +129,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-
+    testMax.periodic();
   }
 }

@@ -1,22 +1,24 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.utils.PDPWrapper;
 
 public class Intake extends Subsystem {
-    private VictorSP tRoller = RobotMap.intakeMotorTop;
-    private VictorSP bRoller = RobotMap.intakeMotorBottom;
+    private SpeedController tRoller = RobotMap.intakeMotorTop;
+    private SpeedController bRoller = RobotMap.intakeMotorBottom;
     private PDPWrapper currentCheck = new PDPWrapper();
 
     private static final double INTAKE_SPEED = -1;
     private static final double HOLD_SPEED = -.01;
     private static final double SHOOT_SPEED = 1;
 
-    private static final double HOLD_CURRENT = 10; // How many amps to hold the ball
-    private static final int CURRENT_CUTOFF_TIME = 500; // Time in ms
+    private static final double HOLD_CURRENT = 10; // Current threshold to know when a ball is stalling the intake
+    private static final int CURRENT_CUTOFF_TIME = 300; // Time in ms
+
+    private static final int[] intakePDPChannels = { RobotMap.INTAKE_UPPER_PDP, RobotMap.INTAKE_LOWER_PDP };
 
     public void intakeCargo(double intakeSpeed) {
         tRoller.set(intakeSpeed);
@@ -37,15 +39,14 @@ public class Intake extends Subsystem {
         intakeCargo(HOLD_SPEED);
     }
 
-    public void hunt() { //TODO Clarify if this is even needed
+    public void hunt() { // TODO Clarify if this is even needed
         intakeCargo(INTAKE_SPEED);
     }
 
     public boolean checkHeld() {
-        return !currentCheck.checkOvercurrent(new int[] { RobotMap.INTAKE_UPPER_PDP, RobotMap.INTAKE_LOWER_PDP },
-                HOLD_CURRENT, CURRENT_CUTOFF_TIME);
+        return !currentCheck.checkOvercurrent(intakePDPChannels, HOLD_CURRENT, CURRENT_CUTOFF_TIME);
     }
-    
+
     public void shoot() {
         intakeCargo(SHOOT_SPEED);
     }
