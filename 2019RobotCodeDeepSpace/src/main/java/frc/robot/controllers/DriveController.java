@@ -8,7 +8,7 @@ public interface  DriveController {
 	
 	abstract public double getSpeedLimiter();
 
-	abstract public boolean getReversedDirection();
+	abstract public boolean getReverseDirectionPressed();
 
 	abstract public double getArmUp();
 

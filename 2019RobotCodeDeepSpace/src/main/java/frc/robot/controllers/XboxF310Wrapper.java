@@ -42,16 +42,16 @@ public class XboxF310Wrapper implements DriveController {
     @Override
     public double getSpeedLimiter() {
         if (xbox.getYButtonPressed() && currentSpeed < SPEEDS.length - 1) {
-            currentSpeed++;
+            ++currentSpeed;
         } else if (xbox.getXButtonPressed() && currentSpeed > 0) {
-            currentSpeed--;
+            --currentSpeed;
         }
 
         return SPEEDS[currentSpeed];
     }
 
     @Override
-    public boolean getReversedDirection() {
+    public boolean getReverseDirectionPressed() {
         return xbox.getBButtonPressed();
     }
 

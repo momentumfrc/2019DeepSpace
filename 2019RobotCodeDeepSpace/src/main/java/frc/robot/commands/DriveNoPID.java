@@ -8,41 +8,42 @@ import frc.robot.controllers.DriveController;
 
 public class DriveNoPID extends Command {
 
-    private DriveSubsystem drive = Robot.driveSystem;
-    private ControlChooser chooser = Robot.controlChooser;
+  private DriveSubsystem drive = Robot.driveSystem;
+  private ControlChooser chooser = Robot.controlChooser;
 
-    private double headTailDirection = 1.0; // positive 1 for forward, -1 for reverse
+  private double headTailDirection = 1.0; // positive 1 for forward, -1 for reverse
 
-    public DriveNoPID() {
-        requires(drive);
-    }
+  public DriveNoPID() {
+    requires(drive);
+  }
 
-    @Override
-    protected void initialize() {
-    }
+  @Override
+  protected void initialize() {
+  }
 
-    @Override
-    protected void execute() {
-        DriveController controller = chooser.getSelected();
-        if (controller.getReversedDirection())
-            headTailDirection = -headTailDirection;
-        double moveRequest = controller.getMoveRequest() * headTailDirection;
-        drive.arcadeDrive(moveRequest, controller.getTurnRequest(), controller.getSpeedLimiter());
-    }
+  @Override
+  protected void execute() {
+    DriveController controller = chooser.getSelected();
+    if (controller.getReverseDirectionPressed()) // "Pressed" methods only return true on the first query after the
+                                                 // button was pressed
+      headTailDirection = -headTailDirection;
+    double moveRequest = controller.getMoveRequest() * headTailDirection;
+    drive.arcadeDrive(moveRequest, controller.getTurnRequest(), controller.getSpeedLimiter());
+  }
 
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    @Override
-    public void end() {
-        drive.stop();
-    }
+  @Override
+  public void end() {
+    drive.stop();
+  }
 
-    @Override
-    public void interrupted() {
-        end();
-    }
+  @Override
+  public void interrupted() {
+    end();
+  }
 
 }
