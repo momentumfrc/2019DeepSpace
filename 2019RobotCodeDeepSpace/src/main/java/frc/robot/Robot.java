@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -50,6 +53,13 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     SmartDashboard.putData("Auto mode", SandstormChooser);
     SmartDashboard.putData("Control Chooser", controlChooser);
+
+    VideoSource lifecam = new UsbCamera("Driver Camera", 0);
+    // TODO: Experiment with these numbers
+    lifecam.setResolution(640, 480);
+    lifecam.setFPS(15);
+    CameraServer.getInstance().startAutomaticCapture(lifecam);
+
 
     testMax.init();
   }
