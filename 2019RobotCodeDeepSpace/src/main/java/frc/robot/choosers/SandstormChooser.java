@@ -1,6 +1,5 @@
 package frc.robot.choosers;
 
-import frc.robot.sandstorm.*;
 import frc.robot.sandstorm.SandstormMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -11,7 +10,9 @@ public class SandstormChooser extends SendableChooser<SandstormMode> {
 
   public SandstormChooser() {
     super();
-    setDefaultOption("Default", SandstormMode.DEFAULT_PATH);
+
+    setDefaultOption("Teleop Control", SandstormMode.TELEOP);
+    addOption("Default", SandstormMode.DEFAULT_PATH);
 
     SmartDashboard.putData(NAME, this);
   }

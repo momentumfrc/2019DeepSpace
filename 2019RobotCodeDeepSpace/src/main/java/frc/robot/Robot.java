@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
+import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HatchActive;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.HatchPassive;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm;
+import frc.robot.sandstorm.SandstormMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,7 +44,9 @@ public class Robot extends TimedRobot {
   public static TestMax testMax = new TestMax();
   public static OI m_oi;
 
-  SendableChooser<Command> SandstormChooser = new SendableChooser<>();
+  private SendableChooser<SandstormMode> sandstormChooser = new SandstormChooser();
+
+  private Command driveCommand = new DriveNoPID();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -51,7 +55,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    SmartDashboard.putData("Auto mode", SandstormChooser);
+    SmartDashboard.putData("Auto mode", sandstormChooser);
     SmartDashboard.putData("Control Chooser", controlChooser);
 
     VideoSource lifecam = new UsbCamera("Driver Camera", 0);
@@ -107,7 +111,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Scheduler.getInstance().removeAll();
-    new DriveNoPID().start();
+
+    switch(sandstormChooser.getSelected()) {
+      case DEFAULT_PATH:
+        // Do path stuff
+        // break; // Commented so that it will just fall through to the teleop mode
+      case TELEOP:
+      default:
+        driveCommand.start();
+    }
   }
 
   /**
@@ -121,7 +133,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Scheduler.getInstance().removeAll();
-    new DriveNoPID().start();
+    driveCommand.start();
   }
 
   /**
