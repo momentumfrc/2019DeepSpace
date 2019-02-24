@@ -13,8 +13,8 @@ public class MaintainWristPosition extends Command {
 
   @Override
   protected void initialize() {
-    wrist.pid.enable();
     wrist.pid.setSetpoint(wrist.getWristPos());
+    wrist.pid.enable();
   }
 
   @Override
@@ -29,12 +29,12 @@ public class MaintainWristPosition extends Command {
 
   @Override
   protected void end() {
-
+    wrist.stopWrist();
   }
 
   @Override
   protected void interrupted() {
-
+    wrist.stopWrist();
   }
 
 }

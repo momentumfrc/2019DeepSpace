@@ -40,6 +40,12 @@ public class ZeroWrist extends Command {
 
   @Override
   protected void end() {
+    wrist.stopWrist();
     wrist.ZeroWrist();
+  }
+
+  @Override
+  protected void interrupted() {
+    wrist.stopWrist();
   }
 }
