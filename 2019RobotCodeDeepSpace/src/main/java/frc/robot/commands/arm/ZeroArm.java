@@ -36,7 +36,7 @@ public class ZeroArm extends Command {
 
   @Override
   protected boolean isFinished() {
-    return ocMon.check();
+    return ocMon.check() || time.hasPeriodPassed(CUTOFF_TIME);
   }
 
   @Override
