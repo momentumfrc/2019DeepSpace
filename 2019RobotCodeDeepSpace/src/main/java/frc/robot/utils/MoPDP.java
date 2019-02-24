@@ -55,7 +55,7 @@ public class MoPDP extends PowerDistributionPanel {
     private final long timeThreshold;
     private long since;
 
-    UndercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
+    private UndercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
       validateChannels(channels);
       this.channels = channels;
       this.currentThreshold = currentThreshold;
@@ -63,7 +63,7 @@ public class MoPDP extends PowerDistributionPanel {
       since = getTimeMillis();
     }
 
-    UndercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
+    private UndercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
       this(new int[] { channel }, currentThreshold, timeThreshold);
     }
 
@@ -89,7 +89,7 @@ public class MoPDP extends PowerDistributionPanel {
     private final long timeThreshold;
     private long since;
 
-    UndervoltageMonitor(double voltageThreshold, long timeThreshold) {
+    private UndervoltageMonitor(double voltageThreshold, long timeThreshold) {
       this.voltageThreshold = voltageThreshold;
       this.timeThreshold = timeThreshold;
       since = getTimeMillis();
@@ -111,7 +111,10 @@ public class MoPDP extends PowerDistributionPanel {
 
   private void validateChannel(int channel) {
     if (channel < 0 || channel >= NUM_CHANNELS)
-      throw new Error("Invalid channel");
+      // StackOverflow says "RuntimeException indicate there is a error with the
+      // program, and an Error is something that is fatal but out of the program's
+      // control"
+      throw new RuntimeException("Invalid channel");
   }
 
   private void validateChannels(int[] channels) {
