@@ -5,32 +5,36 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class MaintainArmPosition extends Command {
-    private Arm arm = Robot.arm;
-    
-    public MaintainArmPosition(){
-        requires(arm);
-    }
+  private Arm arm = Robot.arm;
 
-    protected void initialize() {
-        arm.pid.enable();
-        arm.pid.setSetpoint((0));
-    }
+  public MaintainArmPosition() {
+    requires(arm);
+  }
 
-    protected void execute(){
-        arm.drivePID();
-    }
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  @Override
+  protected void initialize() {
+    arm.pid.enable();
+    arm.pid.setSetpoint((0));
+  }
 
-    protected void end(){
+  @Override
+  protected void execute() {
+    arm.drivePID();
+  }
 
-    }
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    protected void interrupted(){
+  @Override
+  protected void end() {
 
-    }
+  }
 
+  @Override
+  protected void interrupted() {
+
+  }
 
 }

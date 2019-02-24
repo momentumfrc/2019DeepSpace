@@ -10,13 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.controllers.LogitechF310;
+import frc.robot.utils.MoPDP;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -52,13 +52,13 @@ public class RobotMap {
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
   // HATCH GROUND INTAKE //
-  public static final Solenoid hatchKicker = new Solenoid(0);
+  public static final DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
 
   // HATCH ACTIVE //
-  public static final DoubleSolenoid hatchActive = new DoubleSolenoid(1, 2);
+  public static final DoubleSolenoid hatchActive = new DoubleSolenoid(2, 3);
 
   // PDP//
-  public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
+  public static final MoPDP pdp = new MoPDP();
 
   public static final int LF_DRIVE_MOTOR_PDP = 0;
   public static final int LB_DRIVE_MOTOR_PDP = 1;

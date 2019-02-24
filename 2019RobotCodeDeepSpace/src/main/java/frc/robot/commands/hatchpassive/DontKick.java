@@ -1,27 +1,19 @@
 package frc.robot.commands.hatchpassive;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchPassive;
 
-public class DontKick extends Command {
-    HatchPassive hatch = Robot.hatchPassive;
+public class DontKick extends InstantCommand {
+  HatchPassive hatch = Robot.hatchPassive;
 
-    public DontKick() {
-        requires(hatch);
-    }
+  public DontKick() {
+    requires(hatch);
+  }
 
-    protected void initialize() {
-
-    }
-
-    protected void execute() {
-        hatch.dontKick();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  @Override
+  protected void execute() {
+    hatch.dontKick();
+  }
 
 }

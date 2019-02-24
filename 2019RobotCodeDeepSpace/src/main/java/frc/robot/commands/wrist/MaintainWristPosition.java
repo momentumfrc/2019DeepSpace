@@ -5,32 +5,36 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Wrist;
 
 public class MaintainWristPosition extends Command {
-    private Wrist wrist = Robot.wrist;
-    
-    public MaintainWristPosition(){
-        requires(wrist);
-    }
+  private Wrist wrist = Robot.wrist;
 
-    protected void initialize() {
-        wrist.pid.enable();
-        wrist.pid.setSetpoint(wrist.getWristPos());
-    }
+  public MaintainWristPosition() {
+    requires(wrist);
+  }
 
-    protected void execute(){
-        wrist.drivePID();
-    }
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  @Override
+  protected void initialize() {
+    wrist.pid.enable();
+    wrist.pid.setSetpoint(wrist.getWristPos());
+  }
 
-    protected void end(){
+  @Override
+  protected void execute() {
+    wrist.drivePID();
+  }
 
-    }
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    protected void interrupted(){
+  @Override
+  protected void end() {
 
-    }
+  }
 
+  @Override
+  protected void interrupted() {
+
+  }
 
 }

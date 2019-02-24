@@ -1,28 +1,20 @@
 package frc.robot.commands.hatchactive;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.subsystems.HatchActive;
 
-public class ReleaseHatch extends Command{
+public class ReleaseHatch extends InstantCommand {
 
-    HatchActive hatch = Robot.hatchActive;
+  HatchActive hatch = Robot.hatchActive;
 
-    public ReleaseHatch() {
-        requires(hatch);
-    }
+  public ReleaseHatch() {
+    requires(hatch);
+  }
 
-    protected void initialize(){
-        
-    }
-
-    protected void execute() {
-        hatch.releaseHatch();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return false;
-    }
+  @Override
+  protected void execute() {
+    hatch.releaseHatch();
+  }
 
 }
