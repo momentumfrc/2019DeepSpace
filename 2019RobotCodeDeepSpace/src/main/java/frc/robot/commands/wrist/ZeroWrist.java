@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ZeroWrist extends Command {
-    private static final double CUTOFF_TIME = 5;//cut off if taking too long aka something is going on 
-
+    private static final double CUTOFF_TIME = 1000;//Zeroing the wrist is taking too long or something is going wrong  
     private static final double ZERO_SPEED = .125;
     private static final double ZERO_CUTOFF_CURRENT = 3;//Amps
     private static final int ZERO_CUTTOFF_TIME = 1000;//Milliseconds

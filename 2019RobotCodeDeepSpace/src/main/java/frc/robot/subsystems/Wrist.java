@@ -38,14 +38,14 @@ public class Wrist extends Subsystem {
      * Get the current position of the Wrist relative to the offset/zero position
      */
     public double getWristPos() {
-        return e_Wrist.getPosition() - wristOffset;
+        return e_Wrist.getPosition();
     }
 
     /*
      * Defines the current position of the Wrist as the offset/zero positon
      */
     public void ZeroWrist() {
-        wristOffset = e_Wrist.getPosition();
+        e_Wrist.setPosition(0);
     }
 
     public void setWristMotor(double speed) {

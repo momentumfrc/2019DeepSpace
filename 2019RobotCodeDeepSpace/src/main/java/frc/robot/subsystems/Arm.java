@@ -33,6 +33,10 @@ public class Arm extends Subsystem {
         m_Arm.set(speed);
     }
 
+    public double getArmPos() {
+        return e_Arm.getPosition();
+    }
+
     /*
      * Defines the current position of the Arm as the offset/zero positon
      */
@@ -61,10 +65,10 @@ public class Arm extends Subsystem {
      * Define the Arm's position in degrees instead of the native rotations
      */
     public double calculateArmDegrees() {
-        return e_Arm.getPosition() * GEAR_RATIO * 360;
+        return getArmPos() * GEAR_RATIO * 360;
     }
 
-    public void drivePID(){
+    public void drivePID() {
         setArmMotor(pid.get());
     }
 
