@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
@@ -46,12 +47,15 @@ public class RobotMap {
   // WRIST//
   public static final CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
 
-  // INTAKE//
+  // CARGO INTAKE//
   public static final SpeedController intakeMotorTop = new VictorSP(4);
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
-  public static final DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
-  public static final DoubleSolenoid hatchGrabber = new DoubleSolenoid(2, 3);
+  // HATCH GROUND INTAKE //
+  public static final Solenoid hatchKicker = new Solenoid(0);
+
+  // HATCH ACTIVE //
+  public static final DoubleSolenoid hatchActive = new DoubleSolenoid(1, 2);
 
   // PDP//
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();

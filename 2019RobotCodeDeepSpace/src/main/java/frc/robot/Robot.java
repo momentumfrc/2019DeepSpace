@@ -7,23 +7,17 @@
 
 package frc.robot;
 
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import org.usfirst.frc.team4999.pid.SendableCANPIDController;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.HatchActive;
+import frc.robot.subsystems.HatchPassive;
+import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm;
 
@@ -39,7 +33,9 @@ public class Robot extends TimedRobot {
   public static ControlChooser controlChooser = new ControlChooser();
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
-  public static Intake intakeCargo = new Intake();
+  public static CargoIntake cargoIntake = new CargoIntake();
+  public static HatchActive hatchActive = new HatchActive();
+  public static HatchPassive hatchPassive = new HatchPassive();
   public static TestMax testMax = new TestMax();
   public static OI m_oi; 
   
