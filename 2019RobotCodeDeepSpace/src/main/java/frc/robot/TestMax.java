@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
@@ -33,12 +34,56 @@ public class TestMax {
     SmartDashboard.putNumber("Max F", f);
     SmartDashboard.putNumber("Max I Zone", iZone);
 
+    SmartDashboard.getEntry("Max P").addListener(
+      notification->{
+        double t = notification.getEntry().getDouble(p);
+        if(t != p) {
+          p = t;
+          testMax_PID.setP(p);
+        }
+      },
+      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max i").addListener(
+      notification->{
+        double t = notification.getEntry().getDouble(i);
+        if(t != i) {
+          i = t;
+          testMax_PID.setI(i);
+        }
+      },
+      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max D").addListener(
+      notification->{
+        double t = notification.getEntry().getDouble(d);
+        if(t != d) {
+          d = t;
+          testMax_PID.setD(d);
+        }
+      },
+      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max F").addListener(
+      notification->{
+        double t = notification.getEntry().getDouble(f);
+        if(t != f) {
+          f = t;
+          testMax_PID.setFF(f);
+        }
+      },
+      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max F").addListener(
+      notification->{
+        double t = notification.getEntry().getDouble(iZone);
+        if(t != iZone) {
+          iZone = t;
+          testMax_PID.setFF(iZone);
+        }
+      },
+      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+
     testMax.getEncoder().setPositionConversionFactor(16); // Motor is on 16:1 gearbox
   }
 
   public void periodic() {
-    updateFromDashboard();
-
     servoJoystick();
     // tunePID();
   }
@@ -54,39 +99,5 @@ public class TestMax {
     long now = System.currentTimeMillis() / 1000;
     double posRequest = (now % 2) == 0 ? 0 : 0.25; // choose 0 or 1/4 rotation, alternating every second
     testMax_PID.setReference(posRequest, ControlType.kPosition);
-  }
-
-  private void updateFromDashboard() {
-    double t;
-
-    t = SmartDashboard.getNumber("Max P", p);
-    if (t != p) {
-      p = t;
-      testMax_PID.setP(p);
-    }
-
-    t = SmartDashboard.getNumber("Max I", i);
-    if (t != i) {
-      i = t;
-      testMax_PID.setI(i);
-    }
-
-    t = SmartDashboard.getNumber("Max D", d);
-    if (t != d) {
-      d = t;
-      testMax_PID.setD(d);
-    }
-
-    t = SmartDashboard.getNumber("Max P", f);
-    if (t != f) {
-      f = t;
-      testMax_PID.setFF(f);
-    }
-
-    t = SmartDashboard.getNumber("Max I Zone", iZone);
-    if (t != iZone) {
-      iZone = t;
-      testMax_PID.setIZone(iZone);
-    }
   }
 }
