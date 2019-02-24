@@ -39,8 +39,21 @@ public class TestMax {
   public void periodic() {
     updateFromDashboard();
 
+    servoJoystick();
+    // tunePID();
+  }
+
+  /// Connect the joystick to the motor like a servo
+  private void servoJoystick() {
     DriveController controller = chooser.getSelected();
     testMax_PID.setReference(controller.getMoveRequest(), ControlType.kPosition);
+  }
+
+  /// Wave the motor back and forth every second for PID tuning
+  private void tunePID() {
+    long now = System.currentTimeMillis() / 1000;
+    double posRequest = (now % 2) == 0 ? 0 : 0.25; // choose 0 or 1/4 rotation, alternating every second
+    testMax_PID.setReference(posRequest, ControlType.kPosition);
   }
 
   private void updateFromDashboard() {
