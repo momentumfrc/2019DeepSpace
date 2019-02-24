@@ -16,19 +16,19 @@ public class SetArmPosition extends Command {
 
   @Override
   protected void initialize() {
-    arm.pid.setSetpoint(position);
-    arm.pid.enable();
+    arm.pid_arm.setSetpoint(position);
+    arm.pid_arm.enable();
   }
 
   @Override
   protected void execute() {
-    System.out.format("Setpoint:%.2f Current:%.2f Output:%.2f\n", position, arm.getArmPos(), arm.pid.get());
+    System.out.format("Setpoint:%.2f Current:%.2f Output:%.2f\n", position, arm.getArmPos(), arm.pid_arm.get());
     arm.drivePID();
   }
 
   @Override
   protected boolean isFinished() {
-    return arm.pid.onTargetForTime();
+    return arm.pid_arm.onTargetForTime();
   }
 
   @Override

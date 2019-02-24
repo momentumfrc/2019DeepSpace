@@ -13,8 +13,8 @@ public class MaintainArmPosition extends Command {
 
   @Override
   protected void initialize() {
-    arm.pid.enable();
-    arm.pid.setSetpoint((0));
+    arm.pid_arm.enable();
+    arm.pid_arm.setSetpoint((0));
   }
 
   @Override
