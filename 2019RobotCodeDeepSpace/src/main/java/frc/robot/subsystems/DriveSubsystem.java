@@ -22,7 +22,7 @@ public class DriveSubsystem extends Subsystem {
 
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
 
-  public DriveSubsystem(){
+  public DriveSubsystem() {
     super("Drive Subsytem");
     drive.setDeadband(0);
     addChild("Left Side", leftside);
@@ -34,23 +34,23 @@ public class DriveSubsystem extends Subsystem {
     setDefaultCommand(new DriveNoPID());
   }
 
-  public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter){
+  public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
     double m_r = Utils.clip(moveRequest, -1, 1) * speedLimiter;
     double t_r = Utils.clip(turnRequest, -1, 1) * speedLimiter;
-	  drive.arcadeDrive(m_r, t_r, false);
+    drive.arcadeDrive(m_r, t_r, false);
   }
 
   public void tankDrive(double leftSide, double rightSide, double speedLimiter) {
     double l_m = Utils.clip(leftSide * speedLimiter, -1, 1);
     double r_m = Utils.clip(rightSide * speedLimiter, -1, 1);
-    drive.tankDrive(l_m, r_m);
+    drive.tankDrive(l_m, r_m, false);
   }
 
-  public void stop(){
-    tankDrive(0,0,0);
+  public void stop() {
+    tankDrive(0, 0, 0);
   }
 
   public double get() {
-    return (leftside.get() + rightside.get())/2;
+    return (leftside.get() + rightside.get()) / 2;
   }
 }
