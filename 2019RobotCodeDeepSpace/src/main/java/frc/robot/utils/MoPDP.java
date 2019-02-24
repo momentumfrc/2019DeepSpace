@@ -5,128 +5,138 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MoPDP extends PowerDistributionPanel {
 
-  private final int NUM_CHANNELS = 16; // 16 channels on the PDP
-  private final long[] overtime = new long[NUM_CHANNELS];
-  private final double[] overThresh = new double[NUM_CHANNELS];
-  private final long[] undertime = new long[NUM_CHANNELS];
-  private final double[] underThresh = new double[NUM_CHANNELS];
+  /**
+   * Checks if a channel of the PDP has been above the current threshold for the
+   * specified period of time
+   * 
+   * @param channel          Channel(s) of the PDP to check
+   * @param currentThreshold Max current allowed
+   * @param timeThreshold    Cutoff time in milliseconds
+   */
+  public class OvercurrentMonitor {
+    private final int[] channels;
+    private final double currentThreshold;
+    private final long timeThreshold;
+    private long since;
 
-  private long undervoltTimer;
-  private double undervoltThreshold;
+    OvercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
+      validateChannels(channels);
+      this.channels = channels;
+      this.currentThreshold = currentThreshold;
+      this.timeThreshold = timeThreshold;
+      since = getTimeMillis();
+    }
+
+    OvercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
+      this(new int[] { channel }, currentThreshold, timeThreshold);
+    }
+
+    public boolean check() {
+      for (int channel : channels) {
+        if (getCurrent(channel) > currentThreshold && getTimeMillis() - since > timeThreshold)
+          return true;
+      }
+      since = getTimeMillis();
+      return false;
+    }
+  }
+
+  /**
+   * Checks if a channel of the PDP has been below the current threshold for the
+   * specified period of time
+   * 
+   * @param channel          Channel of the PDP to check
+   * @param currentThreshold Min current allowed
+   * @param timeThreshold    Cutoff time in milliseconds
+   */
+  public class UndercurrentMonitor {
+    private final int[] channels;
+    private final double currentThreshold;
+    private final long timeThreshold;
+    private long since;
+
+    UndercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
+      validateChannels(channels);
+      this.channels = channels;
+      this.currentThreshold = currentThreshold;
+      this.timeThreshold = timeThreshold;
+      since = getTimeMillis();
+    }
+
+    UndercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
+      this(new int[] { channel }, currentThreshold, timeThreshold);
+    }
+
+    public boolean check() {
+      for (int channel : channels) {
+        if (getCurrent(channel) < currentThreshold && getTimeMillis() - since > timeThreshold)
+          return true;
+      }
+      since = getTimeMillis();
+      return false;
+    }
+  }
+
+  /**
+   * Checks if the PDP has been below the voltage threshold for the specified
+   * period of time
+   * 
+   * @param voltageThreshold Min voltage allowed
+   * @param timeThreshold    Cutoff time in milliseconds
+   */
+  public class UndervoltageMonitor {
+    private final double voltageThreshold;
+    private final long timeThreshold;
+    private long since;
+
+    UndervoltageMonitor(double voltageThreshold, long timeThreshold) {
+      this.voltageThreshold = voltageThreshold;
+      this.timeThreshold = timeThreshold;
+      since = getTimeMillis();
+    }
+
+    public boolean check() {
+      if (getVoltage() > voltageThreshold)
+        return getTimeMillis() - since > timeThreshold;
+      since = getTimeMillis();
+      return false;
+    }
+  }
+
+  private final int NUM_CHANNELS = 16; // 16 channels on the PDP
 
   private long getTimeMillis() {
     return (long) (Timer.getFPGATimestamp() * 1000);
   }
 
-  public MoPDP() {
-    for (int i = 0; i < NUM_CHANNELS; ++i) {
-      overtime[i] = undertime[i] = getTimeMillis();
-      overThresh[i] = 120; // Main breaker limit
-      underThresh[i] = 0;
-    }
-
-    undervoltTimer = getTimeMillis();
-    undervoltThreshold = 8; // 8 volts is a very low voltage for a robot
+  private void validateChannel(int channel) {
+    if (channel < 0 || channel >= NUM_CHANNELS)
+      throw new Error("Invalid channel");
   }
 
-  public void periodic() {
-    for (int i = 0; i < NUM_CHANNELS; ++i) {
-      double current = getCurrent(i);
-      if (current <= overThresh[i])
-        overtime[i] = getTimeMillis();
-      if (current >= underThresh[i])
-        undertime[i] = getTimeMillis();
-    }
-
-    if (getVoltage() >= undervoltThreshold)
-      undervoltTimer = getTimeMillis();
-  }
-
-  public void setOvercurrentThreshold(int channel, double current) {
-    overThresh[channel] = current;
-    overtime[channel] = getTimeMillis();
-  }
-
-  public void setOvercurrentThresholds(int[] channels, double current) {
+  private void validateChannels(int[] channels) {
     for (int channel : channels)
-      setOvercurrentThreshold(channel, current);
+      validateChannel(channel);
   }
 
-  public void setundercurrentThreshold(int channel, double current) {
-    underThresh[channel] = current;
-    undertime[channel] = getTimeMillis();
+  public OvercurrentMonitor MakeOvercurrentMonitor(int channel, double currentThreshold, int timeThreshold) {
+    return new OvercurrentMonitor(channel, currentThreshold, timeThreshold);
   }
 
-  public void setundervoltageThreshold(double voltage) {
-    undervoltThreshold = voltage;
-    undervoltTimer = getTimeMillis();
+  public OvercurrentMonitor MakeOvercurrentMonitor(int[] channels, double currentThreshold, int timeThreshold) {
+    return new OvercurrentMonitor(channels, currentThreshold, timeThreshold);
   }
 
-  /**
-   * Checks if a channel of the PDP has been above the set current threshold for
-   * the specified period of time
-   * 
-   * @param channel    Channel of the PDP to check
-   * @param cutofftime Cutoff time in milliseconds
-   * @return If the channel is over the current limit
-   */
-  public boolean checkOvercurrent(int channel, long cutofftime) {
-    return getTimeMillis() - overtime[channel] > cutofftime;
+  public UndercurrentMonitor MakeUnercurrentMonitor(int channel, double currentThreshold, int timeThreshold) {
+    return new UndercurrentMonitor(channel, currentThreshold, timeThreshold);
   }
 
-  /**
-   * Checks if some channels of the PDP has been above the set current threshold
-   * for the specified period of time
-   * 
-   * @param channels   Channels of the PDP to check
-   * @param cutofftime Cutoff time in milliseconds
-   * @return If any of the channels are over the current limit
-   */
-  public boolean checkOvercurrent(int[] channels, int cutofftime) {
-    for (int channel : channels) {
-      if (checkOvercurrent(channel, cutofftime))
-        return true;
-    }
-    return false;
+  public UndercurrentMonitor MakeUndercurrentMonitor(int[] channels, double currentThreshold, int timeThreshold) {
+    return new UndercurrentMonitor(channels, currentThreshold, timeThreshold);
   }
 
-  /**
-   * Checks if a channel of the PDP has been below the set current threshold for
-   * the specified period of time
-   * 
-   * @param channel    Channel of the PDP to check
-   * @param cutofftime Cutoff time in milliseconds
-   * @return If the channel is under the current limit
-   */
-  public boolean checkUndercurrent(int channel, int cutofftime) {
-    return getTimeMillis() - undertime[channel] > cutofftime;
-  }
-
-  /**
-   * Checks if some channels of the PDP has been below the set current threshold
-   * for the specified period of time
-   * 
-   * @param channels   Channels of the PDP to check
-   * @param cutofftime Cutoff time in milliseconds
-   * @return If any of the channels are below the current limit
-   */
-  public boolean checkUndercurrent(int[] channels, int cutofftime) {
-    for (int channel : channels) {
-      if (checkUndercurrent(channel, cutofftime))
-        return true;
-    }
-    return false;
-  }
-
-  /**
-   * Checks if the battery voltage has been below the set voltage threshold for
-   * the specified period of time
-   * 
-   * @param cutofftime Cutoff time in milliseconds
-   * @return If the voltage is below the voltage limit
-   */
-  public boolean checkUndervoltage(int cutofftime) {
-    return getTimeMillis() - undervoltTimer < cutofftime;
+  public UndervoltageMonitor MakeUndervoltageMonitor(double voltageThreshold, int timeThreshold) {
+    return new UndervoltageMonitor(voltageThreshold, timeThreshold);
   }
 
 }

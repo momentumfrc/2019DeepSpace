@@ -64,7 +64,6 @@ public class Robot extends TimedRobot {
     lifecam.setFPS(15);
     CameraServer.getInstance().startAutomaticCapture(lifecam);
 
-
     testMax.init();
   }
 
@@ -79,7 +78,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    RobotMap.pdp.periodic();
   }
 
   /**
@@ -112,13 +110,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Scheduler.getInstance().removeAll();
 
-    switch(sandstormChooser.getSelected()) {
-      case DEFAULT_PATH:
-        // Do path stuff
-        // break; // Commented so that it will just fall through to the teleop mode
-      case TELEOP:
-      default:
-        driveCommand.start();
+    switch (sandstormChooser.getSelected()) {
+    case DEFAULT_PATH:
+      // Do path stuff
+      // break; // Commented so that it will just fall through to the teleop mode
+    case TELEOP:
+    default:
+      driveCommand.start();
     }
   }
 

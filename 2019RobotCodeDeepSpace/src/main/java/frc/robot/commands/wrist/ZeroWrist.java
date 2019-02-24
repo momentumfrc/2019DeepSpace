@@ -14,7 +14,8 @@ public class ZeroWrist extends Command {
   private static final int ZERO_CUTTOFF_TIME = 1000;// Milliseconds
 
   private Wrist wrist = Robot.wrist;
-  private MoPDP pdp = new MoPDP();
+  private MoPDP.OvercurrentMonitor ocMon = RobotMap.pdp.MakeOvercurrentMonitor(RobotMap.WRIST_PDP, ZERO_CUTOFF_CURRENT,
+      ZERO_CUTTOFF_TIME);
   private Timer time = new Timer();
 
   public ZeroWrist() {
@@ -24,7 +25,6 @@ public class ZeroWrist extends Command {
   @Override
   protected void initialize() {
     time.start();
-    pdp.setOvercurrentThreshold(RobotMap.WRIST_PDP, ZERO_CUTOFF_CURRENT);
   }
 
   @Override
@@ -35,7 +35,7 @@ public class ZeroWrist extends Command {
 
   @Override
   protected boolean isFinished() {
-    return pdp.checkOvercurrent(RobotMap.WRIST_PDP, ZERO_CUTTOFF_TIME) || time.hasPeriodPassed(CUTOFF_TIME);
+    return ocMon.check() || time.hasPeriodPassed(CUTOFF_TIME);
   }
 
   @Override

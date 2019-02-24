@@ -9,7 +9,8 @@ import frc.robot.utils.MoPDP;
 public class CargoIntake extends Subsystem {
   private SpeedController tRoller = RobotMap.intakeMotorTop;
   private SpeedController bRoller = RobotMap.intakeMotorBottom;
-  private MoPDP pdp = RobotMap.pdp;
+  private MoPDP.OvercurrentMonitor ocMon = RobotMap.pdp.MakeOvercurrentMonitor(intakePDPChannels, GRABBED_CURRENT,
+      CURRENT_CUTOFF_TIME);
 
   private static final double INTAKE_SPEED = -1;
   private static final double HOLD_SPEED = -.01;
@@ -31,7 +32,6 @@ public class CargoIntake extends Subsystem {
 
   public void grab() {
     intakeCargo(INTAKE_SPEED);
-    pdp.setOvercurrentThresholds(intakePDPChannels, GRABBED_CURRENT);
   }
 
   public void hold() {
@@ -39,7 +39,7 @@ public class CargoIntake extends Subsystem {
   }
 
   public boolean checkHeld() {
-    return pdp.checkOvercurrent(intakePDPChannels, CURRENT_CUTOFF_TIME);
+    return ocMon.check();
   }
 
   public void shoot() {
