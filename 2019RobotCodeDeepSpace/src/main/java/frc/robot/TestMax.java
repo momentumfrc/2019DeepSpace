@@ -5,7 +5,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.usfirst.frc.team4999.pid.SendableCANPIDController;
+
 import edu.wpi.first.networktables.TableEntryListener;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
@@ -13,6 +16,9 @@ import frc.robot.controllers.DriveController;
 public class TestMax {
   private static CANSparkMax testMax = new CANSparkMax(14, MotorType.kBrushless);
   private static CANPIDController testMax_PID = testMax.getPIDController();
+  
+  private SendableCANPIDController sendablepid;
+  
   private ControlChooser chooser = Robot.controlChooser;
 
   private double p;
@@ -22,6 +28,11 @@ public class TestMax {
   private double iZone;
 
   public void init() {
+
+    sendablepid = new SendableCANPIDController("TestMax", testMax, 0, 0);
+
+    LiveWindow.add(sendablepid);
+
     p = testMax_PID.getP();
     i = testMax_PID.getI();
     d = testMax_PID.getD();
