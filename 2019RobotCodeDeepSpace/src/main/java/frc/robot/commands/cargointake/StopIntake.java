@@ -1,11 +1,11 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.cargointake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.CargoIntake;
 
 public class StopIntake extends Command {
-  Intake intake = Robot.intakeCargo;
+  CargoIntake intake = Robot.cargoIntake;
 
   public StopIntake() {
     requires(intake);

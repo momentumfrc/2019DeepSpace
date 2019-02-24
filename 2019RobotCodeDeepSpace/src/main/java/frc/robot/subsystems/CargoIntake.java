@@ -3,10 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.intake.StopIntake;
+import frc.robot.commands.cargointake.StopIntake;
 import frc.robot.utils.PDPWrapper;
 
-public class Intake extends Subsystem {
+public class CargoIntake extends Subsystem {
     private SpeedController tRoller = RobotMap.intakeMotorTop;
     private SpeedController bRoller = RobotMap.intakeMotorBottom;
     private PDPWrapper currentCheck = new PDPWrapper();
@@ -37,10 +37,6 @@ public class Intake extends Subsystem {
 
     public void hold() {
         intakeCargo(HOLD_SPEED);
-    }
-
-    public void hunt() { // TODO Clarify if this is even needed
-        intakeCargo(INTAKE_SPEED);
     }
 
     public boolean checkHeld() {
