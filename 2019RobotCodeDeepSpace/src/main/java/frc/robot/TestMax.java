@@ -16,9 +16,9 @@ import frc.robot.controllers.DriveController;
 public class TestMax {
   private static CANSparkMax testMax = new CANSparkMax(14, MotorType.kBrushless);
   private static CANPIDController testMax_PID = testMax.getPIDController();
-  
+
   private SendableCANPIDController sendablepid;
-  
+
   private ControlChooser chooser = Robot.controlChooser;
 
   private double p;
@@ -45,53 +45,43 @@ public class TestMax {
     SmartDashboard.putNumber("Max F", f);
     SmartDashboard.putNumber("Max I Zone", iZone);
 
-    SmartDashboard.getEntry("Max P").addListener(
-      notification->{
-        double t = notification.getEntry().getDouble(p);
-        if(t != p) {
-          p = t;
-          testMax_PID.setP(p);
-        }
-      },
-      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
-    SmartDashboard.getEntry("Max i").addListener(
-      notification->{
-        double t = notification.getEntry().getDouble(i);
-        if(t != i) {
-          i = t;
-          testMax_PID.setI(i);
-        }
-      },
-      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
-    SmartDashboard.getEntry("Max D").addListener(
-      notification->{
-        double t = notification.getEntry().getDouble(d);
-        if(t != d) {
-          d = t;
-          testMax_PID.setD(d);
-        }
-      },
-      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
-    SmartDashboard.getEntry("Max F").addListener(
-      notification->{
-        double t = notification.getEntry().getDouble(f);
-        if(t != f) {
-          f = t;
-          testMax_PID.setFF(f);
-        }
-      },
-      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
-    SmartDashboard.getEntry("Max F").addListener(
-      notification->{
-        double t = notification.getEntry().getDouble(iZone);
-        if(t != iZone) {
-          iZone = t;
-          testMax_PID.setFF(iZone);
-        }
-      },
-      TableEntryListener.kUpdate|TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max P").addListener(notification -> {
+      double t = notification.getEntry().getDouble(p);
+      if (t != p) {
+        p = t;
+        testMax_PID.setP(p);
+      }
+    }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max i").addListener(notification -> {
+      double t = notification.getEntry().getDouble(i);
+      if (t != i) {
+        i = t;
+        testMax_PID.setI(i);
+      }
+    }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max D").addListener(notification -> {
+      double t = notification.getEntry().getDouble(d);
+      if (t != d) {
+        d = t;
+        testMax_PID.setD(d);
+      }
+    }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max F").addListener(notification -> {
+      double t = notification.getEntry().getDouble(f);
+      if (t != f) {
+        f = t;
+        testMax_PID.setFF(f);
+      }
+    }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
+    SmartDashboard.getEntry("Max F").addListener(notification -> {
+      double t = notification.getEntry().getDouble(iZone);
+      if (t != iZone) {
+        iZone = t;
+        testMax_PID.setFF(iZone);
+      }
+    }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
 
-    testMax.getEncoder().setPositionConversionFactor(16); // Motor is on 16:1 gearbox
+    testMax.getEncoder().setPositionConversionFactor(1.0 / 16.0); // Motor is on 16:1 gearbox
   }
 
   public void periodic() {
