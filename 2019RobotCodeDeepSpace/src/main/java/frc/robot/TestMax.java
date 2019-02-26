@@ -82,11 +82,14 @@ public class TestMax {
     }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
 
     testMax.getEncoder().setPositionConversionFactor(1.0 / 16.0); // Motor is on 16:1 gearbox
+    testMax_PID.setSmartMotionMaxAccel(60.0, 0);
+    testMax_PID.setSmartMotionMaxVelocity(60.0, 0);
   }
 
   public void periodic() {
     servoJoystick();
     // tunePID();
+    // smartMotion();
   }
 
   /// Connect the joystick to the motor like a servo
@@ -100,5 +103,12 @@ public class TestMax {
     long now = System.currentTimeMillis() / 1000;
     double posRequest = (now % 2) == 0 ? 0 : 0.25; // choose 0 or 1/4 rotation, alternating every second
     testMax_PID.setReference(posRequest, ControlType.kPosition);
+  }
+
+  /// Wave the motor back and forth every second with smart motion
+  private void smartMotion() {
+    long now = System.currentTimeMillis() / 1000;
+    double posRequest = (now % 2) == 0 ? 0 : 0.25; // choose 0 or 1/4 rotation, alternating every second
+    testMax_PID.setReference(posRequest, ControlType.kSmartMotion);
   }
 }
