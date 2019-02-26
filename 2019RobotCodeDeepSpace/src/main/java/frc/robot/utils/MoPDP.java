@@ -19,7 +19,7 @@ public class MoPDP extends PowerDistributionPanel {
     private final long timeThreshold;
     private long since;
 
-    OvercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
+    private OvercurrentMonitor(int[] channels, double currentThreshold, long timeThreshold) {
       validateChannels(channels);
       this.channels = channels;
       this.currentThreshold = currentThreshold;
@@ -27,14 +27,14 @@ public class MoPDP extends PowerDistributionPanel {
       since = getTimeMillis();
     }
 
-    OvercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
+    private OvercurrentMonitor(int channel, double currentThreshold, long timeThreshold) {
       this(new int[] { channel }, currentThreshold, timeThreshold);
     }
 
     public boolean check() {
       for (int channel : channels) {
-        if (getCurrent(channel) > currentThreshold && getTimeMillis() - since > timeThreshold)
-          return true;
+        if (getCurrent(channel) > currentThreshold)
+          return getTimeMillis() - since > timeThreshold;
       }
       since = getTimeMillis();
       return false;
@@ -69,8 +69,8 @@ public class MoPDP extends PowerDistributionPanel {
 
     public boolean check() {
       for (int channel : channels) {
-        if (getCurrent(channel) < currentThreshold && getTimeMillis() - since > timeThreshold)
-          return true;
+        if (getCurrent(channel) < currentThreshold)
+          return getTimeMillis() - since > timeThreshold;
       }
       since = getTimeMillis();
       return false;
@@ -96,7 +96,7 @@ public class MoPDP extends PowerDistributionPanel {
     }
 
     public boolean check() {
-      if (getVoltage() > voltageThreshold)
+      if (getVoltage() < voltageThreshold)
         return getTimeMillis() - since > timeThreshold;
       since = getTimeMillis();
       return false;
@@ -111,10 +111,7 @@ public class MoPDP extends PowerDistributionPanel {
 
   private void validateChannel(int channel) {
     if (channel < 0 || channel >= NUM_CHANNELS)
-      // StackOverflow says "RuntimeException indicate there is a error with the
-      // program, and an Error is something that is fatal but out of the program's
-      // control"
-      throw new RuntimeException("Invalid channel");
+      throw new IllegalArgumentException("Invalid channel number");
   }
 
   private void validateChannels(int[] channels) {
