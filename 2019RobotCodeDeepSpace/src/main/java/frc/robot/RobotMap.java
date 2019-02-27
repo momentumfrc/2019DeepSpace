@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.controllers.LogitechF310;
+import org.usfirst.frc.team4999.controllers.LogitechF310;
 import frc.robot.utils.MoPDP;
 
 import com.kauailabs.navx.frc.AHRS;
