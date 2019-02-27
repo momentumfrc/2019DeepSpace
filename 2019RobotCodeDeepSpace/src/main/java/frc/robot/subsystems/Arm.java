@@ -11,68 +11,68 @@ import frc.robot.utils.MoPrefs;
 
 public class Arm extends Subsystem {
 
-    private CANSparkMax m_Arm = RobotMap.armMotor;
-    private CANEncoder e_arm = m_Arm.getEncoder();
-    public final SendableCANPIDController pid_arm = PIDFactory.getArmPID();
-    public double armOffset;
+  private CANSparkMax m_Arm = RobotMap.armMotor;
+  private CANEncoder e_arm = m_Arm.getEncoder();
+  public final SendableCANPIDController pid_arm = PIDFactory.getArmPID();
+  public double armOffset;
 
-    private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
+  private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
 
-    public Arm() {
-        super("Arm");
-        e_arm.setPositionConversionFactor(GEAR_RATIO);
-        addChild(m_Arm);
-        addChild(pid_arm);
-    }
+  public Arm() {
+    super("Arm");
+    e_arm.setPositionConversionFactor(GEAR_RATIO);
+    addChild(m_Arm);
+    addChild(pid_arm);
+  }
 
-    /*
-     * Allows the wrist to be controlled with raw input
-     */
-    public void setArmNoLimits(double speed) {
+  /*
+   * Allows the wrist to be controlled with raw input
+   */
+  public void setArmNoLimits(double speed) {
+    m_Arm.set(speed);
+  }
+
+  public double getArmPos() {
+    return e_arm.getPosition();
+  }
+
+  /*
+   * Defines the current position of the Arm as the offset/zero positon
+   */
+  public void zeroArm() {
+    e_arm.setPosition(0);
+  }
+
+  public void setArmMotor(double speed) {
+    double arm_pos = calculateArmDegrees();
+    if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
+      System.out.format("Arm at max rotation (%d)", arm_pos);
+      m_Arm.set(0);
+    } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()) {
+      System.out.format("Arm at min rotation (%d)", arm_pos);
+      m_Arm.set(0);
+    } else {
       m_Arm.set(speed);
     }
+  }
 
-    public double getArmPos() {
-      return e_arm.getPosition();
-    }
+  public void stop() {
+    m_Arm.set(0);
+  }
 
-    /*
-     * Defines the current position of the Arm as the offset/zero positon
-     */
-    public void zeroArm() {
-      e_arm.setPosition(0);
-    }
+  /*
+   * Define the Arm's position in degrees instead of the native rotations
+   */
+  public double calculateArmDegrees() {
+    return getArmPos() * 360;
+  }
 
-    public void setArmMotor(double speed) {
-      double arm_pos = calculateArmDegrees();
-      if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
-        System.out.format("Arm at max rotation (%d)", arm_pos);
-        m_Arm.set(0);
-      } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()) {
-        System.out.format("Arm at min rotation (%d)", arm_pos);
-        m_Arm.set(0);
-      } else {
-        m_Arm.set(speed);
-      }
-    }
+  public void drivePID() {
+    setArmMotor(pid_arm.get());
+  }
 
-    public void stop() {
-        m_Arm.set(0);
-    }
-
-    /*
-     * Define the Arm's position in degrees instead of the native rotations
-     */
-    public double calculateArmDegrees() {
-      return getArmPos() * 360;
-    }
-
-    public void drivePID() {
-      setArmMotor(pid_arm.get());
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-    }
+  @Override
+  protected void initDefaultCommand() {
+  }
 
 }
