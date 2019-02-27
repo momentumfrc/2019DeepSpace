@@ -1,14 +1,14 @@
-package frc.robot.commands.arm;
+package frc.robot.commands.wrist;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ArmNoLimits extends Command {
-  Arm arm = Robot.arm;
+public class WristNoLimits extends Command {
+  Wrist wrist = Robot.wrist;
 
-  public ArmNoLimits() {
-    requires(arm);
+  public WristNoLimits() {
+    requires(wrist);
   }
 
   // Called just before this Command runs the first time
@@ -19,7 +19,7 @@ public class ArmNoLimits extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.setArmNoLimits(Robot.controlChooser.getSelected().getArmSpeed());
+    Robot.arm.setArmNoLimits(Robot.controlChooser.getSelected().getWristSpeed  ());
   }
 
   // Make this return true when this Command no longer needs to run execute()

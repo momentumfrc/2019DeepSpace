@@ -1,20 +1,23 @@
 package frc.robot.controllers;
 
-public interface  DriveController {
-	
-	abstract public double getMoveRequest();
-	
-	abstract public double getTurnRequest();
-	
-	abstract public double getSpeedLimiter();
+public interface DriveController {
 
-	abstract public boolean getReverseDirectionPressed();
+  abstract public double getMoveRequest();
 
-	abstract public double getArmUp();
+  abstract public double getTurnRequest();
 
-	abstract public double getArmDown();
+  abstract public double getSpeedLimiter();
 
-	abstract public double getWristSpeed();
+  abstract public boolean getReverseDirectionPressed();
 
-	
+  abstract public double getArmSpeed();
+
+  /*
+   * abstract public double getArmUp();
+   * 
+   * abstract public double getArmDown();
+   */
+
+  abstract public double getWristSpeed();
+
 }
