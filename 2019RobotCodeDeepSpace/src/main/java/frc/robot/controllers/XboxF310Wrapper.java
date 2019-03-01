@@ -6,11 +6,8 @@ import frc.robot.utils.Utils;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
-<<<<<<< HEAD
 import org.usfirst.frc.team4999.controllers.LogitechF310;
 
-=======
->>>>>>> b3d2f11d60a626811d56121bbd0b93e9c632d584
 public class XboxF310Wrapper implements DriveController {
 
   private XboxController xbox = RobotMap.xbox;
@@ -60,25 +57,10 @@ public class XboxF310Wrapper implements DriveController {
     return xbox.getBButtonPressed();
   }
 
-  @Override
-<<<<<<< HEAD
-  public double getArmUp() {
-    double rT = xbox.getTriggerAxis(Hand.kRight);
-    double RightT = Utils.map(rT, 0, 1, 0, MAX_ARM_SPEED);
-    return RightT;
-  }
-
-  @Override
-  public double getArmDown() {
-    double lT = xbox.getTriggerAxis(Hand.kLeft);
-    double LeftT = Utils.map(lT, 0, 1, 0, -MAX_ARM_SPEED);
-    return LeftT;
-=======
   public double getArmSpeed() {
     double armSpeed = Utils.map(xbox.getTriggerAxis(Hand.kLeft), -1, 1, -MAX_ARM_SPEED, 0)
         + Utils.map(xbox.getTriggerAxis(Hand.kRight), -1, 1, 0, MAX_ARM_SPEED);
     return armSpeed;
->>>>>>> b3d2f11d60a626811d56121bbd0b93e9c632d584
   }
 
   // F310 CONTROLS//
