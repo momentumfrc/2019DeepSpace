@@ -7,10 +7,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.commands.DriveNoPID;
+import frc.robot.commands.DrivePID;
 import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
 
@@ -20,6 +21,9 @@ public class DriveSubsystem extends Subsystem {
   private SpeedControllerGroup leftside = new SpeedControllerGroup(RobotMap.leftFrontMotor, RobotMap.leftBackMotor);
   private SpeedControllerGroup rightside = new SpeedControllerGroup(RobotMap.rightFrontMotor, RobotMap.rightBackMotor);
 
+  private Encoder leftEnc = RobotMap.leftDriveEncoder;
+  private Encoder rightEnc = RobotMap.rightDriveEncoder;
+
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
 
   public DriveSubsystem() {
@@ -27,17 +31,35 @@ public class DriveSubsystem extends Subsystem {
     drive.setDeadband(0);
     addChild("Left Side", leftside);
     addChild("Right Side", rightside);
+
+    addChild("Left Encoder", leftEnc);
+    addChild("Right Encoder", rightEnc);
+    leftEnc.setDistancePerPulse(1.0 / 2000.0);
+    rightEnc.setDistancePerPulse(1.0 / 2000.0);
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveNoPID());
+    setDefaultCommand(new DrivePID());
   }
 
   public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
     double m_r = Utils.clip(moveRequest, -1, 1) * speedLimiter;
     double t_r = Utils.clip(turnRequest, -1, 1) * speedLimiter;
     drive.arcadeDrive(m_r, t_r, false);
+  }
+
+  public void resetEncoders() {
+    leftEnc.reset();
+    rightEnc.reset();
+  }
+
+  public double getMoveRate() {
+    return (rightEnc.getRate() + leftEnc.getRate()) / 2.0;
+  }
+
+  public double getTurnRate() {
+    return (leftEnc.getRate() - rightEnc.getRate());
   }
 
   public void tankDrive(double leftSide, double rightSide, double speedLimiter) {
