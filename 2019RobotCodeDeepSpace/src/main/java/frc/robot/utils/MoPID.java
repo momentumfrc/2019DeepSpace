@@ -45,7 +45,7 @@ public class MoPID implements Sendable {
     }
 
     // Calculate dErr
-    double dErr = (err - lastErr) / dTime;
+    double dErr = dTime > 0 ? (err - lastErr) / dTime : 0.0;
     lastErr = err;
 
     // Combine all the parts
