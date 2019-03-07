@@ -17,11 +17,15 @@ public class MoPrefs {
 
   public static final double MAX_MOTOR_TEMP = 10;
 
-  private static double getDouble(String key, double def) {
+  public static double getDouble(String key, double def) {
     if (!prefs.containsKey(key)) {
       prefs.putDouble(key, def);
     }
     return prefs.getDouble(key, def);
+  }
+
+  public static void setDouble(String key, double value) {
+    prefs.putDouble(key, value);
   }
 
   public static double getDriveEncTicks() {

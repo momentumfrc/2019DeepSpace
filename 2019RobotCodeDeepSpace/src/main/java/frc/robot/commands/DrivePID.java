@@ -1,10 +1,9 @@
 package frc.robot.commands;
 
-import org.usfirst.frc.team4999.pid.MomentumPID;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utils.MoPID;
 import frc.robot.*;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
@@ -13,7 +12,7 @@ public class DrivePID extends Command {
 
   private DriveSubsystem drive = Robot.driveSystem;
   private ControlChooser chooser = Robot.controlChooser;
-  private MomentumPID movePID, turnPID;
+  private MoPID movePID, turnPID;
 
   private double headTailDirection = 1.0; // positive 1 for forward, -1 for reverse
 
@@ -23,29 +22,33 @@ public class DrivePID extends Command {
 
   @Override
   protected void initialize() {
+    movePID = MoPID.makePIDFromPrefs("MoveRatePID");
+    turnPID = MoPID.makePIDFromPrefs("TurnRatePID");
+
+    SmartDashboard.putData(movePID);
+    SmartDashboard.putData(turnPID);
   }
 
   @Override
   protected void execute() {
-    SmartDashboard.putData(RobotMap.leftDriveEncoder);
-    SmartDashboard.putData(RobotMap.rightDriveEncoder);
-
     DriveController controller = chooser.getSelected();
     if (controller.getReverseDirectionPressed()) // "Pressed" methods only return true on the first query after the
                                                  // button was pressed
       headTailDirection = -headTailDirection;
 
-    // Gets user controll inputs
+    // Gets user control inputs
     double moveRequest = controller.getMoveRequest() * headTailDirection;
     double turnRequest = controller.getTurnRequest();
 
-    // Calculates the error
-    double moveError = moveRequest - drive.getMoveRate();
-    double turnError = turnRequest - drive.getTurnRate();
+    // Get the PID corrections
+    double moveCorrection = movePID.calculate(moveRequest, drive.getMoveRate());
+    double turnCorrection = turnPID.calculate(turnRequest, drive.getTurnRate());
 
-    // THe PID thing
+    // Calculate final drive
+    double move = moveRequest + moveCorrection;
+    double turn = turnRequest + turnCorrection;
 
-    drive.arcadeDrive(moveRequest, controller.getTurnRequest(), controller.getSpeedLimiter());
+    drive.arcadeDrive(move, turn, controller.getSpeedLimiter());
   }
 
   @Override
