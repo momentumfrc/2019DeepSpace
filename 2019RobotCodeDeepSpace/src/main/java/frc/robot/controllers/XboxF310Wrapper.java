@@ -57,6 +57,7 @@ public class XboxF310Wrapper implements DriveController {
     return xbox.getBButtonPressed();
   }
 
+  @Override
   public double getArmSpeed() {
     double armSpeed = Utils.map(xbox.getTriggerAxis(Hand.kLeft), -1, 1, -MAX_ARM_SPEED, 0)
         + Utils.map(xbox.getTriggerAxis(Hand.kRight), -1, 1, 0, MAX_ARM_SPEED);

@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 
   private SendableChooser<SandstormMode> sandstormChooser = new SandstormChooser();
 
-  private Command driveCommand = new DriveNoPID();
+  private Command driveCommand = new DrivePID();
 
   /**
    * This function is run when the robot is first started up and should be used
