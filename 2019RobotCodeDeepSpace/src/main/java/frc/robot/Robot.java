@@ -13,6 +13,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
   private SendableChooser<SandstormMode> sandstormChooser = new SandstormChooser();
 
   private Command driveCommand = new DrivePID();
+  private Command armCommand = new ArmPositioning();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -117,6 +120,7 @@ public class Robot extends TimedRobot {
     case TELEOP:
     default:
       driveCommand.start();
+      armCommand.start();
     }
   }
 
@@ -132,6 +136,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Scheduler.getInstance().removeAll();
     driveCommand.start();
+    armCommand.start();
   }
 
   /**
@@ -147,6 +152,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    testMax.periodic();
+    // testMax.periodic();
+    boolean kick = controlChooser.getSelected().getKick();
+    hatchPassive.setKick(kick);
+    SmartDashboard.putBoolean("kick", kick);
   }
 }

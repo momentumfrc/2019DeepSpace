@@ -64,6 +64,21 @@ public class XboxF310Wrapper implements DriveController {
     return armSpeed;
   }
 
+  @Override
+  public double getNextPos() {
+    return 0;
+  }
+
+  @Override
+  public double getPrevPos() {
+    return 0;
+  }
+
+  @Override
+  public boolean getKick() {
+    return xbox.getBumper(Hand.kRight);
+  }
+
   // F310 CONTROLS//
   @Override
   public double getWristSpeed() {

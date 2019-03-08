@@ -2,7 +2,6 @@ package frc.robot.utils;
 
 import org.usfirst.frc.team4999.pid.PIDConstantUpdateListener;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -79,26 +78,31 @@ public class MoPID implements Sendable {
 
   public void setP(double p) {
     kP = p;
+    MoPrefs.setDouble(name + "_p", kP);
     updateListener.update();
   }
 
   public void setI(double i) {
     kI = i;
+    MoPrefs.setDouble(name + "_i", kI);
     updateListener.update();
   }
 
   public void setD(double d) {
     kD = d;
+    MoPrefs.setDouble(name + "_d", kD);
     updateListener.update();
   }
 
   public void setF(double f) {
     kF = f;
+    MoPrefs.setDouble(name + "_f", kF);
     updateListener.update();
   }
 
   public void setErrZone(double zone) {
     iErrZone = zone;
+    MoPrefs.setDouble(name + "_iErrZone", iErrZone);
     updateListener.update();
   }
 

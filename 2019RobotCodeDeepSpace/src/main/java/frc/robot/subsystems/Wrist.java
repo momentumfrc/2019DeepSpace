@@ -14,17 +14,15 @@ public class Wrist extends Subsystem {
 
   private CANSparkMax m_Wrist = RobotMap.wristMotor;
   private CANEncoder e_Wrist = m_Wrist.getEncoder();
-  private SendableCANPIDController pid_Wrist = PIDFactory.getWristPID();
+  public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
   public double wristOffset;
-  public SendableCANPIDController pid;
 
   private static final double GEAR_RATIO = 1 / 32; // 16:1 CIM Sport into a 32:16 Chain and Sprocket
 
   public Wrist() {
     super("Wrist");
-    pid = pid_Wrist;
     addChild(m_Wrist);
-    addChild(pid);
+    addChild(pid_wrist);
   }
 
   /*
@@ -73,7 +71,7 @@ public class Wrist extends Subsystem {
   }
 
   public void drivePID() {
-    setWristMotor(pid.get());
+    setWristMotor(pid_wrist.get());
   }
 
   @Override

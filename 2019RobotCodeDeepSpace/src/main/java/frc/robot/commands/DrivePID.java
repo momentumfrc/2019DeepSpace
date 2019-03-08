@@ -40,6 +40,8 @@ public class DrivePID extends Command {
     double moveRequest = controller.getMoveRequest() * headTailDirection;
     double turnRequest = controller.getTurnRequest();
 
+    // SmartDashboard.putNumber("Direction: ", headTailDirection);
+
     // Get the PID corrections
     double moveCorrection = movePID.calculate(moveRequest, drive.getMoveRate());
     double turnCorrection = turnPID.calculate(turnRequest, drive.getTurnRate());

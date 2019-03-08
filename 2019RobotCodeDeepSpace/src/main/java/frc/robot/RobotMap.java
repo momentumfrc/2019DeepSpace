@@ -32,7 +32,7 @@ public class RobotMap {
   // TODO One of the encoders is reversed on the robot, set that encoder to
   // reversed here.
   public static final Encoder leftDriveEncoder = new Encoder(0, 1, false);
-  public static final Encoder rightDriveEncoder = new Encoder(2, 3, false);
+  public static final Encoder rightDriveEncoder = new Encoder(2, 3, true);
 
   // CONTROLLERS//
   public static final XboxController xbox = new XboxController(0);

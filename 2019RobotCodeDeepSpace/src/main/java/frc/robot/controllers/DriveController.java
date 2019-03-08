@@ -12,6 +12,12 @@ public interface DriveController {
 
   abstract public double getArmSpeed();
 
+  abstract public double getNextPos();
+
+  abstract public double getPrevPos();
+
+  abstract public boolean getKick();
+
   /*
    * abstract public double getArmUp();
    * 
