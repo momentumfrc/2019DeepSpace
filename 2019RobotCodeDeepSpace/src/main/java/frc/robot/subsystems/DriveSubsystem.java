@@ -15,7 +15,6 @@ import frc.robot.commands.DrivePID;
 import frc.robot.RobotMap;
 import frc.robot.utils.Utils;
 
-//import org.usfirst.frc.team4999.pid;
 public class DriveSubsystem extends Subsystem {
 
   private SpeedControllerGroup leftside = new SpeedControllerGroup(RobotMap.leftFrontMotor, RobotMap.leftBackMotor);
@@ -62,17 +61,7 @@ public class DriveSubsystem extends Subsystem {
     return (leftEnc.getRate() - rightEnc.getRate());
   }
 
-  public void tankDrive(double leftSide, double rightSide, double speedLimiter) {
-    double l_m = Utils.clip(leftSide * speedLimiter, -1, 1);
-    double r_m = Utils.clip(rightSide * speedLimiter, -1, 1);
-    drive.tankDrive(l_m, r_m, false);
-  }
-
   public void stop() {
-    tankDrive(0, 0, 0);
-  }
-
-  public double get() {
-    return (leftside.get() + rightside.get()) / 2;
+    arcadeDrive(0, 0, 0);
   }
 }
