@@ -24,7 +24,7 @@ public class SetWristPosition extends Command {
   @Override
   protected void execute() {
     System.out.format("Setpoint:%.2f Current:%.2f Output:%.2f\n", position, wrist.getWristPos(), wrist.pid_wrist.get());
-    wrist.drivePID();
+    // wrist.drivePID();
   }
 
   @Override

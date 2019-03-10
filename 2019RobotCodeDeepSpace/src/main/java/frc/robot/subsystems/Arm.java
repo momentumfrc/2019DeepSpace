@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+
 import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 import frc.robot.utils.PIDFactory;
 
@@ -13,38 +16,51 @@ public class Arm extends Subsystem {
 
   private CANSparkMax m_Arm = RobotMap.armMotor;
   private CANEncoder e_arm = m_Arm.getEncoder();
+  private CANPIDController p_arm = m_Arm.getPIDController();
   public final SendableCANPIDController pid_arm = PIDFactory.getArmPID();
-  public double armOffset;
+  private boolean reliableZero = false; // the arm has a reliable zero setpoint
 
-  private static final double GEAR_RATIO = 1 / 168; // 36:1 CIM Sport into a 18:84 Gear Ratio
+  private static final double GEAR_RATIO = (1.0 / 36.0) * (18.0 / 84.0); // 1:36 CIM Sport into a 18:84 Gear Ratio
 
   public Arm() {
     super("Arm");
-    e_arm.setPositionConversionFactor(GEAR_RATIO);
     addChild(m_Arm);
     addChild(pid_arm);
+    e_arm.setPositionConversionFactor(GEAR_RATIO);
   }
 
-  /*
-   * Allows the wrist to be controlled with raw input
-   */
+  /// Allows the wrist to be controlled with raw input
   public void setArmNoLimits(double speed) {
     m_Arm.set(speed);
   }
 
+  /// Gets the current arm position
   public double getArmPos() {
     return e_arm.getPosition();
   }
 
-  /*
-   * Defines the current position of the Arm as the offset/zero positon
-   */
+  public boolean hasReliableZero() {
+    return reliableZero;
+  }
+
+  /// Sets the encoder such that the current arm position is the specified number
+  public void setArmPosition(double pos) {
+    e_arm.setPosition(pos);
+    reliableZero = true;
+  }
+
+  /// Defines the current position of the Arm as the offset/zero positon
   public void zeroArm() {
-    e_arm.setPosition(0);
+    setArmPosition(0);
+  }
+
+  /// Request a specific position using SmartMotion
+  public void setSmartPosition(double posRequest) {
+    p_arm.setReference(posRequest, ControlType.kSmartMotion);
   }
 
   public void setArmMotor(double speed) {
-    double arm_pos = calculateArmDegrees();
+    double arm_pos = getArmPos();
     if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
       System.out.format("Arm at max rotation (%d)", arm_pos);
       m_Arm.set(0);
@@ -58,17 +74,6 @@ public class Arm extends Subsystem {
 
   public void stop() {
     m_Arm.set(0);
-  }
-
-  /*
-   * Define the Arm's position in degrees instead of the native rotations
-   */
-  public double calculateArmDegrees() {
-    return getArmPos() * 360;
-  }
-
-  public void drivePID() {
-    setArmMotor(pid_arm.get());
   }
 
   @Override

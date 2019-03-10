@@ -36,8 +36,8 @@ import frc.robot.sandstorm.SandstormMode;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static ControlChooser controlChooser = new ControlChooser();
+  public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
   public static CargoIntake cargoIntake = new CargoIntake();

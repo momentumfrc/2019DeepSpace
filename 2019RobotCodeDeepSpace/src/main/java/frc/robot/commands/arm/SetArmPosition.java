@@ -23,7 +23,6 @@ public class SetArmPosition extends Command {
   @Override
   protected void execute() {
     System.out.format("Setpoint:%.2f Current:%.2f Output:%.2f\n", position, arm.getArmPos(), arm.pid_arm.get());
-    arm.drivePID();
   }
 
   @Override

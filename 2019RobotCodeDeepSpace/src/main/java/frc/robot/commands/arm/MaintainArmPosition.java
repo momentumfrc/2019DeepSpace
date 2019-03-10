@@ -19,7 +19,6 @@ public class MaintainArmPosition extends Command {
 
   @Override
   protected void execute() {
-    arm.drivePID();
   }
 
   @Override
