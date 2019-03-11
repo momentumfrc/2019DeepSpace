@@ -8,6 +8,7 @@ import frc.robot.subsystems.CargoIntake;
 public class GrabCargo extends Command {
 
   CargoIntake intake = Robot.cargoIntake;
+  Command holdCargo = new HoldCargo();
 
   public GrabCargo() {
     requires(intake);
@@ -38,7 +39,7 @@ public class GrabCargo extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    new HoldCargo().start();
+    holdCargo.start();
   }
 
   // Called when another command which requires one or more of the same
