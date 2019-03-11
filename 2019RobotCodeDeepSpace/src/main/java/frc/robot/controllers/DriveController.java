@@ -22,8 +22,8 @@ public interface DriveController {
 
   public abstract boolean getSavePreset();
 
-  public abstract boolean getPresetGroup0Pressed();
+  public abstract boolean getGamepieceType0Pressed();
 
-  public abstract boolean getPresetGroup1Pressed();
+  public abstract boolean getGamepieceType1Pressed();
 
 }

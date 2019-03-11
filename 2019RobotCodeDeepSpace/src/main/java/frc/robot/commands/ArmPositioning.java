@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
-import java.util.Vector;
-
+import java.util.ArrayList;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
@@ -30,6 +30,10 @@ public class ArmPositioning extends Command {
       this.wristPos = MoPrefs.getDouble(name + "_wrist", -1);
     }
 
+    String getName() {
+      return name;
+    }
+
     boolean isValid() {
       return armPos >= 0 && wristPos >= 0;
     }
@@ -50,14 +54,14 @@ public class ArmPositioning extends Command {
     }
   }
 
-  private class Presets {
+  private class PresetGroup {
     private final String groupName;
     private int currentIx = 0;
-    private Vector<Preset> presets;
+    private ArrayList<Preset> presets;
 
-    Presets(String groupName, String... presetNames) {
+    PresetGroup(String groupName, String... presetNames) {
       this.groupName = groupName;
-      presets = new Vector<Preset>();
+      presets = new ArrayList<Preset>();
       for (String name : presetNames) {
         presets.add(new Preset(groupName + "_" + name));
       }
@@ -84,34 +88,30 @@ public class ArmPositioning extends Command {
     }
 
     Preset getCurrentPreset() {
-      return presets.elementAt(currentIx);
-    }
-
-    void savePreset(double armPos, double wristPos) {
-      presets.elementAt(currentIx).setPreset(armPos, wristPos);
+      return presets.get(currentIx);
     }
   }
 
-  private class PresetGroup {
-    private Presets presets[] = new Presets[2];
+  private class GamepieceType {
+    private PresetGroup presets[] = new PresetGroup[2];
     private int currentIx = 0;
 
-    PresetGroup() {
-      presets[0] = new Presets("Hatch", "Ground", "1", "2");
-      presets[1] = new Presets("Cargo", "Ground", "1", "2", "Bay");
+    GamepieceType() {
+      presets[0] = new PresetGroup("Hatch", "Ground", "1", "2");
+      presets[1] = new PresetGroup("Cargo", "Ground", "1", "2", "Bay");
     }
 
-    void selectGroup(int ix) {
+    void selectType(int ix) {
       if (ix > 0 && ix < presets.length)
         currentIx = ix;
     }
 
-    Presets getPresets() {
+    PresetGroup getPresetGroup() {
       return presets[currentIx];
     }
   }
 
-  PresetGroup presetGroup = new PresetGroup();
+  GamepieceType gamepieceType = new GamepieceType();
 
   public ArmPositioning() {
     requires(arm);
@@ -128,8 +128,8 @@ public class ArmPositioning extends Command {
     DriveController controller = chooser.getSelected();
     double manualArmSpeed = controller.getArmSpeed();
     double manualWristSpeed = controller.getWristSpeed();
-    boolean presetGroup0Selected = controller.getPresetGroup0Pressed();
-    boolean presetGroup1Selected = controller.getPresetGroup1Pressed();
+    boolean gamepieceType0Selected = controller.getGamepieceType0Pressed();
+    boolean gamepieceType1Selected = controller.getGamepieceType1Pressed();
     boolean presetIncreased = controller.getPresetIncreasedPressed();
     boolean presetDecreased = controller.getPresetDecreasedPressed();
     boolean savePreset = controller.getSavePreset();
@@ -137,23 +137,23 @@ public class ArmPositioning extends Command {
     boolean manualOverride = Math.abs(manualArmSpeed) > manualDeadzone || Math.abs(manualWristSpeed) > manualDeadzone;
     boolean presetRequested = presetIncreased || presetDecreased;
 
-    if (presetGroup0Selected)
-      presetGroup.selectGroup(0);
-    if (presetGroup1Selected)
-      presetGroup.selectGroup(1);
+    if (gamepieceType0Selected)
+      gamepieceType.selectType(0);
+    if (gamepieceType1Selected)
+      gamepieceType.selectType(1);
 
-    Presets presets = presetGroup.getPresets();
+    PresetGroup presetGroup = gamepieceType.getPresetGroup();
 
-    Preset preset = presets.getCurrentPreset();
+    Preset preset = presetGroup.getCurrentPreset();
     if (presetRequested) {
       if (presetIncreased) {
         // Select higher preset
-        presets.nextPreset();
+        presetGroup.nextPreset();
       } else if (presetDecreased) {
         // Select lower preset
-        presets.prevPreset();
+        presetGroup.prevPreset();
       }
-      preset = presets.getCurrentPreset();
+      preset = presetGroup.getCurrentPreset();
       if (preset.isValid())
         manualMode = false;
     }
@@ -167,8 +167,8 @@ public class ArmPositioning extends Command {
       arm.setArmNoLimits(manualArmSpeed);
       wrist.setWristNoLimits(manualWristSpeed);
 
-      // Can only save presets from manual mode
-      if (savePreset) {
+      // Can only save presets from manual mode while not moving anything
+      if (savePreset && !manualOverride) {
         preset.setPreset(arm.getArmPos(), wrist.getWristPos());
       }
 
@@ -177,6 +177,10 @@ public class ArmPositioning extends Command {
       arm.setSmartPosition(preset.getArmPos());
       wrist.setSmartPosition(preset.getWristPos());
     }
+
+    SmartDashboard.putBoolean("manualMode", manualMode);
+    SmartDashboard.putString("presetName", presetGroup.getGroupName() + "_" + preset.getName());
+    SmartDashboard.putBoolean("presetValid", preset.isValid());
   }
 
   @Override
@@ -186,11 +190,11 @@ public class ArmPositioning extends Command {
 
   @Override
   protected void interrupted() {
-
+    arm.stop();
+    wrist.stopWrist();
   }
 
   @Override
   protected void end() {
-
   }
 }
