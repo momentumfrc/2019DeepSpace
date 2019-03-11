@@ -10,12 +10,40 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPrefs;
 
+/**
+ * The ArmPositioning command is the main workhorse for the arm. It controls
+ * both the shoulder and wrist joints.
+ * 
+ * There are two modes of operation: manual and preset
+ * 
+ * In manual mode, the driver must use analog inputs on the gamepad to
+ * independently control the shoulder and wrist.
+ * 
+ * In preset mode, a saved location for a particular gamepiece type and target
+ * will be set into the shoulder and wrist via SmartMotion.
+ * 
+ * Manual mode is active at startup and if an invalid preset is selected. The
+ * only way to get into preset mode is to select a valid preset. It is always
+ * possible to get immediately back to manual mode by moving one of the manual
+ * controls.
+ * 
+ * Preset mode also relies on both the arm and wrist having reliable zero points
+ * set. This must be accomplished either by running the arm and wrist against
+ * their limit switches, or by executing a zeroing procedure, or by using the
+ * known good starting position of the prop.
+ * 
+ * To specify the list of presets, edit the new PresetGroup lines below.
+ */
 public class ArmPositioning extends Command {
+
+  private final PresetGroup hatchPresetGroup = new PresetGroup("Hatch", "Ground", "1", "2");
+  private final PresetGroup cargoPresetGroup = new PresetGroup("Cargo", "Ground", "1", "2", "Bay");
 
   private Arm arm = Robot.arm;
   private Wrist wrist = Robot.wrist;
   private ControlChooser chooser = Robot.controlChooser;
   private boolean manualMode = true; // select between manual or preset mode
+  private PresetGroup currentPresetGroup = hatchPresetGroup;
 
   private final double manualDeadzone = 0.05; // Manual inputs greater than the deadzone kill the preset mode
 
@@ -92,27 +120,6 @@ public class ArmPositioning extends Command {
     }
   }
 
-  private class GamepieceType {
-    private PresetGroup presets[] = new PresetGroup[2];
-    private int currentIx = 0;
-
-    GamepieceType() {
-      presets[0] = new PresetGroup("Hatch", "Ground", "1", "2");
-      presets[1] = new PresetGroup("Cargo", "Ground", "1", "2", "Bay");
-    }
-
-    void selectType(int ix) {
-      if (ix > 0 && ix < presets.length)
-        currentIx = ix;
-    }
-
-    PresetGroup getPresetGroup() {
-      return presets[currentIx];
-    }
-  }
-
-  GamepieceType gamepieceType = new GamepieceType();
-
   public ArmPositioning() {
     requires(arm);
     requires(wrist);
@@ -121,48 +128,57 @@ public class ArmPositioning extends Command {
   @Override
   protected void initialize() {
     manualMode = true;
+    currentPresetGroup = hatchPresetGroup;
   }
 
   @Override
   protected void execute() {
+    // Get all the controller inputs
     DriveController controller = chooser.getSelected();
     double manualArmSpeed = controller.getArmSpeed();
     double manualWristSpeed = controller.getWristSpeed();
-    boolean gamepieceType0Selected = controller.getGamepieceType0Pressed();
-    boolean gamepieceType1Selected = controller.getGamepieceType1Pressed();
+    boolean hatchGamepieceSelected = controller.getHatchGamepiecePressed();
+    boolean cargoGamepieceSelected = controller.getCargoGamepiecePressed();
     boolean presetIncreased = controller.getPresetIncreasedPressed();
     boolean presetDecreased = controller.getPresetDecreasedPressed();
     boolean savePreset = controller.getSavePreset();
 
+    // Interpret driver initiated changes
     boolean manualOverride = Math.abs(manualArmSpeed) > manualDeadzone || Math.abs(manualWristSpeed) > manualDeadzone;
     boolean presetRequested = presetIncreased || presetDecreased;
 
-    if (gamepieceType0Selected)
-      gamepieceType.selectType(0);
-    if (gamepieceType1Selected)
-      gamepieceType.selectType(1);
+    if (hatchGamepieceSelected)
+      currentPresetGroup = hatchPresetGroup;
+    if (cargoGamepieceSelected)
+      currentPresetGroup = cargoPresetGroup;
 
-    PresetGroup presetGroup = gamepieceType.getPresetGroup();
-
-    Preset preset = presetGroup.getCurrentPreset();
+    // Dig into the current preset settings
+    Preset preset = currentPresetGroup.getCurrentPreset();
     if (presetRequested) {
       if (presetIncreased) {
         // Select higher preset
-        presetGroup.nextPreset();
+        currentPresetGroup.nextPreset();
       } else if (presetDecreased) {
         // Select lower preset
-        presetGroup.prevPreset();
+        currentPresetGroup.prevPreset();
       }
-      preset = presetGroup.getCurrentPreset();
+
+      // The preset changed, update if necessary. (Note: if the index was already at
+      // the end of the list, then the same preset will be selected again, but since
+      // it's a new request, recheck and potentially re-enable preset mode)
+      preset = currentPresetGroup.getCurrentPreset();
       if (preset.isValid())
         manualMode = false;
     }
 
-    if (manualOverride || !preset.isValid()) {
-      // Switch to manual mode
+    // Always check for manual override or invalid automation last
+    if (manualOverride || !(preset.isValid() && arm.hasReliableZero() && wrist.hasReliableZero())) {
+      // Switch to manual mode if selected by the driver or if there is any
+      // problem with the automation.
       manualMode = true;
     }
 
+    // Finally, apply the actions selected by everything above.
     if (manualMode) {
       arm.setArmNoLimits(manualArmSpeed);
       wrist.setWristNoLimits(manualWristSpeed);
@@ -178,8 +194,9 @@ public class ArmPositioning extends Command {
       wrist.setSmartPosition(preset.getWristPos());
     }
 
+    // Keep the driver informed about what's going on inside the robot's brain.
     SmartDashboard.putBoolean("manualMode", manualMode);
-    SmartDashboard.putString("presetName", presetGroup.getGroupName() + "_" + preset.getName());
+    SmartDashboard.putString("presetName", currentPresetGroup.getGroupName() + "_" + preset.getName());
     SmartDashboard.putBoolean("presetValid", preset.isValid());
   }
 

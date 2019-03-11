@@ -75,12 +75,12 @@ public class XboxF310Wrapper implements DriveController {
   }
 
   @Override
-  public boolean getGamepieceType0Pressed() {
+  public boolean getHatchGamepiecePressed() {
     return xbox.getBButtonPressed();
   }
 
   @Override
-  public boolean getGamepieceType1Pressed() {
+  public boolean getCargoGamepiecePressed() {
     return xbox.getYButtonPressed();
   }
 
