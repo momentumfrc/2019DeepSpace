@@ -47,6 +47,19 @@ public class ArmPositioning extends Command {
 
   private final double manualDeadzone = 0.05; // Manual inputs greater than the deadzone kill the preset mode
 
+  /**
+   * A Preset is a saved position of both the arm and the wrist.
+   * 
+   * Every Preset has a name so it can be easily identified on the Dashboard.
+   * 
+   * The units of armPos and wristPos are relative to the scaling setting on the
+   * SparkMAX. They do not necessarily relate to real world scales (e.g. degrees)
+   * 
+   * The only restriction on the positions is that negative values indicate
+   * invalid settings. Non-negative values are valid.
+   * 
+   * Position values are automatically saved and retrieved from Prefs.
+   */
   private class Preset {
     private final String name;
     private double armPos;
@@ -82,37 +95,60 @@ public class ArmPositioning extends Command {
     }
   }
 
+  /**
+   * A PresetGroup is a named collection of Presets
+   */
   private class PresetGroup {
-    private final String groupName;
     private int currentIx = 0;
     private ArrayList<Preset> presets;
 
     PresetGroup(String groupName, String... presetNames) {
-      this.groupName = groupName;
       presets = new ArrayList<Preset>();
       for (String name : presetNames) {
         presets.add(new Preset(groupName + "_" + name));
       }
     }
 
-    String getGroupName() {
-      return groupName;
-    }
-
-    boolean nextPreset() {
+    void nextPreset() {
       if (currentIx + 1 < presets.size()) {
         ++currentIx;
-        return true;
       }
-      return false;
     }
 
-    boolean prevPreset() {
+    void prevPreset() {
       if (currentIx > 0) {
         --currentIx;
-        return true;
       }
-      return false;
+    }
+
+    /// Search for the next higher preset from the current arm position.
+    /// Assumes that arm positions are sorted
+    void findNextBestPreset(double armPos) {
+      for (int i = 0; i < presets.size(); ++i) {
+        Preset p = presets.get(i);
+        if (p.isValid() && p.getArmPos() >= armPos) {
+          currentIx = i;
+          return;
+        }
+      }
+      // Couldn't find a better valid preset, so just go to the next one.
+      // TODO Verify this is reasonable behavior
+      nextPreset();
+    }
+
+    /// Search for the next lower preset from the current arm position
+    /// Assumes that arm positions are sorted
+    void findPrevBestPreset(double armPos) {
+      for (int i = presets.size(); --i >= 0;) {
+        Preset p = presets.get(i);
+        if (p.isValid() && p.getArmPos() <= armPos) {
+          currentIx = i;
+          return;
+        }
+      }
+      // Couldn't find a better valid preset, so just go to the prev one.
+      // TODO Verify this is reasonable behavior
+      prevPreset();
     }
 
     Preset getCurrentPreset() {
@@ -147,25 +183,37 @@ public class ArmPositioning extends Command {
     boolean manualOverride = Math.abs(manualArmSpeed) > manualDeadzone || Math.abs(manualWristSpeed) > manualDeadzone;
     boolean presetRequested = presetIncreased || presetDecreased;
 
-    if (hatchGamepieceSelected)
+    if (hatchGamepieceSelected) {
       currentPresetGroup = hatchPresetGroup;
-    if (cargoGamepieceSelected)
+      manualMode = true;
+    }
+    if (cargoGamepieceSelected) {
       currentPresetGroup = cargoPresetGroup;
+      manualMode = true;
+    }
 
     // Dig into the current preset settings
     Preset preset = currentPresetGroup.getCurrentPreset();
     if (presetRequested) {
       if (presetIncreased) {
         // Select higher preset
-        currentPresetGroup.nextPreset();
+        if (manualMode)
+          currentPresetGroup.findNextBestPreset(arm.getArmPos());
+        else
+          currentPresetGroup.nextPreset();
       } else if (presetDecreased) {
         // Select lower preset
-        currentPresetGroup.prevPreset();
+        if (manualMode)
+          currentPresetGroup.findPrevBestPreset(arm.getArmPos());
+        else
+          currentPresetGroup.prevPreset();
       }
 
-      // The preset changed, update if necessary. (Note: if the index was already at
-      // the end of the list, then the same preset will be selected again, but since
-      // it's a new request, recheck and potentially re-enable preset mode)
+      /*
+       * The preset may have changed, update if necessary. (Note: if the index was
+       * already at the end of the list, then the same preset will be selected again,
+       * but since it's a new request, recheck and potentially re-enable preset mode)
+       */
       preset = currentPresetGroup.getCurrentPreset();
       if (preset.isValid())
         manualMode = false;
@@ -196,7 +244,7 @@ public class ArmPositioning extends Command {
 
     // Keep the driver informed about what's going on inside the robot's brain.
     SmartDashboard.putBoolean("manualMode", manualMode);
-    SmartDashboard.putString("presetName", currentPresetGroup.getGroupName() + "_" + preset.getName());
+    SmartDashboard.putString("presetName", preset.getName());
     SmartDashboard.putBoolean("presetValid", preset.isValid());
   }
 
