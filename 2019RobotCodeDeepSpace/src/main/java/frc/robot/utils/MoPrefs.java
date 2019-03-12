@@ -6,8 +6,9 @@ public class MoPrefs {
 
   private static Preferences prefs = Preferences.getInstance();
 
-  public static final double DRIVE_ENC_TICKS = 1; // Number of Encoder ticks in 1 foot of Travel
-  // Encoder dip switch settings = 100 = 0 1 1 1
+  public static final double DRIVE_ENC_TICKS = 63.66; // Number of Encoder ticks in 1 foot of Travel
+  // Encoder dip switch settings (0 1 1 1)= 100 ticks/revolution = pi * 6" =
+  // 18.85" = 1.57'
 
   public static final double MAX_ARM_ROTATION = 125; // Degrees
   public static final double MIN_ARM_ROTATION = 0;

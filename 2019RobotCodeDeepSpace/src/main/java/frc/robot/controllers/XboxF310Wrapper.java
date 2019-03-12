@@ -65,18 +65,33 @@ public class XboxF310Wrapper implements DriveController {
   }
 
   @Override
-  public double getNextPos() {
-    return 0;
+  public boolean getPresetIncreasedPressed() {
+    return xbox.getBumperPressed(Hand.kRight);
   }
 
   @Override
-  public double getPrevPos() {
-    return 0;
+  public boolean getPresetDecreasedPressed() {
+    return xbox.getBumperPressed(Hand.kLeft);
+  }
+
+  @Override
+  public boolean getHatchGamepiecePressed() {
+    return xbox.getBButtonPressed();
+  }
+
+  @Override
+  public boolean getCargoGamepiecePressed() {
+    return xbox.getYButtonPressed();
   }
 
   @Override
   public boolean getKick() {
-    return xbox.getBumper(Hand.kRight);
+    return false;
+  }
+
+  @Override
+  public boolean getSavePreset() {
+    return xbox.getStartButton() && xbox.getBackButton();
   }
 
   // F310 CONTROLS//
