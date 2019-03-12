@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.triggers.*;
 import frc.robot.commands.arm.KillArm;
+import frc.robot.commands.hatchactive.*;
+import frc.robot.commands.hatchpassive.*;
+import frc.robot.commands.cargointake.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -46,7 +49,34 @@ public class OI {
 
   private Trigger overtemp = new ArmMotorTempTrigger();
 
+  Trigger grabHatch = new BooleanTrigger(() -> {
+    return Robot.controlChooser.getSelected().getGrabHatch();
+  });
+
+  Trigger kickHatch = new BooleanTrigger(() -> {
+    return Robot.controlChooser.getSelected().getKick();
+  });
+
+  Trigger shoot = new BooleanTrigger(() -> {
+    return Robot.controlChooser.getSelected().getShootSpeed();
+  });
+
+  Trigger intake = new BooleanTrigger(() -> {
+    return Robot.controlChooser.getSelected().getIntakeSpeed();
+  });
+
   public OI() {
     overtemp.whenActive(new KillArm());
+
+    grabHatch.whenActive(new GrabHatch());
+    grabHatch.whenInactive(new ReleaseHatch());
+
+    kickHatch.whenActive(new KickPiston());
+    kickHatch.whenInactive(new DontKick());
+
+    shoot.whenActive(new ShootCargo());
+
+    intake.whenActive(new GrabCargo());
+    intake.whenInactive(new HoldCargo());
   }
 }

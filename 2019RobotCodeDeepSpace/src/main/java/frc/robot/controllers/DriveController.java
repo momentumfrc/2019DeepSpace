@@ -12,6 +12,12 @@ public interface DriveController {
 
   abstract public double getArmSpeed();
 
+  abstract public boolean getIntakeSpeed();
+
+  abstract public boolean getShootSpeed();
+
+  abstract public boolean getGrabHatch();
+
   abstract public boolean getKick();
 
   abstract public double getWristSpeed();
