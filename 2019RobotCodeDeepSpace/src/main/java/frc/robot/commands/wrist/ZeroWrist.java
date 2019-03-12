@@ -41,7 +41,7 @@ public class ZeroWrist extends Command {
   @Override
   protected void end() {
     wrist.stopWrist();
-    wrist.ZeroWrist();
+    wrist.zeroWrist();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -9,6 +10,7 @@ import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 import frc.robot.utils.PIDFactory;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
 
@@ -17,6 +19,8 @@ public class Wrist extends Subsystem {
   private CANSparkMax m_Wrist = RobotMap.wristMotor;
   private CANEncoder e_Wrist = m_Wrist.getEncoder();
   private CANPIDController p_Wrist = m_Wrist.getPIDController();
+  private CANDigitalInput limitSwitch = m_Wrist
+      .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
   public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
   private boolean reliableZero = false;
 
@@ -27,6 +31,7 @@ public class Wrist extends Subsystem {
     addChild(m_Wrist);
     addChild(pid_wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
+    limitSwitch.enableLimitSwitch(true);
   }
 
   /// Allows the wrist to be controlled with raw input
@@ -50,7 +55,7 @@ public class Wrist extends Subsystem {
   }
 
   /// Defines the current position of the Wrist as the offset/zero positon
-  public void ZeroWrist() {
+  public void zeroWrist() {
     setWristPos(0);
   }
 
@@ -78,6 +83,13 @@ public class Wrist extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+  }
+
+  @Override
+  public void periodic() {
+    if (limitSwitch.get())
+      zeroWrist();
+    SmartDashboard.putBoolean("wristHasZero", hasReliableZero());
   }
 
 }
