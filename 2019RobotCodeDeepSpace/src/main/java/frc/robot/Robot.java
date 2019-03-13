@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    // testMax.periodic();
+    testMax.periodic();
     boolean kick = controlChooser.getSelected().getKick();
     hatchPassive.setKick(kick);
     SmartDashboard.putBoolean("kick", kick);

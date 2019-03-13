@@ -42,9 +42,9 @@ public class PIDFactory extends MomentumPIDFactoryBase {
       @Override
       public double pidGet() {
         if (type == PIDSourceType.kDisplacement) {
-          return RobotMap.navx.getAngle();
+          return 0; // RobotMap.navx.getAngle();
         } else {
-          return RobotMap.navx.getRate();
+          return 0; // RobotMap.navx.getRate();
         }
       }
 

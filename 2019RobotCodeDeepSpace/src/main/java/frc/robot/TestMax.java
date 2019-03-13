@@ -27,8 +27,6 @@ public class TestMax {
   private double f;
   private double iZone;
 
-  private double lastPos = 0;
-
   public void init() {
 
     try {
@@ -36,11 +34,11 @@ public class TestMax {
 
       LiveWindow.add(sendablepid);
 
-      p = testMax_PID.getP();
-      i = testMax_PID.getI();
-      d = testMax_PID.getD();
-      f = testMax_PID.getFF();
-      iZone = testMax_PID.getIZone();
+      p = testMax_PID.getP(0);
+      i = testMax_PID.getI(0);
+      d = testMax_PID.getD(0);
+      f = testMax_PID.getFF(0);
+      iZone = testMax_PID.getIZone(0);
 
       SmartDashboard.putNumber("Max P", p);
       SmartDashboard.putNumber("Max I", i);
@@ -52,42 +50,42 @@ public class TestMax {
         double t = notification.getEntry().getDouble(p);
         if (t != p) {
           p = t;
-          testMax_PID.setP(p);
+          testMax_PID.setP(p, 0);
         }
       }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
       SmartDashboard.getEntry("Max i").addListener(notification -> {
         double t = notification.getEntry().getDouble(i);
         if (t != i) {
           i = t;
-          testMax_PID.setI(i);
+          testMax_PID.setI(i, 0);
         }
       }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
       SmartDashboard.getEntry("Max D").addListener(notification -> {
         double t = notification.getEntry().getDouble(d);
         if (t != d) {
           d = t;
-          testMax_PID.setD(d);
+          testMax_PID.setD(d, 0);
         }
       }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
       SmartDashboard.getEntry("Max F").addListener(notification -> {
         double t = notification.getEntry().getDouble(f);
         if (t != f) {
           f = t;
-          testMax_PID.setFF(f);
+          testMax_PID.setFF(f, 0);
         }
       }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
       SmartDashboard.getEntry("Max F").addListener(notification -> {
         double t = notification.getEntry().getDouble(iZone);
         if (t != iZone) {
           iZone = t;
-          testMax_PID.setFF(iZone);
+          testMax_PID.setFF(iZone, 0);
         }
       }, TableEntryListener.kUpdate | TableEntryListener.kImmediate);
     } catch (Throwable e) {
       System.out.format("Exception caught: %s\n", e.getMessage());
     }
 
-    testMax.getEncoder().setPositionConversionFactor(1.0 / 16.0); // Motor is on
+    testMax.getEncoder().setPositionConversionFactor(1.0); // / 16.0); // Motor is on
     // 16:1 gearbox
     testMax_PID.setSmartMotionMaxAccel(15000.0, 0);
     testMax_PID.setSmartMotionMaxVelocity(2000.0, 0);
@@ -96,14 +94,14 @@ public class TestMax {
 
   public void periodic() {
     // servoJoystick();
-    tunePID();
-    // smartMotion();
+    // tunePID();
+    smartMotion();
   }
 
   /// Connect the joystick to the motor like a servo
   private void servoJoystick() {
     DriveController controller = chooser.getSelected();
-    testMax_PID.setReference(controller.getMoveRequest(), ControlType.kPosition);
+    testMax_PID.setReference(controller.getMoveRequest(), ControlType.kPosition, 0);
     System.out.format("Xbox Value: %f\n", controller.getMoveRequest());
   }
 
@@ -111,16 +109,13 @@ public class TestMax {
   private void tunePID() {
     long now = System.currentTimeMillis() / 1000;
     double posRequest = (now % 2) == 0 ? 0 : 1.0; // choose 0 or 1/4 rotation, alternating every second
-    testMax_PID.setReference(posRequest, ControlType.kPosition);
+    testMax_PID.setReference(posRequest, ControlType.kPosition, 0);
   }
 
   /// Wave the motor back and forth every second with smart motion
   private void smartMotion() {
     long now = System.currentTimeMillis() / 2000;
     double posRequest = (now % 2) == 0 ? 0 : 1.0; // choose 0 or 1 rotation, alternating every 2 seconds
-    if (posRequest != lastPos) {
-      testMax_PID.setReference(posRequest, ControlType.kSmartMotion);
-      lastPos = posRequest;
-    }
+    testMax_PID.setReference(posRequest, ControlType.kSmartMotion, 0);
   }
 }
