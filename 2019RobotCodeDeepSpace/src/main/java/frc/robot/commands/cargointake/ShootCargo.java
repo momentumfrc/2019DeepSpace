@@ -10,6 +10,7 @@ public class ShootCargo extends Command {
 
   CargoIntake intake = Robot.cargoIntake;
   Timer time = new Timer();
+  Command stopIntake = new StopIntake();
 
   public ShootCargo() {
     requires(intake);
@@ -37,13 +38,13 @@ public class ShootCargo extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    intake.setDefaultCommand(new StopIntake());
+    stopIntake.start();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    intake.stop();
+    end();
   }
 }

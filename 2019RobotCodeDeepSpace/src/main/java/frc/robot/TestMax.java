@@ -99,6 +99,7 @@ public class TestMax {
   }
 
   /// Connect the joystick to the motor like a servo
+  @SuppressWarnings("unused")
   private void servoJoystick() {
     DriveController controller = chooser.getSelected();
     testMax_PID.setReference(controller.getMoveRequest(), ControlType.kPosition, 0);
@@ -106,6 +107,7 @@ public class TestMax {
   }
 
   /// Wave the motor back and forth every second for PID tuning
+  @SuppressWarnings("unused")
   private void tunePID() {
     long now = System.currentTimeMillis() / 1000;
     double posRequest = (now % 2) == 0 ? 0 : 1.0; // choose 0 or 1/4 rotation, alternating every second
@@ -113,6 +115,7 @@ public class TestMax {
   }
 
   /// Wave the motor back and forth every second with smart motion
+  @SuppressWarnings("unused")
   private void smartMotion() {
     long now = System.currentTimeMillis() / 2000;
     double posRequest = (now % 2) == 0 ? 0 : 1.0; // choose 0 or 1 rotation, alternating every 2 seconds

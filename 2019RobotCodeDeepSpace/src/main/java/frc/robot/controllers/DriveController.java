@@ -12,9 +12,9 @@ public interface DriveController {
 
   abstract public double getArmSpeed();
 
-  abstract public boolean getIntakeSpeed();
+  abstract public boolean getIntakeCargo();
 
-  abstract public boolean getShootSpeed();
+  abstract public boolean getShootCargo();
 
   abstract public boolean getGrabHatch();
 

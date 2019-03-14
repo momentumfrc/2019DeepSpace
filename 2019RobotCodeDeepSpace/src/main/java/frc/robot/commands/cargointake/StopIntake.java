@@ -25,7 +25,7 @@ public class StopIntake extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false; // TODO Should this quit after setting the stop once?
+    return false;
   }
 
   // Called once after isFinished returns true

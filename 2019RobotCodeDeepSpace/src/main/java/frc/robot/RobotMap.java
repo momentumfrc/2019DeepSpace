@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.SerialPort;
+//import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
@@ -39,7 +39,7 @@ public class RobotMap {
   public static final LogitechF310 f310 = new LogitechF310(2);
 
   // GYROS//
-  //public static final AHRS navx = new AHRS(SerialPort.Port.kMXP);
+  // public static final AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
   // ARM//
   public static final CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);

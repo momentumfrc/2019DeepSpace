@@ -58,11 +58,11 @@ public class OI {
   });
 
   Trigger shoot = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getShootSpeed();
+    return Robot.controlChooser.getSelected().getShootCargo();
   });
 
   Trigger intake = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getIntakeSpeed();
+    return Robot.controlChooser.getSelected().getIntakeCargo();
   });
 
   public OI() {

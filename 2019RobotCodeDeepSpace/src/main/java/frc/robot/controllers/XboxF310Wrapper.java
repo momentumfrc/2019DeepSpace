@@ -85,12 +85,12 @@ public class XboxF310Wrapper implements DriveController {
   }
 
   @Override
-  public boolean getIntakeSpeed() {
+  public boolean getIntakeCargo() {
     return false;
   }
 
   @Override
-  public boolean getShootSpeed() {
+  public boolean getShootCargo() {
     return false;
   }
 

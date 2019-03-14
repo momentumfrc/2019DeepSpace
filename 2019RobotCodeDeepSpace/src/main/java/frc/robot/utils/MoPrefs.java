@@ -6,37 +6,16 @@ public class MoPrefs {
 
   private static Preferences prefs = Preferences.getInstance();
 
-  public static final double DRIVE_ENC_TICKS = 63.66; // Number of Encoder ticks in 1 foot of Travel
-  // Encoder dip switch settings (0 1 1 1)= 100 ticks/revolution = pi * 6" =
-  // 18.85" = 1.57'
+  // Number of Encoder ticks in 1 foot of Travel:
+  // Encoder dip switch settings (0 1 1 1)
+  // = 100 ticks/revolution = pi * 6" = 18.85" = 1.57'
+  public static final double DRIVE_ENC_TICKS = 63.66;
 
   public static final double MAX_ARM_ROTATION = 125; // Degrees
   public static final double MIN_ARM_ROTATION = 0;
 
   public static final double MAX_WRIST_ROTATION = 180; // Degrees
   public static final double MIN_WRIST_ROTATION = 0;
-
-  // ARM PRESETS //
-  // TODO set all of these positions to the correct angles
-  public static final double ARM_GROUND_POS = 0;
-  public static final double ARM_LOADINGSTATION_POS = 1;
-
-  public static final double ARM_LEVELONE_HATCH = 2;
-  public static final double ARM_LEVELONE_CARGO = 2;
-
-  public static final double ARM_LEVELTWO_HATCH = 3;
-  public static final double ARM_LEVELTWO_CARGO = 3;
-
-  // WRIST PRESETS //
-  // TODO set all of these positions to the correct angles
-  public static final double WRIST_GROUND_POS = 0;
-  public static final double WRIST_LOADINGSTATION_POS = 1;
-
-  public static final double WRIST_LEVELONE_HATCH = 2;
-  public static final double WRIST_LEVELONE_CARGO = 2;
-
-  public static final double WRIST_LEVELTWO_HATCH = 3;
-  public static final double WRIST_LEVELTWO_CARGO = 3;
 
   public static final double MAX_MOTOR_TEMP = 10;
 
