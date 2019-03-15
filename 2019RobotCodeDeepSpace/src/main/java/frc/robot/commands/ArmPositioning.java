@@ -1,6 +1,9 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
+
+import org.usfirst.frc.team4999.utils.Utils;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -171,8 +174,8 @@ public class ArmPositioning extends Command {
   protected void execute() {
     // Get all the controller inputs
     DriveController controller = chooser.getSelected();
-    double manualArmSpeed = controller.getArmSpeed();
-    double manualWristSpeed = controller.getWristSpeed();
+    double manualArmSpeed = Utils.deadzone(controller.getArmSpeed(), manualDeadzone);
+    double manualWristSpeed = Utils.deadzone(controller.getWristSpeed(), manualDeadzone);
     boolean hatchGamepieceSelected = controller.getHatchGamepiecePressed();
     boolean cargoGamepieceSelected = controller.getCargoGamepiecePressed();
     boolean presetIncreased = controller.getPresetIncreasedPressed();
@@ -180,7 +183,7 @@ public class ArmPositioning extends Command {
     boolean savePreset = controller.getSavePreset();
 
     // Interpret driver initiated changes
-    boolean manualOverride = Math.abs(manualArmSpeed) > manualDeadzone || Math.abs(manualWristSpeed) > manualDeadzone;
+    boolean manualOverride = Math.abs(manualArmSpeed) > 0.0 || Math.abs(manualWristSpeed) > 0.0;
     boolean presetRequested = presetIncreased || presetDecreased;
 
     if (hatchGamepieceSelected) {

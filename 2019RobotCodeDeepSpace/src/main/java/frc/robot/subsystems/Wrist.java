@@ -37,6 +37,7 @@ public class Wrist extends Subsystem {
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
     m_Wrist.set(speed);
+    limitSwitch.enableLimitSwitch(true);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
@@ -62,6 +63,7 @@ public class Wrist extends Subsystem {
   /// Request a specific position using SmartMotion
   public void setSmartPosition(double posRequest) {
     p_Wrist.setReference(posRequest, ControlType.kSmartMotion);
+    limitSwitch.enableLimitSwitch(false);
   }
 
   public void setWristMotor(double speed) {

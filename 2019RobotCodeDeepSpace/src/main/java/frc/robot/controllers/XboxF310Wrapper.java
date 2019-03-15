@@ -75,6 +75,18 @@ public class XboxF310Wrapper implements DriveController {
   }
 
   @Override
+  public boolean getSavePreset() {
+    return xbox.getStartButton() && xbox.getBackButton();
+  }
+
+  // F310 CONTROLS//
+  @Override
+  public double getWristSpeed() {
+    double val = Utils.clip(logitech.getY(Hand.kLeft) + logitech.getY(Hand.kRight), -1, 1);
+    return Utils.map(val, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
+  }
+
+  @Override
   public boolean getHatchGamepiecePressed() {
     return xbox.getBButtonPressed();
   }
@@ -102,18 +114,6 @@ public class XboxF310Wrapper implements DriveController {
   @Override
   public boolean getKick() {
     return false;
-  }
-
-  @Override
-  public boolean getSavePreset() {
-    return xbox.getStartButton() && xbox.getBackButton();
-  }
-
-  // F310 CONTROLS//
-  @Override
-  public double getWristSpeed() {
-    double val = Utils.clip(logitech.getY(Hand.kLeft) + logitech.getY(Hand.kRight), -1, 1);
-    return Utils.map(val, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
   }
 
 }

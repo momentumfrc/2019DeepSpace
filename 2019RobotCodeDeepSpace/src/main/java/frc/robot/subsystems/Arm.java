@@ -37,6 +37,7 @@ public class Arm extends Subsystem {
   /// Allows the wrist to be controlled with raw input
   public void setArmNoLimits(double speed) {
     m_Arm.set(speed);
+    limitSwitch.enableLimitSwitch(true);
   }
 
   /// Gets the current arm position
@@ -62,6 +63,7 @@ public class Arm extends Subsystem {
   /// Request a specific position using SmartMotion
   public void setSmartPosition(double posRequest) {
     p_arm.setReference(posRequest, ControlType.kSmartMotion);
+    limitSwitch.enableLimitSwitch(false);
   }
 
   public void setArmMotor(double speed) {
