@@ -3,6 +3,7 @@ package frc.robot.utils;
 import org.usfirst.frc.team4999.pid.PIDConstantUpdateListener;
 
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class MoPID implements Sendable {
@@ -12,7 +13,7 @@ public class MoPID implements Sendable {
 
   private double totalErr;
   private double lastErr;
-  private long lastTime;
+  private double lastTime;
 
   private PIDConstantUpdateListener updateListener = () -> {
   };
@@ -24,13 +25,13 @@ public class MoPID implements Sendable {
     this.kI = kI;
     this.kD = kD;
     this.kF = kF;
-    lastTime = System.currentTimeMillis();
+    lastTime = Timer.getFPGATimestamp() * 1000.0;
   }
 
   public double calculate(double target, double current) {
     // calculate time for dT
-    long now = System.currentTimeMillis();
-    long dTime = now - lastTime;
+    double now = Timer.getFPGATimestamp() * 1000.0; // FPGA time is in seconds with microsecond resolution
+    double dTime = now - lastTime;
     lastTime = now;
 
     // Calculate error
