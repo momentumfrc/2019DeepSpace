@@ -183,7 +183,7 @@ public class ArmPositioning extends Command {
     boolean savePreset = controller.getSavePreset();
 
     // Interpret driver initiated changes
-    boolean manualOverride = Math.abs(manualArmSpeed) > 0.0 || Math.abs(manualWristSpeed) > 0.0;
+    boolean manualOverride = manualArmSpeed != 0.0 || manualWristSpeed != 0.0;
     boolean presetRequested = presetIncreased || presetDecreased;
 
     if (hatchGamepieceSelected) {
