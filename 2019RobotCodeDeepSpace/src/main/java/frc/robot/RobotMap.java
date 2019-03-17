@@ -46,19 +46,21 @@ public class RobotMap {
 
   // ARM//
   public static final CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);
+  public static final boolean armInverted = false;
 
   // WRIST//
   public static final CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
+  public static final boolean wristInverted = false;
 
   // CARGO INTAKE//
   public static final SpeedController intakeMotorTop = new VictorSP(4);
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
-  // HATCH GROUND INTAKE //
-  public static final Optional<DoubleSolenoid> hatchKicker = Optional.empty(); // Optional.of(new DoubleSolenoid(0, 1));
+  // HATCH VELCRO KICKERS //
+  public static final Optional<DoubleSolenoid> hatchKicker = Optional.of(new DoubleSolenoid(0, 1)); // Optional.empty();
 
-  // HATCH ACTIVE //
-  public static final Optional<DoubleSolenoid> hatchActive = Optional.empty(); // Optional.of(new DoubleSolenoid(2, 3));
+  // HATCH FLOOR FLIPPER //
+  public static final Optional<DoubleSolenoid> hatchFlipper = Optional.of(new DoubleSolenoid(2, 3)); // Optional.empty();
 
   // PDP//
   public static final MoPDP pdp = new MoPDP();

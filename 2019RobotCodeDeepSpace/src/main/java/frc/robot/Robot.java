@@ -17,7 +17,7 @@ import frc.robot.choosers.ControlChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HatchActive;
+import frc.robot.subsystems.HatchFlipper;
 import frc.robot.subsystems.HatchPassive;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
   public static CargoIntake cargoIntake = new CargoIntake();
-  public static HatchActive hatchActive = new HatchActive();
+  public static HatchFlipper hatchActive = new HatchFlipper();
   public static HatchPassive hatchPassive = new HatchPassive();
   // public static TestMax testMax = new TestMax();
   public static OI m_oi;

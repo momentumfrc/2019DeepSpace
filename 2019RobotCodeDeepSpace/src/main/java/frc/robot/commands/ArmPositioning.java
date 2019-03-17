@@ -244,7 +244,7 @@ public class ArmPositioning extends Command {
     }
 
     // Keep the driver informed about what's going on inside the robot's brain.
-    SmartDashboard.putBoolean("manualMode", manualMode);
+    SmartDashboard.putBoolean("presetMode", !manualMode);
     SmartDashboard.putString("presetName", preset.getName());
     SmartDashboard.putBoolean("presetValid", preset.isValid());
   }

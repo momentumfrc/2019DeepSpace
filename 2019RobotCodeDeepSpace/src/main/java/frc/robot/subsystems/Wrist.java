@@ -32,6 +32,7 @@ public class Wrist extends Subsystem {
     addChild(pid_wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
     limitSwitch.enableLimitSwitch(true);
+    m_Wrist.setInverted(RobotMap.wristInverted);
   }
 
   /// Allows the wrist to be controlled with raw input
