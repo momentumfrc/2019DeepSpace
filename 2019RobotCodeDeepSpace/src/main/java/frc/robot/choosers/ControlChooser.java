@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ControlChooser extends SendableChooser<DriveController> {
 
-  private final String NAME = "CONTROL CHOOSER";
+  private final String NAME = "Controls";
 
   public ControlChooser() {
     super();

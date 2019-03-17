@@ -8,12 +8,10 @@
 package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.choosers.SandstormChooser;
@@ -24,7 +22,6 @@ import frc.robot.subsystems.HatchPassive;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Arm;
-import frc.robot.sandstorm.SandstormMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,10 +38,10 @@ public class Robot extends TimedRobot {
   public static CargoIntake cargoIntake = new CargoIntake();
   public static HatchActive hatchActive = new HatchActive();
   public static HatchPassive hatchPassive = new HatchPassive();
-  public static TestMax testMax = new TestMax();
+  // public static TestMax testMax = new TestMax();
   public static OI m_oi;
 
-  private SendableChooser<SandstormMode> sandstormChooser = new SandstormChooser();
+  private SandstormChooser sandstormChooser = new SandstormChooser();
 
   private Command driveCommand = new DrivePID();
   private Command armCommand = new ArmPositioning();
@@ -56,21 +53,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    SmartDashboard.putData("Auto mode", sandstormChooser);
-    SmartDashboard.putData("Control Chooser", controlChooser);
 
-    VideoSource lifecam = new UsbCamera("Driver Camera", 0);
-    // TODO: Experiment with these numbers
-    lifecam.setResolution(640, 480);
+    UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
+    lifecam.setResolution(320, 240);
     lifecam.setFPS(15);
-    CameraServer.getInstance().startAutomaticCapture(lifecam);
 
-    testMax.init();
+    // testMax.init();
   }
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for
-   * items like diagnostics that you want ran during disabled, autonomous,
+   * items like diagnostics that you want run during disabled, autonomous,
    * teleoperated and test.
    *
    * <p>
@@ -150,7 +143,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    testMax.periodic();
+    // testMax.periodic();
     boolean kick = controlChooser.getSelected().getKick();
     hatchPassive.setKick(kick);
     SmartDashboard.putBoolean("kick", kick);

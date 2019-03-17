@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SandstormChooser extends SendableChooser<SandstormMode> {
-  private final String NAME = "SANDSTORM CHOOSER";
+  private final String NAME = "Sandstorm";
 
   public SandstormChooser() {
     super();

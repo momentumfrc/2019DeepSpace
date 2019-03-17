@@ -13,8 +13,8 @@ public class XboxF310Wrapper implements DriveController {
   private XboxController xbox = RobotMap.xbox;
   private LogitechF310 logitech = RobotMap.f310;
 
-  private static final double MOVE_CURVE = 2.5;
-  private static final double TURN_CURVE = 2.5;
+  private static final double MOVE_CURVE = 0; // 2.5;
+  private static final double TURN_CURVE = 0; // 2.5;
 
   private static final double DEADZONE = 0.1;
 
@@ -22,7 +22,7 @@ public class XboxF310Wrapper implements DriveController {
   private int currentSpeed = SPEEDS.length - 1;
 
   private static final double MAX_ARM_SPEED = .8;
-  private static final double MAX_WRIST_SPEED = .8;
+  private static final double MAX_WRIST_SPEED = .5;
 
   // XBOX CONTROLS//
   @Override
@@ -43,25 +43,35 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public double getSpeedLimiter() {
-    if (xbox.getYButtonPressed() && currentSpeed < SPEEDS.length - 1) {
-      ++currentSpeed;
-    } else if (xbox.getXButtonPressed() && currentSpeed > 0) {
-      --currentSpeed;
-    }
-
+    /*
+     * // Speed limiting is disabled while the X and Y buttons have other
+     * assignments if (xbox.getYButtonPressed() && currentSpeed < SPEEDS.length - 1)
+     * { ++currentSpeed; } else if (xbox.getXButtonPressed() && currentSpeed > 0) {
+     * --currentSpeed; }
+     */
     return SPEEDS[currentSpeed];
   }
 
   @Override
   public boolean getReverseDirectionPressed() {
-    return xbox.getBButtonPressed();
+    return xbox.getXButtonPressed();
   }
 
   @Override
   public double getArmSpeed() {
-    double armSpeed = Utils.map(xbox.getTriggerAxis(Hand.kLeft), -1, 1, -MAX_ARM_SPEED, 0)
-        + Utils.map(xbox.getTriggerAxis(Hand.kRight), -1, 1, 0, MAX_ARM_SPEED);
+    double armSpeed = xbox.getTriggerAxis(Hand.kLeft) * -MAX_ARM_SPEED
+        + xbox.getTriggerAxis(Hand.kRight) * MAX_ARM_SPEED;
     return armSpeed;
+  }
+
+  @Override
+  public boolean getHatchGamepiecePressed() {
+    return xbox.getBButtonPressed();
+  }
+
+  @Override
+  public boolean getCargoGamepiecePressed() {
+    return xbox.getYButtonPressed();
   }
 
   @Override
@@ -83,17 +93,7 @@ public class XboxF310Wrapper implements DriveController {
   @Override
   public double getWristSpeed() {
     double val = Utils.clip(logitech.getY(Hand.kLeft) + logitech.getY(Hand.kRight), -1, 1);
-    return Utils.map(val, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
-  }
-
-  @Override
-  public boolean getHatchGamepiecePressed() {
-    return xbox.getBButtonPressed();
-  }
-
-  @Override
-  public boolean getCargoGamepiecePressed() {
-    return xbox.getYButtonPressed();
+    return val * MAX_WRIST_SPEED;
   }
 
   @Override

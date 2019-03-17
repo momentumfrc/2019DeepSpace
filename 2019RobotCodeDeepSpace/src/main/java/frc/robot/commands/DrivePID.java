@@ -22,8 +22,8 @@ public class DrivePID extends Command {
 
   @Override
   protected void initialize() {
-    movePID = MoPID.makePIDFromPrefs("MoveRatePID");
-    turnPID = MoPID.makePIDFromPrefs("TurnRatePID");
+    movePID = MoPID.makePIDFromPrefs("MainDrive/MoveRatePID");
+    turnPID = MoPID.makePIDFromPrefs("MainDrive/TurnRatePID");
 
     SmartDashboard.putData(movePID);
     SmartDashboard.putData(turnPID);

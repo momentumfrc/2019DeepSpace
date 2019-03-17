@@ -15,7 +15,10 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
 import org.usfirst.frc.team4999.controllers.LogitechF310;
+
 import frc.robot.utils.MoPDP;
+
+import java.util.Optional;
 
 //import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
@@ -52,10 +55,10 @@ public class RobotMap {
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
   // HATCH GROUND INTAKE //
-  public static final DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
+  public static final Optional<DoubleSolenoid> hatchKicker = Optional.empty(); // Optional.of(new DoubleSolenoid(0, 1));
 
   // HATCH ACTIVE //
-  public static final DoubleSolenoid hatchActive = new DoubleSolenoid(2, 3);
+  public static final Optional<DoubleSolenoid> hatchActive = Optional.empty(); // Optional.of(new DoubleSolenoid(2, 3));
 
   // PDP//
   public static final MoPDP pdp = new MoPDP();

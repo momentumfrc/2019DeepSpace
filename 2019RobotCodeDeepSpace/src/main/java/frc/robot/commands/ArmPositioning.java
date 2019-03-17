@@ -135,7 +135,6 @@ public class ArmPositioning extends Command {
         }
       }
       // Couldn't find a better valid preset, so just go to the next one.
-      // TODO Verify this is reasonable behavior
       nextPreset();
     }
 
@@ -150,7 +149,6 @@ public class ArmPositioning extends Command {
         }
       }
       // Couldn't find a better valid preset, so just go to the prev one.
-      // TODO Verify this is reasonable behavior
       prevPreset();
     }
 
