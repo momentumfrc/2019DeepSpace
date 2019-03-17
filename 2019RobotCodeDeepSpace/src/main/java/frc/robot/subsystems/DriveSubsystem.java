@@ -7,11 +7,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveCommand;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPID;
@@ -29,7 +30,8 @@ public class DriveSubsystem extends Subsystem {
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
 
   private MoPID movePID, turnPID;
-  private boolean pidEnabled = true;
+  private NetworkTableEntry pidWidget;
+  private boolean pidEnabled;
 
   public DriveSubsystem() {
     super("Drive Subsytem");
@@ -45,9 +47,12 @@ public class DriveSubsystem extends Subsystem {
     movePID = MoPID.makePIDFromPrefs("MoveRatePID");
     turnPID = MoPID.makePIDFromPrefs("TurnRatePID");
 
-    SmartDashboard.putData(movePID);
-    SmartDashboard.putData(turnPID);
-    SmartDashboard.putBoolean("Drive PID Enabled", pidEnabled);
+    // SmartDashboard.putData(movePID);
+    // SmartDashboard.putData(turnPID);
+    pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withWidget("Toggle Switch").getEntry();
+    pidWidget.addListener(notice -> {
+      pidEnabled = notice.value.getBoolean();
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
   }
 
   @Override

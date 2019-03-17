@@ -8,9 +8,8 @@ import com.revrobotics.ControlType;
 
 import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 import frc.robot.utils.PIDFactory;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
 
@@ -22,6 +21,8 @@ public class Wrist extends Subsystem {
   private CANDigitalInput limitSwitch = m_Wrist
       .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
   public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
+
+  private NetworkTableEntry zeroWidget;
   private boolean reliableZero = false;
 
   private static final double GEAR_RATIO = (1.0 / 16.0) * (16.0 / 32.0); // 1:16 CIM Sport into 16:32 Sprockets
@@ -33,6 +34,7 @@ public class Wrist extends Subsystem {
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setInverted(RobotMap.wristInverted);
+    zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).getEntry();
   }
 
   /// Allows the wrist to be controlled with raw input
@@ -92,7 +94,7 @@ public class Wrist extends Subsystem {
   public void periodic() {
     if (limitSwitch.get())
       zeroWrist();
-    SmartDashboard.putBoolean("wristHasZero", hasReliableZero());
+    zeroWidget.setBoolean(hasReliableZero());
   }
 
 }

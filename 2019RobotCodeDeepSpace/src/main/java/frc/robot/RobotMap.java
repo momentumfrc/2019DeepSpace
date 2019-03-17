@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 import org.usfirst.frc.team4999.controllers.LogitechF310;
 
 import frc.robot.utils.MoPDP;
@@ -62,7 +65,7 @@ public class RobotMap {
   // HATCH FLOOR FLIPPER //
   public static final Optional<DoubleSolenoid> hatchFlipper = Optional.of(new DoubleSolenoid(2, 3)); // Optional.empty();
 
-  // PDP//
+  // PDP //
   public static final MoPDP pdp = new MoPDP();
 
   public static final int LF_DRIVE_MOTOR_PDP = 0;
@@ -74,4 +77,7 @@ public class RobotMap {
   public static final int WRIST_PDP = 14;
   public static final int INTAKE_UPPER_PDP = 2;
   public static final int INTAKE_LOWER_PDP = 3;
+
+  // SHUFFLEBOARD //
+  public static final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
 }

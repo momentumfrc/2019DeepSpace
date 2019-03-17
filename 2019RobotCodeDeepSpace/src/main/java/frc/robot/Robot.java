@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
-import frc.robot.choosers.DriveChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
@@ -33,7 +32,6 @@ import frc.robot.subsystems.Arm;
  */
 public class Robot extends TimedRobot {
   public static ControlChooser controlChooser = new ControlChooser();
-  public static DriveChooser driveChooser = new DriveChooser();
   public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
@@ -59,6 +57,7 @@ public class Robot extends TimedRobot {
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);
     lifecam.setFPS(15);
+    RobotMap.matchTab.add("Drive Camera", lifecam);
 
     // testMax.init();
   }

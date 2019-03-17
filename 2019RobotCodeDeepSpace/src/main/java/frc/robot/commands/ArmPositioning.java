@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team4999.utils.Utils;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
 import frc.robot.subsystems.Arm;
@@ -49,6 +51,8 @@ public class ArmPositioning extends Command {
   private PresetGroup currentPresetGroup = hatchPresetGroup;
 
   private final double manualDeadzone = 0.05; // Manual inputs greater than the deadzone kill the preset mode
+
+  NetworkTableEntry presetModeWidget, presetNameWidget, presetValidWidget;
 
   /**
    * A Preset is a saved position of both the arm and the wrist.
@@ -160,6 +164,11 @@ public class ArmPositioning extends Command {
   public ArmPositioning() {
     requires(arm);
     requires(wrist);
+
+    ShuffleboardTab tab = RobotMap.matchTab;
+    presetModeWidget = tab.add("Preset Active", false).getEntry();
+    presetNameWidget = tab.add("Preset Name", "").getEntry();
+    presetValidWidget = tab.add("Preset Valid", false).getEntry();
   }
 
   @Override
@@ -244,9 +253,9 @@ public class ArmPositioning extends Command {
     }
 
     // Keep the driver informed about what's going on inside the robot's brain.
-    SmartDashboard.putBoolean("presetMode", !manualMode);
-    SmartDashboard.putString("presetName", preset.getName());
-    SmartDashboard.putBoolean("presetValid", preset.isValid());
+    presetModeWidget.setBoolean(!manualMode);
+    presetNameWidget.setString(preset.getName());
+    presetValidWidget.setBoolean(preset.isValid());
   }
 
   @Override
