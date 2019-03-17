@@ -34,7 +34,7 @@ public class Arm extends Subsystem {
     e_arm.setPositionConversionFactor(GEAR_RATIO);
     limitSwitch.enableLimitSwitch(true);
     m_Arm.setInverted(RobotMap.armInverted);
-    zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).getEntry();
+    zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).withPosition(0, 0).getEntry();
   }
 
   /// Allows the wrist to be controlled with raw input

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.robot.commands.DriveCommand;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPID;
@@ -49,7 +50,8 @@ public class DriveSubsystem extends Subsystem {
 
     // SmartDashboard.putData(movePID);
     // SmartDashboard.putData(turnPID);
-    pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withWidget("Toggle Switch").getEntry();
+    pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
     pidWidget.addListener(notice -> {
       pidEnabled = notice.value.getBoolean();
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);

@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -57,7 +59,8 @@ public class Robot extends TimedRobot {
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);
     lifecam.setFPS(15);
-    RobotMap.matchTab.add("Drive Camera", lifecam);
+    RobotMap.matchTab.add("Drive Camera", lifecam).withPosition(3, 0).withSize(3, 3)
+        .withProperties(Map.of("Show controls", false));
 
     // testMax.init();
   }

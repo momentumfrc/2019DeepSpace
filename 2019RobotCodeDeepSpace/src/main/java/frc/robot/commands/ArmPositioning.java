@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team4999.utils.Utils;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -100,6 +102,10 @@ public class ArmPositioning extends Command {
       MoPrefs.setDouble(name + "_arm", armPos);
       MoPrefs.setDouble(name + "_wrist", wristPos);
     }
+
+    public void invalidate() {
+      setPreset(-1, -1);
+    }
   }
 
   /**
@@ -166,9 +172,16 @@ public class ArmPositioning extends Command {
     requires(wrist);
 
     ShuffleboardTab tab = RobotMap.matchTab;
-    presetModeWidget = tab.add("Preset Active", false).getEntry();
-    presetNameWidget = tab.add("Preset Name", "").getEntry();
-    presetValidWidget = tab.add("Preset Valid", false).getEntry();
+    presetModeWidget = tab.add("Preset Active", false).withPosition(2, 0).withSize(1, 2).getEntry();
+    presetNameWidget = tab.add("Preset Name", "").withPosition(1, 0).getEntry();
+    presetValidWidget = tab.add("Preset Valid", false).withPosition(1, 1).withWidget(BuiltInWidgets.kToggleButton)
+        .getEntry();
+    presetValidWidget.addListener(notice -> {
+      if (!notice.value.getBoolean()) {
+        currentPresetGroup.getCurrentPreset().invalidate();
+      }
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
   }
 
   @Override
