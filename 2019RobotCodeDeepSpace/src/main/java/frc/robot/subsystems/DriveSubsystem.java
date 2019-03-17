@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.commands.DrivePID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveCommand;
 import frc.robot.RobotMap;
+import frc.robot.utils.MoPID;
+import frc.robot.utils.MoPrefs;
 import frc.robot.utils.Utils;
 
 public class DriveSubsystem extends Subsystem {
@@ -25,6 +28,9 @@ public class DriveSubsystem extends Subsystem {
 
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
 
+  private MoPID movePID, turnPID;
+  private boolean pidEnabled = true;
+
   public DriveSubsystem() {
     super("Drive Subsytem");
     drive.setDeadband(0);
@@ -33,18 +39,33 @@ public class DriveSubsystem extends Subsystem {
 
     addChild("Left Encoder", leftEnc);
     addChild("Right Encoder", rightEnc);
-    leftEnc.setDistancePerPulse(1.0 / 2000.0);
-    rightEnc.setDistancePerPulse(1.0 / 2000.0);
+    leftEnc.setDistancePerPulse(1.0 / MoPrefs.getDriveEncTicksPerFoot());
+    rightEnc.setDistancePerPulse(1.0 / MoPrefs.getDriveEncTicksPerFoot());
+
+    movePID = MoPID.makePIDFromPrefs("MoveRatePID");
+    turnPID = MoPID.makePIDFromPrefs("TurnRatePID");
+
+    SmartDashboard.putData(movePID);
+    SmartDashboard.putData(turnPID);
+    SmartDashboard.putBoolean("Drive PID Enabled", pidEnabled);
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DrivePID());
+    setDefaultCommand(new DriveCommand());
   }
 
   public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
-    double m_r = Utils.clip(moveRequest, -1, 1) * speedLimiter;
-    double t_r = Utils.clip(turnRequest, -1, 1) * speedLimiter;
+    // Get the PID corrections
+    double moveCorrection = pidEnabled ? movePID.calculate(moveRequest, getMoveRate()) : 0;
+    double turnCorrection = pidEnabled ? turnPID.calculate(turnRequest, getTurnRate()) : 0;
+
+    // Calculate final drive
+    double move = moveRequest + moveCorrection;
+    double turn = turnRequest + turnCorrection;
+
+    double m_r = Utils.clip(move, -1, 1) * speedLimiter;
+    double t_r = Utils.clip(turn, -1, 1) * speedLimiter;
     drive.arcadeDrive(m_r, t_r, false);
   }
 

@@ -9,7 +9,7 @@ public class MoPrefs {
   // Number of Encoder ticks in 1 foot of Travel:
   // Encoder dip switch settings (0 1 1 1)
   // = 100 ticks/revolution = pi * 6" = 18.85" = 1.57'
-  public static final double DRIVE_ENC_TICKS = 63.66;
+  public static final double DRIVE_ENC_TICKS_PER_FOOT = 63.66;
 
   public static final double MAX_ARM_ROTATION = 125; // Degrees
   public static final double MIN_ARM_ROTATION = 0;
@@ -30,8 +30,8 @@ public class MoPrefs {
     prefs.putDouble(key, value);
   }
 
-  public static double getDriveEncTicks() {
-    return getDouble("DRIVE_ENC_TICKS", DRIVE_ENC_TICKS);
+  public static double getDriveEncTicksPerFoot() {
+    return getDouble("DRIVE_ENC_TICKS_PER_FOOT", DRIVE_ENC_TICKS_PER_FOOT);
   }
 
   public static double getMaxArmRotation() {

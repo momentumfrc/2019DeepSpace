@@ -6,14 +6,14 @@ import frc.robot.*;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
 
-public class DriveNoPID extends Command {
+public class DriveCommand extends Command {
 
   private DriveSubsystem drive = Robot.driveSystem;
   private ControlChooser chooser = Robot.controlChooser;
 
   private double headTailDirection = 1.0; // positive 1 for forward, -1 for reverse
 
-  public DriveNoPID() {
+  public DriveCommand() {
     requires(drive);
   }
 

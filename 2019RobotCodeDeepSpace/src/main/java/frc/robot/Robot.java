@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
+import frc.robot.choosers.DriveChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.Arm;
  */
 public class Robot extends TimedRobot {
   public static ControlChooser controlChooser = new ControlChooser();
+  public static DriveChooser driveChooser = new DriveChooser();
   public static DriveSubsystem driveSystem = new DriveSubsystem();
   public static Arm arm = new Arm();
   public static Wrist wrist = new Wrist();
@@ -43,7 +45,7 @@ public class Robot extends TimedRobot {
 
   private SandstormChooser sandstormChooser = new SandstormChooser();
 
-  private Command driveCommand = new DrivePID();
+  private Command driveCommand = new DriveCommand();
   private Command armCommand = new ArmPositioning();
 
   /**
