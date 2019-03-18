@@ -31,61 +31,6 @@
               "_source0": "network_table:///SmartDashboard/Sandstorm",
               "_title": "Sandstorm"
             }
-          },
-          "0,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/MainDrive/TurnRatePID/errZone",
-              "_title": "MainDrive/TurnRatePID/errZone"
-            }
-          },
-          "0,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/MoveRatePID/i",
-              "_title": "MoveRatePID/i"
-            }
-          },
-          "1,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/MoveRatePID/p",
-              "_title": "MoveRatePID/p"
-            }
-          },
-          "2,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/TurnRatePID/errZone",
-              "_title": "TurnRatePID/errZone"
-            }
-          },
-          "3,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/MoveRatePID/errZone",
-              "_title": "MoveRatePID/errZone"
-            }
           }
         }
       }
@@ -103,7 +48,7 @@
           "0,0": {
             "size": [
               2,
-              4
+              3
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -128,7 +73,7 @@
           "2,0": {
             "size": [
               2,
-              4
+              3
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -168,39 +113,7 @@
               ]
             }
           },
-          "6,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/CargoIntake",
-              "_title": "CargoIntake",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
           "8,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/HatchPassive",
-              "_title": "HatchPassive",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/HatchPassive/Kicker Piston/Value",
-                  "_title": "Kicker Piston/Value"
-                }
-              ]
-            }
-          },
-          "0,4": {
             "size": [
               1,
               1
@@ -211,18 +124,7 @@
               "_title": "Wrist/wristPID/current"
             }
           },
-          "1,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Wrist/wristPID/targetZone",
-              "_title": "Wrist/wristPID/targetZone"
-            }
-          },
-          "2,4": {
+          "8,1": {
             "size": [
               1,
               1
@@ -233,7 +135,7 @@
               "_title": "Wrist/wristPID/d"
             }
           },
-          "3,4": {
+          "8,2": {
             "size": [
               1,
               1
@@ -244,7 +146,7 @@
               "_title": "Wrist/wristPID/f"
             }
           },
-          "4,4": {
+          "0,3": {
             "size": [
               1,
               1
@@ -255,7 +157,18 @@
               "_title": "Wrist/wristPID/errZone"
             }
           },
-          "5,4": {
+          "1,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Wrist/wristPID/i",
+              "_title": "Wrist/wristPID/i"
+            }
+          },
+          "2,3": {
             "size": [
               1,
               1
@@ -268,18 +181,18 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,4": {
+          "3,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Wrist/wristPID/i",
-              "_title": "Wrist/wristPID/i"
+              "_source0": "network_table:///LiveWindow/Wrist/wristPID/targetZone",
+              "_title": "Wrist/wristPID/targetZone"
             }
           },
-          "7,4": {
+          "8,3": {
             "size": [
               1,
               1
@@ -290,26 +203,23 @@
               "_title": "Wrist/wristPID/p"
             }
           },
-          "8,4": {
+          "6,0": {
             "size": [
-              1,
-              1
+              2,
+              4
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Wrist/wristPID/targetTime",
-              "_title": "Wrist/wristPID/targetTime"
-            }
-          },
-          "9,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Wrist/wristPID/setpoint",
-              "_title": "Wrist/wristPID/setpoint"
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Wrist",
+              "_title": "Wrist",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Momentum PID Controller",
+                  "_source0": "network_table:///LiveWindow/Wrist/wristPID",
+                  "_title": "wristPID"
+                }
+              ]
             }
           }
         }

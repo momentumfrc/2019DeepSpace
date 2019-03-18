@@ -54,7 +54,7 @@ public class ArmPositioning extends Command {
 
   private final double manualDeadzone = 0.05; // Manual inputs greater than the deadzone kill the preset mode
 
-  NetworkTableEntry presetModeWidget, presetNameWidget, presetValidWidget;
+  private final NetworkTableEntry presetModeWidget, presetNameWidget, presetValidWidget;
 
   /**
    * A Preset is a saved position of both the arm and the wrist.
@@ -103,7 +103,7 @@ public class ArmPositioning extends Command {
       MoPrefs.setDouble(name + "_wrist", wristPos);
     }
 
-    public void invalidate() {
+    void invalidate() {
       setPreset(-1, -1);
     }
   }

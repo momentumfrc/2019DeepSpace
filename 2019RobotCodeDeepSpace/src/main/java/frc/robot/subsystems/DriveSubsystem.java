@@ -30,8 +30,8 @@ public class DriveSubsystem extends Subsystem {
 
   private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
 
-  private MoPID movePID, turnPID;
-  private NetworkTableEntry pidWidget;
+  private final MoPID movePID, turnPID;
+  private final NetworkTableEntry pidWidget;
   private boolean pidEnabled;
 
   public DriveSubsystem() {

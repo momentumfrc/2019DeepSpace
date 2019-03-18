@@ -22,7 +22,7 @@ public class Arm extends Subsystem {
       .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
   public final SendableCANPIDController pid_arm = PIDFactory.getArmPID();
 
-  private NetworkTableEntry zeroWidget;
+  private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false; // the arm has a reliable zero setpoint
 
   private static final double GEAR_RATIO = (1.0 / 36.0) * (18.0 / 84.0); // 1:36 CIM Sport into a 18:84 Gear Ratio

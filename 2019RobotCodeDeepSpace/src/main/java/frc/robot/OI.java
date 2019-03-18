@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.triggers.*;
-import frc.robot.commands.arm.KillArm;
+//import frc.robot.commands.arm.KillArm;
 import frc.robot.commands.hatchactive.*;
 import frc.robot.commands.hatchpassive.*;
 import frc.robot.commands.cargointake.*;
@@ -47,7 +47,7 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
-  private Trigger overtemp = new ArmMotorTempTrigger();
+  // private Trigger overtemp = new ArmMotorTempTrigger();
 
   Trigger grabHatch = new BooleanTrigger(() -> {
     return Robot.controlChooser.getSelected().getGrabHatch();
@@ -66,7 +66,7 @@ public class OI {
   });
 
   public OI() {
-    overtemp.whenActive(new KillArm());
+    // overtemp.whenActive(new KillArm());
 
     grabHatch.whenActive(new GrabHatch());
     grabHatch.whenInactive(new ReleaseHatch());

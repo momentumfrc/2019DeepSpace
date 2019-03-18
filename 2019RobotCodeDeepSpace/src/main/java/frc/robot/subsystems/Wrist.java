@@ -22,7 +22,7 @@ public class Wrist extends Subsystem {
       .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
   public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
 
-  private NetworkTableEntry zeroWidget;
+  private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false;
 
   private static final double GEAR_RATIO = (1.0 / 16.0) * (16.0 / 32.0); // 1:16 CIM Sport into 16:32 Sprockets
