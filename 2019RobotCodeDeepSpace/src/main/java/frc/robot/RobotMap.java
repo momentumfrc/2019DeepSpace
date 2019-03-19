@@ -60,11 +60,10 @@ public class RobotMap {
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
   // HATCH VELCRO KICKERS //
-  public static final Optional<DoubleSolenoid> hatchKicker = Optional.empty(); // Optional.of(new DoubleSolenoid(0, 1));
+  public static final Optional<DoubleSolenoid> hatchKicker = Optional.of(new DoubleSolenoid(0, 1)); // Optional.empty();
 
   // HATCH FLOOR FLIPPER //
-  public static final Optional<DoubleSolenoid> hatchFlipper = Optional.empty(); // Optional.of(new DoubleSolenoid(2,
-                                                                                // 3));
+  public static final Optional<DoubleSolenoid> hatchFlipper = Optional.of(new DoubleSolenoid(2, 3)); // Optional.empty();
 
   // PDP //
   public static final MoPDP pdp = new MoPDP();

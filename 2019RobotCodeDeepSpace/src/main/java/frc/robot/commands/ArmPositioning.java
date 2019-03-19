@@ -278,8 +278,8 @@ public class ArmPositioning extends Command {
 
   @Override
   protected void interrupted() {
-    arm.stop();
-    wrist.stopWrist();
+    arm.coast();
+    wrist.coast();
   }
 
   @Override

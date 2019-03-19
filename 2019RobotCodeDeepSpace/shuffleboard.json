@@ -94,25 +94,6 @@
               ]
             }
           },
-          "4,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Arm",
-              "_title": "Arm",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Momentum PID Controller",
-                  "_source0": "network_table:///LiveWindow/Arm/ArmPID",
-                  "_title": "ArmPID"
-                }
-              ]
-            }
-          },
           "8,0": {
             "size": [
               1,
@@ -203,6 +184,28 @@
               "_title": "Wrist/wristPID/p"
             }
           },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Arm/ArmPID/i",
+              "_title": "Arm/ArmPID/i"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Arm/ArmPID/p",
+              "_title": "Arm/ArmPID/p"
+            }
+          },
           "6,0": {
             "size": [
               2,
@@ -210,16 +213,10 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Wrist",
-              "_title": "Wrist",
+              "_source0": "network_table:///LiveWindow/HatchFlipper",
+              "_title": "HatchFlipper",
               "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Momentum PID Controller",
-                  "_source0": "network_table:///LiveWindow/Wrist/wristPID",
-                  "_title": "wristPID"
-                }
-              ]
+              "_children": []
             }
           }
         }
