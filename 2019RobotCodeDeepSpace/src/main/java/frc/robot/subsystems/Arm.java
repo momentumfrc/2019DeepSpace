@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
+import frc.robot.utils.SparkMaxShuffleboard;
 
 public class Arm extends Subsystem {
 
@@ -43,6 +44,8 @@ public class Arm extends Subsystem {
   private static final double kMinOutput = -1;
   private static final double allowedErr = 0;
 
+  SparkMaxShuffleboard value_display;
+
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
   private static final double minVel = 0;
@@ -55,17 +58,32 @@ public class Arm extends Subsystem {
     // addChild(pid_arm);
     e_arm.setPositionConversionFactor(GEAR_RATIO);
 
-    p_arm.setP(kP, smartMotionSlot);
-    p_arm.setI(kI, smartMotionSlot);
-    p_arm.setD(kD, smartMotionSlot);
-    p_arm.setIZone(kIz, smartMotionSlot);
-    p_arm.setFF(kFF, smartMotionSlot);
-    p_arm.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
-    p_arm.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    p_arm.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    p_arm.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    p_arm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Arm SparkMax", p_arm, smartMotionSlot);
     p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
+    /*
+     * p_arm.setP(kP, smartMotionSlot);
+     * 
+     * p_arm.setI(kI, smartMotionSlot);
+     * 
+     * p_arm.setD(kD, smartMotionSlot);
+     * 
+     * p_arm.setIZone(kIz, smartMotionSlot);
+     * 
+     * p_arm.setFF(kFF, smartMotionSlot);
+     * 
+     * p_arm.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
+     * 
+     * p_arm.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+     * 
+     * p_arm.setSmartMotionMinOutputVelocity(minVel,smartMotionSlot);
+     * 
+     * p_arm.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+     * 
+     * p_arm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+     * 
+     * p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal,
+     * smartMotionSlot);
+     */
 
     limitSwitch.enableLimitSwitch(true);
     m_Arm.setInverted(RobotMap.armInverted);
