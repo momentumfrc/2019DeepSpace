@@ -12,6 +12,8 @@ import frc.robot.triggers.*;
 //import frc.robot.commands.arm.KillArm;
 import frc.robot.commands.hatchactive.*;
 import frc.robot.commands.hatchpassive.*;
+import frc.robot.commands.ArmPositioning;
+import frc.robot.commands.FailsafeArmPositioning;
 import frc.robot.commands.cargointake.*;
 
 /**
@@ -49,21 +51,15 @@ public class OI {
 
   // private Trigger overtemp = new ArmMotorTempTrigger();
 
-  Trigger grabHatch = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getGrabHatch();
-  });
+  Trigger grabHatch = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getGrabHatch());
 
-  Trigger kickHatch = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getKick();
-  });
+  Trigger kickHatch = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getKick());
 
-  Trigger shoot = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getShootCargo();
-  });
+  Trigger shoot = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getShootCargo());
 
-  Trigger intake = new BooleanTrigger(() -> {
-    return Robot.controlChooser.getSelected().getIntakeCargo();
-  });
+  Trigger intake = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getIntakeCargo());
+
+  Trigger failsafeArm = new ShuffleboardTrigger(RobotMap.matchTab, "Arm PID Enabbled", 8, 2);
 
   public OI() {
     // overtemp.whenActive(new KillArm());
@@ -78,5 +74,8 @@ public class OI {
 
     intake.whenActive(new GrabCargo());
     intake.whenInactive(new HoldCargo());
+
+    failsafeArm.whenActive(new FailsafeArmPositioning());
+    failsafeArm.whenInactive(ArmPositioning.getInstance());
   }
 }

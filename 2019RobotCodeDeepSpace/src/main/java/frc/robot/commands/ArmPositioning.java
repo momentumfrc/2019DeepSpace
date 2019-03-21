@@ -56,6 +56,15 @@ public class ArmPositioning extends Command {
 
   private final NetworkTableEntry presetModeWidget, presetNameWidget, presetValidWidget;
 
+  private static ArmPositioning instance;
+
+  public static ArmPositioning getInstance() {
+    if (instance == null) {
+      instance = new ArmPositioning();
+    }
+    return instance;
+  }
+
   /**
    * A Preset is a saved position of both the arm and the wrist.
    * 
@@ -167,7 +176,7 @@ public class ArmPositioning extends Command {
     }
   }
 
-  public ArmPositioning() {
+  private ArmPositioning() {
     requires(arm);
     requires(wrist);
 
@@ -278,11 +287,12 @@ public class ArmPositioning extends Command {
 
   @Override
   protected void interrupted() {
-    arm.coast();
-    wrist.coast();
+    end();
   }
 
   @Override
   protected void end() {
+    arm.coast();
+    wrist.coast();
   }
 }
