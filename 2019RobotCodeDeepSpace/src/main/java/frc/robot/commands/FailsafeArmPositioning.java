@@ -43,7 +43,7 @@ public class FailsafeArmPositioning extends Command {
     double arm_req = controller.getArmSpeed();
     arm_req = Utils.clip(arm_req, -1, 1);
     arm_req = Utils.deadzone(arm_req, ARM_DEADZONE);
-    arm_req = Utils.curve(arm_req, ARM_DEADZONE);
+    arm_req = Utils.curve(arm_req, ARM_CURVE);
     double wrist_req = controller.getWristSpeed();
     wrist_req = Utils.clip(wrist_req, -1, 1);
     wrist_req = Utils.deadzone(wrist_req, WRIST_DEADZONE);
