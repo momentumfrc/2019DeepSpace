@@ -21,9 +21,6 @@ import org.usfirst.frc.team4999.controllers.LogitechF310;
 
 import frc.robot.utils.MoPDP;
 
-import java.util.Optional;
-
-//import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -60,10 +57,10 @@ public class RobotMap {
   public static final SpeedController intakeMotorBottom = new VictorSP(5);
 
   // HATCH VELCRO KICKERS //
-  public static final Optional<DoubleSolenoid> hatchKicker = Optional.of(new DoubleSolenoid(0, 1)); // Optional.empty();
+  public static final DoubleSolenoid hatchKicker = new DoubleSolenoid(0, 1);
 
   // HATCH FLOOR FLIPPER //
-  public static final Optional<DoubleSolenoid> hatchFlipper = Optional.of(new DoubleSolenoid(2, 3)); // Optional.empty();
+  public static final DoubleSolenoid hatchFlipper = new DoubleSolenoid(2, 3);
 
   // PDP //
   public static final MoPDP pdp = new MoPDP();

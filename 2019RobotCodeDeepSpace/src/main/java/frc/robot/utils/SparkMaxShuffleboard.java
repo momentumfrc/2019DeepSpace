@@ -1,7 +1,6 @@
 package frc.robot.utils;
 
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANPIDController.AccelStrategy;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
@@ -9,7 +8,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class SparkMaxShuffleboard {
 
