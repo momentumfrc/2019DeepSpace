@@ -31,6 +31,17 @@
               "_source0": "network_table:///SmartDashboard/Sandstorm",
               "_title": "Sandstorm"
             }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_title": "Robot Preferences",
+              "Miscellaneous/Show search box": true
+            }
           }
         }
       }
@@ -217,6 +228,17 @@
               "_title": "HatchFlipper",
               "Layout/Label position": "BOTTOM",
               "_children": []
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/HatchPassive/Kicker Piston/Value",
+              "_title": "HatchPassive/Kicker Piston/Value"
             }
           }
         }

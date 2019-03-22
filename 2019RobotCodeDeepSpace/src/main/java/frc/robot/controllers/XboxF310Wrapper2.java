@@ -28,7 +28,8 @@ public class XboxF310Wrapper2 implements DriveController {
   private static final double[] SPEEDS = { .125, .25, .375, .5, .625, .875, 1 };
   private int currentSpeed = SPEEDS.length - 1;
 
-  private static final double MAX_ARM_SPEED = .8;
+  private static final double MAX_ARM_SPEED_UP = .4;
+  private static final double MAX_ARM_SPEED_DOWN = .4;
   private static final double MAX_WRIST_SPEED = .25;
 
   @Override
@@ -66,7 +67,10 @@ public class XboxF310Wrapper2 implements DriveController {
     double armspeed = f310.getY(Hand.kLeft);
     deadzone(armspeed, DEADZONE);
     curve(armspeed, ARM_CURVE);
-    map(armspeed, -1, 1, -MAX_ARM_SPEED, MAX_ARM_SPEED);
+    if (armspeed < 0)
+      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_DOWN, MAX_ARM_SPEED_DOWN);
+    else
+      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_UP, MAX_ARM_SPEED_UP);
     return armspeed;
   }
 
