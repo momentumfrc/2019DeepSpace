@@ -11,7 +11,8 @@ public class ControlChooser extends SendableChooser<DriveController> {
 
   public ControlChooser() {
     super();
-    setDefaultOption("Xbox Main, F310 Secondary", new XboxF310Wrapper());
+    setDefaultOption("Xbox Drive/Arm, F310 Wrist/Intake", new XboxF310Wrapper());
+    addOption("Xbox Drive, F310 Arm/Wrist/Intake", new XboxF310Wrapper2());
 
     SmartDashboard.putData(NAME, this);
   }

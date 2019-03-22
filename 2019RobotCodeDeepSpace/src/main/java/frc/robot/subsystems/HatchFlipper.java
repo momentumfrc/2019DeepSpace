@@ -18,7 +18,11 @@ public class HatchFlipper extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new ReleaseHatch());
+    // I wonder if having this as a default command was causing the robot to
+    // constantly call releaseHatch() since both GrabHatch and ReleaseHatch are
+    // InstantCommands so when they complete the subsystem would start running the
+    // default command
+    // setDefaultCommand(new ReleaseHatch());
   }
 
 }

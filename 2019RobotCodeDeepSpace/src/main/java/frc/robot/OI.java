@@ -59,7 +59,7 @@ public class OI {
 
   Trigger intake = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getIntakeCargo());
 
-  Trigger failsafeArm = new ShuffleboardTrigger(RobotMap.matchTab, "Arm PID Enabbled", 8, 2);
+  Trigger failsafeArm = new ShuffleboardTrigger(RobotMap.matchTab, "Arm PID Enabbled", 8, 1);
 
   public OI() {
     // overtemp.whenActive(new KillArm());

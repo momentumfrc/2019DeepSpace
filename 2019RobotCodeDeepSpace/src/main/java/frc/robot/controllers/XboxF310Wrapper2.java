@@ -8,12 +8,12 @@ import frc.robot.RobotMap;
 import static frc.robot.utils.Utils.*;
 
 /**
- * A class to drive the robot using the Xbox Controller for driving and arm
- * control and the F310 controller for wrist and intake control
+ * A class to drive the robot using the Xbox Controller for driving control and
+ * the F310 controller for arm, wrist, and intake control
  * 
  * @author Jordan
  */
-public class XboxF310Wrapper implements DriveController {
+public class XboxF310Wrapper2 implements DriveController {
 
   private XboxController xbox = RobotMap.xbox;
   private LogitechF310 f310 = RobotMap.f310;
@@ -63,28 +63,19 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public double getArmSpeed() {
-    double arms_back = xbox.getTriggerAxis(Hand.kLeft);
-    arms_back = map(arms_back, -1, 1, 0, 1);
-    double arms_fwd = xbox.getTriggerAxis(Hand.kRight);
-    arms_fwd = map(arms_fwd, -1, 1, 0, 1);
-    double armspeed = arms_fwd - arms_back;
-    armspeed = deadzone(armspeed, DEADZONE);
-    armspeed = curve(armspeed, ARM_CURVE);
-    armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED, MAX_ARM_SPEED);
+    double armspeed = f310.getY(Hand.kLeft);
+    deadzone(armspeed, DEADZONE);
+    curve(armspeed, ARM_CURVE);
+    map(armspeed, -1, 1, -MAX_ARM_SPEED, MAX_ARM_SPEED);
     return armspeed;
   }
 
   @Override
   public double getWristSpeed() {
-    double left_wrist = f310.getY(Hand.kLeft);
-    left_wrist = deadzone(left_wrist, DEADZONE);
-    left_wrist = curve(left_wrist, WRIST_CURVE);
-    double right_wrist = f310.getY(Hand.kRight);
-    right_wrist = deadzone(right_wrist, DEADZONE);
-    right_wrist = curve(right_wrist, WRIST_CURVE);
-    double wristspeed = left_wrist + right_wrist;
-    wristspeed = clip(wristspeed, -1, 1);
-    wristspeed = map(wristspeed, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
+    double wristspeed = f310.getY(Hand.kRight);
+    deadzone(wristspeed, DEADZONE);
+    curve(wristspeed, WRIST_CURVE);
+    map(wristspeed, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
     return wristspeed;
   }
 
@@ -110,27 +101,27 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public boolean getPresetIncreasedPressed() {
-    return xbox.getPOV() == 0;
+    return f310.getPOV() == 0;
   }
 
   @Override
   public boolean getPresetDecreasedPressed() {
-    return xbox.getPOV() == 180;
+    return f310.getPOV() == 180;
   }
 
   @Override
   public boolean getSavePreset() {
-    return xbox.getBackButton();
+    return f310.getBackButton();
   }
 
   @Override
   public boolean getHatchGamepiecePressed() {
-    return xbox.getPOV() == 270;
+    return f310.getPOV() == 270;
   }
 
   @Override
   public boolean getCargoGamepiecePressed() {
-    return xbox.getPOV() == 90;
+    return f310.getPOV() == 90;
   }
 
 }

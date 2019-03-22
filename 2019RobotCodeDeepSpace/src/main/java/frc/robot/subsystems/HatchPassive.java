@@ -26,6 +26,10 @@ public class HatchPassive extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new DontKick());
+    // I wonder if having this as a default command was causing the robot to
+    // constantly call dontKick() since both KickHatch and DontKick are
+    // InstantCommands so when they complete the subsystem would start running the
+    // default command
+    // setDefaultCommand(new DontKick());
   }
 }
