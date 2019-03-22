@@ -30,7 +30,7 @@ public class XboxF310Wrapper implements DriveController {
 
   private static final double MAX_ARM_SPEED_UP = .4;
   private static final double MAX_ARM_SPEED_DOWN = .4;
-  private static final double MAX_WRIST_SPEED = .2;
+  private static final double MAX_WRIST_SPEED = .3;
 
   @Override
   public double getMoveRequest() {
@@ -92,12 +92,12 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public boolean getIntakeCargo() {
-    return f310.getAButton();
+    return f310.getBumper(Hand.kLeft);
   }
 
   @Override
   public boolean getShootCargo() {
-    return f310.getBButton();
+    return f310.getBumper(Hand.kRight);
   }
 
   @Override

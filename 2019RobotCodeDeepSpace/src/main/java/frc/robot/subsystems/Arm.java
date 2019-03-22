@@ -53,7 +53,7 @@ public class Arm extends Subsystem {
   private static final double maxVel = 100.0 / GEAR_RATIO;
   private static final double maxAcc = 1500.0 / GEAR_RATIO;
 
-  private static final double MAX_POWER_DELTA = 0.001;
+  private static final double MAX_POWER_DELTA = 0.03;
 
   public Arm() {
     super("Arm");
@@ -141,9 +141,11 @@ public class Arm extends Subsystem {
   }
 
   public void setArmMotor(double speed) {
+    setArmNoLimits(speed);
+    /*m_Arm.setIdleMode(IdleMode.kBrake);
     double arm_pos = getArmPos();
     if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
-      System.out.format("Arm at max rotation (%d)", arm_pos);
+      System.out.format("Arm at max rotation (%d)\n", arm_pos);
       m_Arm.set(0);
     } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()) {
       System.out.format("Arm at min rotation (%d)", arm_pos);
@@ -154,7 +156,7 @@ public class Arm extends Subsystem {
       delta = Utils.clip(delta, -MAX_POWER_DELTA, MAX_POWER_DELTA);
 
       m_Arm.set(curr + delta);
-    }
+    }*/
   }
 
   public void stop() {
@@ -163,6 +165,11 @@ public class Arm extends Subsystem {
 
   public void coast() {
     m_Arm.setIdleMode(IdleMode.kCoast);
+    stop();
+  }
+
+  public void brake() {
+    m_Arm.setIdleMode(IdleMode.kBrake);
     stop();
   }
 

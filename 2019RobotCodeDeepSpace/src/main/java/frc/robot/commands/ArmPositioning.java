@@ -295,7 +295,9 @@ public class ArmPositioning extends Command {
 
   @Override
   protected void end() {
-    arm.coast();
-    wrist.coast();
+    // arm.coast();
+    // wrist.coast();
+    arm.brake();
+    wrist.brake();
   }
 }

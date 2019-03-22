@@ -61,8 +61,10 @@ public class FailsafeArmPositioning extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    arm.coast();
-    wrist.coast();
+    // arm.coast();
+    // wrist.coast();
+    arm.brake();
+    wrist.brake();
   }
 
   // Called when another command which requires one or more of the same

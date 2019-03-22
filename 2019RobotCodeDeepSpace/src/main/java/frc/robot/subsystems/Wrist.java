@@ -134,6 +134,7 @@ public class Wrist extends Subsystem {
 
   public void setWristMotor(double speed) {
     double wrist_pos = getWristPos();
+    m_Wrist.setIdleMode(IdleMode.kBrake);
     if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
       System.out.format("Wrist at max rotation (%d)", wrist_pos);
       m_Wrist.set(0);
@@ -141,7 +142,7 @@ public class Wrist extends Subsystem {
       System.out.format("Wrist at min rotation (%d)", wrist_pos);
       m_Wrist.set(0);
     } else {
-      m_Wrist.set(speed);
+      setWristNoLimits(speed);
     }
   }
 
@@ -151,6 +152,11 @@ public class Wrist extends Subsystem {
 
   public void coast() {
     m_Wrist.setIdleMode(IdleMode.kCoast);
+    stopWrist();
+  }
+
+  public void brake() {
+    m_Wrist.setIdleMode(IdleMode.kBrake);
     stopWrist();
   }
 
