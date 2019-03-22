@@ -68,9 +68,9 @@ public class XboxF310Wrapper2 implements DriveController {
     deadzone(armspeed, DEADZONE);
     curve(armspeed, ARM_CURVE);
     if (armspeed < 0)
-      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_DOWN, MAX_ARM_SPEED_DOWN);
-    else
       armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_UP, MAX_ARM_SPEED_UP);
+    else
+      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_DOWN, MAX_ARM_SPEED_DOWN);
     return armspeed;
   }
 

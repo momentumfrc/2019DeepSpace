@@ -53,7 +53,7 @@ public class Arm extends Subsystem {
   private static final double maxVel = 100.0 / GEAR_RATIO;
   private static final double maxAcc = 1500.0 / GEAR_RATIO;
 
-  private static final double MAX_POWER_DELTA = 0.05;
+  private static final double MAX_POWER_DELTA = 0.001;
 
   public Arm() {
     super("Arm");
@@ -149,7 +149,11 @@ public class Arm extends Subsystem {
       System.out.format("Arm at min rotation (%d)", arm_pos);
       m_Arm.set(0);
     } else {
-      m_Arm.set(speed);
+      double curr = m_Arm.get();
+      double delta = speed - curr;
+      delta = Utils.clip(delta, -MAX_POWER_DELTA, MAX_POWER_DELTA);
+
+      m_Arm.set(curr + delta);
     }
   }
 
