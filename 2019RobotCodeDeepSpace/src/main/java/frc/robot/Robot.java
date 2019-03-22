@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   private SandstormChooser sandstormChooser = new SandstormChooser();
 
   private Command driveCommand = new DriveCommand();
-  private Command armCommand = new ArmPositioning();
+  private Command armCommand = ArmPositioning.getInstance();
 
   /**
    * This function is run when the robot is first started up and should be used

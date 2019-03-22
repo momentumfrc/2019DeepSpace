@@ -5,6 +5,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 //import org.usfirst.frc.team4999.pid.SendableCANPIDController;
@@ -13,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
+import frc.robot.utils.SparkMaxShuffleboard;
 
 public class Wrist extends Subsystem {
 
@@ -42,6 +44,8 @@ public class Wrist extends Subsystem {
   private static final double kMinOutput = -1;
   private static final double allowedErr = 0;
 
+  SparkMaxShuffleboard value_display;
+
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
   private static final double minVel = 0;
@@ -54,16 +58,30 @@ public class Wrist extends Subsystem {
     // addChild(pid_wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
 
-    p_Wrist.setP(kP, smartMotionSlot);
-    p_Wrist.setI(kI, smartMotionSlot);
-    p_Wrist.setD(kD, smartMotionSlot);
-    p_Wrist.setIZone(kIz, smartMotionSlot);
-    p_Wrist.setFF(kFF, smartMotionSlot);
-    p_Wrist.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
-    p_Wrist.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    p_Wrist.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    p_Wrist.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax", p_Wrist, smartMotionSlot);
+    p_Wrist.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
+
+    /*
+     * p_Wrist.setP(kP, smartMotionSlot);
+     * 
+     * p_Wrist.setI(kI, smartMotionSlot);
+     * 
+     * p_Wrist.setD(kD, smartMotionSlot);
+     * 
+     * p_Wrist.setIZone(kIz, smartMotionSlot);
+     * 
+     * p_Wrist.setFF(kFF, smartMotionSlot);
+     * 
+     * p_Wrist.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
+     * 
+     * p_Wrist.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+     * 
+     * p_Wrist.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+     * 
+     * p_Wrist.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+     * 
+     * p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+     */
 
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setInverted(RobotMap.wristInverted);
