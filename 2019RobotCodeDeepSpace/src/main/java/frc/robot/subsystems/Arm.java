@@ -141,9 +141,13 @@ public class Arm extends Subsystem {
   }
 
   public void setArmMotor(double speed) {
-    setArmNoLimits(speed);
-    /*m_Arm.setIdleMode(IdleMode.kBrake);
+    m_Arm.setIdleMode(IdleMode.kBrake);
     double arm_pos = getArmPos();
+    if (Double.isInfinite(arm_pos) || Double.isNaN(arm_pos)) {
+      System.out.println("Invalid arm_pos");
+      setArmNoLimits(speed);
+      return;
+    }
     if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
       System.out.format("Arm at max rotation (%d)\n", arm_pos);
       m_Arm.set(0);
@@ -156,7 +160,7 @@ public class Arm extends Subsystem {
       delta = Utils.clip(delta, -MAX_POWER_DELTA, MAX_POWER_DELTA);
 
       m_Arm.set(curr + delta);
-    }*/
+    }
   }
 
   public void stop() {

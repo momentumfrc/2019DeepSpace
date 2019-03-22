@@ -135,6 +135,11 @@ public class Wrist extends Subsystem {
   public void setWristMotor(double speed) {
     double wrist_pos = getWristPos();
     m_Wrist.setIdleMode(IdleMode.kBrake);
+    if (Double.isInfinite(wrist_pos) || Double.isNaN(wrist_pos)) {
+      System.out.println("Invalid wrist_pos");
+      setWristNoLimits(speed);
+      return;
+    }
     if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
       System.out.format("Wrist at max rotation (%d)", wrist_pos);
       m_Wrist.set(0);
