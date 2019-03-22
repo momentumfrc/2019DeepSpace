@@ -8,6 +8,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
 //import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 //import frc.robot.utils.PIDFactory;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -22,7 +23,7 @@ public class Wrist extends Subsystem {
   private CANEncoder e_Wrist = m_Wrist.getEncoder();
   private CANPIDController p_Wrist = m_Wrist.getPIDController();
   private CANDigitalInput limitSwitch = m_Wrist
-      .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
+      .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
   // public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
 
   private final NetworkTableEntry zeroWidget;
@@ -84,14 +85,21 @@ public class Wrist extends Subsystem {
      */
 
     limitSwitch.enableLimitSwitch(true);
+    m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Wrist.setInverted(RobotMap.wristInverted);
     zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).withPosition(0, 1).getEntry();
+    /*
+     * zeroWidget.addListener(notice -> { if (!notice.value.getBoolean()) {
+     * reliableZero = false; } }, EntryListenerFlags.kNew |
+     * EntryListenerFlags.kUpdate);
+     */
 
     coast();
   }
 
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
+    limitSwitch.enableLimitSwitch(false);
     m_Wrist.setIdleMode(IdleMode.kBrake);
     m_Wrist.set(speed);
     limitSwitch.enableLimitSwitch(true);
@@ -152,6 +160,9 @@ public class Wrist extends Subsystem {
 
   @Override
   public void periodic() {
+    /*
+     * if (limitSwitch.get()) System.out.println("Limit switch got");
+     */
     if (limitSwitch.get())
       zeroWrist();
     zeroWidget.setBoolean(hasReliableZero());

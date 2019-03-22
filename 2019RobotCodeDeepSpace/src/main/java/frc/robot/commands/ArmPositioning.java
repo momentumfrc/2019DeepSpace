@@ -260,7 +260,10 @@ public class ArmPositioning extends Command {
 
     // Finally, apply the actions selected by everything above.
     if (manualMode) {
-      arm.setArmNoLimits(manualArmSpeed);
+      if (!arm.hasReliableZero())
+        arm.setArmNoLimits(manualArmSpeed);
+      else
+        arm.setArmMotor(manualArmSpeed);
       wrist.setWristNoLimits(manualWristSpeed);
 
       // Can only save presets from manual mode while not moving anything

@@ -8,6 +8,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
 //import org.usfirst.frc.team4999.pid.SendableCANPIDController;
 //import frc.robot.utils.PIDFactory;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -15,14 +16,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
 import frc.robot.utils.SparkMaxShuffleboard;
+import frc.robot.utils.Utils;
 
 public class Arm extends Subsystem {
 
   private CANSparkMax m_Arm = RobotMap.armMotor;
   private CANEncoder e_arm = m_Arm.getEncoder();
   private CANPIDController p_arm = m_Arm.getPIDController();
-  private CANDigitalInput limitSwitch = m_Arm
-      .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
+  private CANDigitalInput limitSwitch = m_Arm.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
   // public final SendableCANPIDController pid_arm = PIDFactory.getArmPID();
 
   private final NetworkTableEntry zeroWidget;
@@ -51,6 +52,8 @@ public class Arm extends Subsystem {
   private static final double minVel = 0;
   private static final double maxVel = 100.0 / GEAR_RATIO;
   private static final double maxAcc = 1500.0 / GEAR_RATIO;
+
+  private static final double MAX_POWER_DELTA = 0.05;
 
   public Arm() {
     super("Arm");
@@ -86,16 +89,27 @@ public class Arm extends Subsystem {
      */
 
     limitSwitch.enableLimitSwitch(true);
+    m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Arm.setInverted(RobotMap.armInverted);
     zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).withPosition(0, 0).getEntry();
+    /*
+     * zeroWidget.addListener(notice -> { if (!notice.value.getBoolean()) {
+     * reliableZero = false; } }, EntryListenerFlags.kNew |
+     * EntryListenerFlags.kUpdate);
+     */
 
     coast();
   }
 
   /// Allows the wrist to be controlled with raw input
   public void setArmNoLimits(double speed) {
+    limitSwitch.enableLimitSwitch(false);
     m_Arm.setIdleMode(IdleMode.kBrake);
-    m_Arm.set(speed);
+    double curr = m_Arm.get();
+    double delta = speed - curr;
+    delta = Utils.clip(delta, -MAX_POWER_DELTA, MAX_POWER_DELTA);
+
+    m_Arm.set(curr + delta);
     limitSwitch.enableLimitSwitch(true);
   }
 
@@ -154,8 +168,10 @@ public class Arm extends Subsystem {
 
   @Override
   public void periodic() {
-    if (limitSwitch.get())
+    if (limitSwitch.get()) {
+      System.out.println("Zeroing arm");
       zeroArm();
+    }
     zeroWidget.setBoolean(hasReliableZero());
   }
 

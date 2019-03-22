@@ -29,7 +29,7 @@ public class XboxF310Wrapper2 implements DriveController {
   private int currentSpeed = SPEEDS.length - 1;
 
   private static final double MAX_ARM_SPEED = .8;
-  private static final double MAX_WRIST_SPEED = .5;
+  private static final double MAX_WRIST_SPEED = .25;
 
   @Override
   public double getMoveRequest() {
