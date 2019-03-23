@@ -184,7 +184,7 @@ public class Arm extends Subsystem {
   @Override
   public void periodic() {
     if (limitSwitch.get()) {
-      System.out.println("Zeroing arm");
+      // /System.out.println("Zeroing arm");
       zeroArm();
     }
     zeroWidget.setBoolean(hasReliableZero());

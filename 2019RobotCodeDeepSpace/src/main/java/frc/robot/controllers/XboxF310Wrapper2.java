@@ -30,7 +30,7 @@ public class XboxF310Wrapper2 implements DriveController {
 
   private static final double MAX_ARM_SPEED_UP = .4;
   private static final double MAX_ARM_SPEED_DOWN = .4;
-  private static final double MAX_WRIST_SPEED = .3;
+  private static final double MAX_WRIST_SPEED = .2;
 
   @Override
   public double getMoveRequest() {
@@ -80,7 +80,7 @@ public class XboxF310Wrapper2 implements DriveController {
     deadzone(wristspeed, DEADZONE);
     curve(wristspeed, WRIST_CURVE);
     map(wristspeed, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
-    return wristspeed;
+    return -1 * wristspeed;
   }
 
   @Override
