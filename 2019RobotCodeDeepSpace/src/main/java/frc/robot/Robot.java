@@ -148,8 +148,11 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     // testMax.periodic();
-    boolean kick = controlChooser.getSelected().getKick();
-    hatchPassive.setKick(kick);
-    SmartDashboard.putBoolean("kick", kick);
+    /*
+     * boolean kick = controlChooser.getSelected().getKick();
+     * hatchPassive.setKick(kick); SmartDashboard.putBoolean("kick", kick);
+     */
+    arm.value_display.update();
+    wrist.value_display.update();
   }
 }

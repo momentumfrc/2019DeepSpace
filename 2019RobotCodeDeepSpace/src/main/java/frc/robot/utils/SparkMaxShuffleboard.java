@@ -1,11 +1,15 @@
 package frc.robot.utils;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -18,8 +22,16 @@ public class SparkMaxShuffleboard {
 
   private NetworkTableEntry kP, kI, kD, iErrZone, kFF, kMinOutput, kMaxOutput, maxVel, minVel, maxAcc, allowedErr;
 
-  public SparkMaxShuffleboard(ShuffleboardTab tab, String name, CANPIDController pid, int slotid) {
+  private NetworkTableEntry setpoint, position, velocity, power, graph, burn;
+  private CANSparkMax max;
+  private CANPIDController pid;
+  private CANEncoder encoder;
+
+  public SparkMaxShuffleboard(ShuffleboardTab tab, String name, CANSparkMax max, int slotid) {
     this.slotid = slotid;
+    this.max = max;
+    this.pid = max.getPIDController();
+    this.encoder = max.getEncoder();
     pid.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, slotid);
     ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kList).withSize(WIDTH, HEIGHT);
     kP = layout.add("kP", pid.getP(slotid)).getEntry();
@@ -33,6 +45,17 @@ public class SparkMaxShuffleboard {
     minVel = layout.add("Minimum Velocity", pid.getSmartMotionMinOutputVelocity(slotid)).getEntry();
     maxAcc = layout.add("Maximum Acceleration", pid.getSmartMotionMaxAccel(slotid)).getEntry();
     allowedErr = layout.add("Allowed Closed Loop Error", pid.getSmartMotionAllowedClosedLoopError(slotid)).getEntry();
+
+    setpoint = layout.add("Setpoint", 0).getEntry();
+    position = layout.add("Position", encoder.getPosition()).getEntry();
+    velocity = layout.add("Velocity", encoder.getVelocity()).getEntry();
+    power = layout.add("Power", max.get()).getEntry();
+
+    graph = layout
+        .add("Graph", new double[] { setpoint.getDouble(0), encoder.getPosition(), encoder.getVelocity(), max.get() })
+        .withWidget(BuiltInWidgets.kGraph).getEntry();
+
+    burn = layout.add("Burn Values", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     kP.addListener(notice -> pid.setP(notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
@@ -59,6 +82,22 @@ public class SparkMaxShuffleboard {
     allowedErr.addListener(notice -> pid.setSmartMotionAllowedClosedLoopError(notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
+    setpoint.addListener(notice -> pid.setReference(notice.value.getDouble(), ControlType.kSmartMotion, slotid),
+        EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+    burn.addListener(notice -> {
+      max.burnFlash();
+      notice.getEntry().setBoolean(false);
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+  }
+
+  public void update() {
+    position.setDouble(encoder.getPosition());
+    velocity.setDouble(encoder.getVelocity());
+    power.setDouble(max.get());
+    graph.setDoubleArray(
+        new double[] { setpoint.getDouble(0), encoder.getPosition(), encoder.getVelocity(), max.get() });
   }
 
 }

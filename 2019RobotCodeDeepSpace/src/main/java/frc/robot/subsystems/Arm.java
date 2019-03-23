@@ -45,7 +45,7 @@ public class Arm extends Subsystem {
   private static final double kMinOutput = -1;
   private static final double allowedErr = 0;
 
-  SparkMaxShuffleboard value_display;
+  public final SparkMaxShuffleboard value_display;
 
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
@@ -61,7 +61,7 @@ public class Arm extends Subsystem {
     // addChild(pid_arm);
     e_arm.setPositionConversionFactor(GEAR_RATIO);
 
-    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Arm SparkMax", p_arm, smartMotionSlot);
+    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Arm SparkMax", m_Arm, smartMotionSlot);
     p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
     /*
      * p_arm.setP(kP, smartMotionSlot);
