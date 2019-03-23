@@ -13,7 +13,6 @@ import frc.robot.triggers.*;
 import frc.robot.commands.hatchactive.*;
 import frc.robot.commands.hatchpassive.*;
 import frc.robot.commands.ArmPositioning;
-import frc.robot.commands.FailsafeArmPositioning;
 import frc.robot.commands.cargointake.*;
 
 /**
@@ -59,8 +58,6 @@ public class OI {
 
   Trigger intake = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getIntakeCargo());
 
-  Trigger failsafeArm = new ShuffleboardTrigger(RobotMap.matchTab, "Arm PID Enabbled", 8, 1);
-
   public OI() {
     // overtemp.whenActive(new KillArm());
 
@@ -75,7 +72,5 @@ public class OI {
     intake.whenActive(new GrabCargo());
     intake.whenInactive(new HoldCargo());
 
-    failsafeArm.whenActive(new FailsafeArmPositioning());
-    failsafeArm.whenInactive(ArmPositioning.getInstance());
   }
 }
