@@ -45,7 +45,7 @@ public class Wrist extends Subsystem {
   private static final double kMinOutput = -1;
   private static final double allowedErr = 0;
 
-  SparkMaxShuffleboard value_display;
+  public final SparkMaxShuffleboard value_display;
 
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
@@ -59,7 +59,7 @@ public class Wrist extends Subsystem {
     // addChild(pid_wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
 
-    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax", p_Wrist, smartMotionSlot);
+    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax", m_Wrist, smartMotionSlot);
     p_Wrist.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
     /*
