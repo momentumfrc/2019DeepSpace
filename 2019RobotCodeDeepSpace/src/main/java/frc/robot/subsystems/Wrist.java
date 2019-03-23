@@ -147,7 +147,7 @@ public class Wrist extends Subsystem {
       System.out.format("Wrist at min rotation (%d)", wrist_pos);
       m_Wrist.set(0);
     } else {
-      setWristNoLimits(speed);
+      m_Wrist.set(speed);
     }
   }
 
