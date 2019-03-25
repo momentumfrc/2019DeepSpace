@@ -80,7 +80,7 @@ public class XboxF310Wrapper2 implements DriveController {
     deadzone(wristspeed, DEADZONE);
     curve(wristspeed, WRIST_CURVE);
     map(wristspeed, -1, 1, -MAX_WRIST_SPEED, MAX_WRIST_SPEED);
-    return -1 * wristspeed;
+    return wristspeed;
   }
 
   @Override
