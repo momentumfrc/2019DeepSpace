@@ -10,8 +10,10 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class SparkMaxShuffleboard {
 
@@ -27,8 +29,20 @@ public class SparkMaxShuffleboard {
   private CANPIDController pid;
   private CANEncoder encoder;
 
-  public SparkMaxShuffleboard(ShuffleboardTab tab, String name, CANSparkMax max, int slotid) {
-    this.slotid = slotid;
+  private PIDMode modechooser;
+
+  private class PIDMode extends SendableChooser<ControlType> {
+    public PIDMode() {
+      super();
+
+      setDefaultOption("Velocity Mode", ControlType.kVelocity);
+      addOption("SmartMotion Mode", ControlType.kSmartMotion);
+      addOption("Position Mode", ControlType.kPosition);
+    }
+  }
+
+  public SparkMaxShuffleboard(ShuffleboardTab tab, String name, CANSparkMax max, int slotId) {
+    this.slotid = slotId;
     this.max = max;
     this.pid = max.getPIDController();
     this.encoder = max.getEncoder();
@@ -45,6 +59,9 @@ public class SparkMaxShuffleboard {
     minVel = layout.add("Minimum Velocity", pid.getSmartMotionMinOutputVelocity(slotid)).getEntry();
     maxAcc = layout.add("Maximum Acceleration", pid.getSmartMotionMaxAccel(slotid)).getEntry();
     allowedErr = layout.add("Allowed Closed Loop Error", pid.getSmartMotionAllowedClosedLoopError(slotid)).getEntry();
+
+    modechooser = new PIDMode();
+    layout.add("Mode Chooser", modechooser);
 
     setpoint = layout.add("Setpoint", 0).getEntry();
     position = layout.add("Position", encoder.getPosition()).getEntry();
@@ -82,12 +99,15 @@ public class SparkMaxShuffleboard {
     allowedErr.addListener(notice -> pid.setSmartMotionAllowedClosedLoopError(notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
-    setpoint.addListener(notice -> pid.setReference(notice.value.getDouble(), ControlType.kSmartMotion, slotid),
+    setpoint.addListener(notice -> pid.setReference(notice.value.getDouble(), modechooser.getSelected(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
     burn.addListener(notice -> {
-      max.burnFlash();
-      notice.getEntry().setBoolean(false);
+      if (notice.value.getBoolean()) {
+        max.burnFlash();
+        System.out.println("Burned values");
+        notice.getEntry().setBoolean(false);
+      }
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
   }
