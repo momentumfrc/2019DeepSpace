@@ -14,7 +14,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
@@ -46,7 +45,7 @@ public class Robot extends TimedRobot {
   private SandstormChooser sandstormChooser = new SandstormChooser();
 
   private Command driveCommand = new DriveCommand();
-  private Command armCommand = ArmPositioning.getInstance();
+  private Command armCommand = new ArmPositioning();
 
   /**
    * This function is run when the robot is first started up and should be used

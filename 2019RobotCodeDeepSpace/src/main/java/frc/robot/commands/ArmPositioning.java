@@ -56,15 +56,6 @@ public class ArmPositioning extends Command {
 
   private final NetworkTableEntry presetModeWidget, presetNameWidget, presetValidWidget;
 
-  private static ArmPositioning instance;
-
-  public static ArmPositioning getInstance() {
-    if (instance == null) {
-      instance = new ArmPositioning();
-    }
-    return instance;
-  }
-
   /**
    * A Preset is a saved position of both the arm and the wrist.
    * 
@@ -176,7 +167,7 @@ public class ArmPositioning extends Command {
     }
   }
 
-  private ArmPositioning() {
+  public ArmPositioning() {
     requires(arm);
     requires(wrist);
 
@@ -260,10 +251,10 @@ public class ArmPositioning extends Command {
 
     // Finally, apply the actions selected by everything above.
     if (manualMode) {
-      if (!arm.hasReliableZero())
-        arm.setArmNoLimits(manualArmSpeed);
+      if (arm.hasReliableZero())
+        arm.setArmMotor(manualArmSpeed); // Use soft limited open-loop control
       else
-        arm.setArmMotor(manualArmSpeed);
+        arm.setArmNoLimits(manualArmSpeed); // Use unlimited open-loop control
       wrist.setWristNoLimits(manualWristSpeed);
 
       // Can only save presets from manual mode while not moving anything
@@ -295,8 +286,6 @@ public class ArmPositioning extends Command {
 
   @Override
   protected void end() {
-    // arm.coast();
-    // wrist.coast();
     arm.brake();
     wrist.brake();
   }

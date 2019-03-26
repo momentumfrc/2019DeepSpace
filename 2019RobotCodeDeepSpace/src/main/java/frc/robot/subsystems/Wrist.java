@@ -8,9 +8,6 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-//import org.usfirst.frc.team4999.pid.SendableCANPIDController;
-//import frc.robot.utils.PIDFactory;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -24,7 +21,6 @@ public class Wrist extends Subsystem {
   private CANPIDController p_Wrist = m_Wrist.getPIDController();
   private CANDigitalInput limitSwitch = m_Wrist
       .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
-  // public final SendableCANPIDController pid_wrist = PIDFactory.getWristPID();
 
   private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false;
@@ -56,7 +52,6 @@ public class Wrist extends Subsystem {
   public Wrist() {
     super("Wrist");
     addChild(m_Wrist);
-    // addChild(pid_wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
 
     value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax", m_Wrist, smartMotionSlot);
@@ -94,16 +89,15 @@ public class Wrist extends Subsystem {
      * EntryListenerFlags.kUpdate);
      */
 
-    coast();
+    coast(); // coast at startup to allow pre-match positioning by hand
   }
 
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
     System.out.format("Setting wrist: %.2f\n", speed);
-    limitSwitch.enableLimitSwitch(false);
+    limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
     m_Wrist.set(speed);
-    limitSwitch.enableLimitSwitch(true);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
@@ -130,7 +124,7 @@ public class Wrist extends Subsystem {
   public void setSmartPosition(double posRequest) {
     m_Wrist.setIdleMode(IdleMode.kBrake);
     p_Wrist.setReference(posRequest, ControlType.kSmartMotion, smartMotionSlot);
-    limitSwitch.enableLimitSwitch(false);
+    limitSwitch.enableLimitSwitch(false); // must disable due to bad interaction with SmartMotion
   }
 
   public void setWristMotor(double speed) {
@@ -172,9 +166,6 @@ public class Wrist extends Subsystem {
 
   @Override
   public void periodic() {
-    /*
-     * if (limitSwitch.get()) System.out.println("Limit switch got");
-     */
     if (limitSwitch.get())
       zeroWrist();
     zeroWidget.setBoolean(hasReliableZero());
