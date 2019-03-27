@@ -51,9 +51,9 @@ public class XboxF310Wrapper implements DriveController {
   @Override
   public double getSpeedLimiter() {
     if (xbox.getYButtonPressed() && currentSpeed < SPEEDS.length - 1)
-      currentSpeed++;
+      ++currentSpeed;
     else if (xbox.getXButtonPressed() && currentSpeed > 0)
-      currentSpeed--;
+      --currentSpeed;
     return SPEEDS[currentSpeed];
   }
 
@@ -69,10 +69,7 @@ public class XboxF310Wrapper implements DriveController {
     double armspeed = arm_up - arm_down;
     armspeed = deadzone(armspeed, DEADZONE);
     armspeed = curve(armspeed, ARM_CURVE);
-    if (armspeed < 0)
-      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_UP, MAX_ARM_SPEED_UP);
-    else
-      armspeed = map(armspeed, -1, 1, -MAX_ARM_SPEED_DOWN, MAX_ARM_SPEED_DOWN);
+    armspeed = armspeed * (armspeed > 0 ? MAX_ARM_SPEED_UP : MAX_ARM_SPEED_DOWN);
     return armspeed;
   }
 

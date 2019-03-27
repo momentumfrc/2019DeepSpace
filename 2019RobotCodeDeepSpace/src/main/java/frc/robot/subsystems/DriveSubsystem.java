@@ -48,8 +48,6 @@ public class DriveSubsystem extends Subsystem {
     movePID = MoPID.makePIDFromPrefs("MoveRatePID");
     turnPID = MoPID.makePIDFromPrefs("TurnRatePID");
 
-    // SmartDashboard.putData(movePID);
-    // SmartDashboard.putData(turnPID);
     pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withPosition(8, 0)
         .withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
     pidWidget.addListener(notice -> {

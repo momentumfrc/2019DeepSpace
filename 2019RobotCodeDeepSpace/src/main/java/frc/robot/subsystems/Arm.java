@@ -32,22 +32,22 @@ public class Arm extends Subsystem {
   // PID coefficients
   // These are based on the underlying PID engine and are not affected by the
   // GEAR_RATIO
-  private static final double kP = 5e-5;
-  private static final double kI = 1e-6;
-  private static final double kD = 0;
-  private static final double kIz = 0;
-  private static final double kFF = 0.000156;
-  private static final double kMaxOutput = 1;
-  private static final double kMinOutput = -1;
-  private static final double allowedErr = 0;
+  // private static final double kP = 5e-5;
+  // private static final double kI = 1e-6;
+  // private static final double kD = 0;
+  // private static final double kIz = 0;
+  // private static final double kFF = 0.000156;
+  // private static final double kMaxOutput = 1;
+  // private static final double kMinOutput = -1;
+  // private static final double allowedErr = 0;
 
   public final SparkMaxShuffleboard value_display;
 
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
-  private static final double minVel = 0;
-  private static final double maxVel = 100.0 / GEAR_RATIO;
-  private static final double maxAcc = 1500.0 / GEAR_RATIO;
+  // private static final double minVel = 0;
+  // private static final double maxVel = 100.0 / GEAR_RATIO;
+  // private static final double maxAcc = 1500.0 / GEAR_RATIO;
 
   private static final double MAX_POWER_DELTA = 0.03;
 
