@@ -26,7 +26,7 @@ public interface DriveController {
   /**
    * Gets if the robot should reverse direction
    * 
-   * @return Wether or not the robot should reverse front and back
+   * @return Whether or not the robot should reverse front and back
    */
   abstract public boolean getReverseDirectionPressed();
 
