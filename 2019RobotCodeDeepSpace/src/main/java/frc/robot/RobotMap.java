@@ -64,10 +64,10 @@ public class RobotMap {
   public static final int RF_DRIVE_MOTOR_PDP = 15;
   public static final int RB_DRIVE_MOTOR_PDP = 14;
 
-  public static final int ARM_PDP = 13;
-  public static final int WRIST_PDP = 14;
-  public static final int INTAKE_UPPER_PDP = 2;
-  public static final int INTAKE_LOWER_PDP = 3;
+  public static final int ARM_PDP = 3;
+  public static final int WRIST_PDP = 2;
+  public static final int INTAKE_UPPER_PDP = 4;
+  public static final int INTAKE_LOWER_PDP = 5;
 
   // SHUFFLEBOARD //
   public static final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
