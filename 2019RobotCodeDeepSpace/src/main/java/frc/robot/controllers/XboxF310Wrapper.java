@@ -119,7 +119,7 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public boolean getSavePreset() {
-    return xbox.getBackButton();
+    return xbox.getBackButton() && xbox.getStartButton();
   }
 
   @Override
