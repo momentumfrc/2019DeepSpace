@@ -32,6 +32,9 @@ public class XboxF310Wrapper implements DriveController {
   private static final double MAX_ARM_SPEED_DOWN = .4;
   private static final double MAX_WRIST_SPEED = .2;
 
+  private boolean lastPresetUpPressed = false;
+  private boolean lastPresetDownPressed = false;
+
   @Override
   public double getMoveRequest() {
     double moveRequest = xbox.getY(XboxController.Hand.kLeft);
@@ -109,12 +112,18 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public boolean getPresetIncreasedPressed() {
-    return xbox.getPOV() == 0;
+    boolean isUp = xbox.getPOV() == 0;
+    boolean justPressed = isUp && !lastPresetUpPressed;
+    lastPresetUpPressed = isUp;
+    return justPressed;
   }
 
   @Override
   public boolean getPresetDecreasedPressed() {
-    return xbox.getPOV() == 180;
+    boolean isDown = xbox.getPOV() == 180;
+    boolean justPressed = isDown && !lastPresetDownPressed;
+    lastPresetDownPressed = isDown;
+    return justPressed;
   }
 
   @Override
