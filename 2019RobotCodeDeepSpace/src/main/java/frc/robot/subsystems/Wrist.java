@@ -94,6 +94,7 @@ public class Wrist extends Subsystem {
 
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
+    speed = -speed; // Invert speed to make positive down
     System.out.format("Setting wrist: %.2f\n", speed);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
