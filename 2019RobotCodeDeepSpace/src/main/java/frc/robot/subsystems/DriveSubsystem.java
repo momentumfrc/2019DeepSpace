@@ -28,7 +28,7 @@ public class DriveSubsystem extends Subsystem {
   private Encoder leftEnc = RobotMap.leftDriveEncoder;
   private Encoder rightEnc = RobotMap.rightDriveEncoder;
 
-  private DifferentialDrive drive = new DifferentialDrive(leftside, rightside);
+  private DifferentialDrive drive;
 
   private final MoPID movePID, turnPID;
   private final NetworkTableEntry pidWidget;
@@ -36,6 +36,9 @@ public class DriveSubsystem extends Subsystem {
 
   public DriveSubsystem() {
     super("Drive Subsytem");
+    leftside.setInverted(true); // Invert both sides to make robot go forward
+    rightside.setInverted(true);
+    drive = new DifferentialDrive(leftside, rightside);
     drive.setDeadband(0);
     addChild("Left Side", leftside);
     addChild("Right Side", rightside);
