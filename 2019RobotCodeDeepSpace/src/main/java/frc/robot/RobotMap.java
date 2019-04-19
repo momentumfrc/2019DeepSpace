@@ -44,7 +44,7 @@ public class RobotMap {
 
   // WRIST//
   public static final CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
-  public static final boolean wristInverted = false;
+  public static final boolean wristInverted = true;
 
   // CARGO INTAKE//
   public static final SpeedController intakeMotorTop = new VictorSP(4);

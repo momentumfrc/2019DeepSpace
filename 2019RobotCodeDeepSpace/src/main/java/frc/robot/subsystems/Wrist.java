@@ -19,8 +19,7 @@ public class Wrist extends Subsystem {
   private CANSparkMax m_Wrist = RobotMap.wristMotor;
   private CANEncoder e_Wrist = m_Wrist.getEncoder();
   private CANPIDController p_Wrist = m_Wrist.getPIDController();
-  private CANDigitalInput limitSwitch = m_Wrist
-      .getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+  private CANDigitalInput limitSwitch;
 
   private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false;
@@ -79,8 +78,9 @@ public class Wrist extends Subsystem {
      * p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
      */
 
+    limitSwitch = m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+    m_Wrist.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     limitSwitch.enableLimitSwitch(true);
-    m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Wrist.setInverted(RobotMap.wristInverted);
     zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).withPosition(0, 1).getEntry();
     /*
@@ -94,7 +94,7 @@ public class Wrist extends Subsystem {
 
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
-    speed = -speed; // Invert speed to make positive down
+    // speed = -speed; // Invert speed to make positive down
     System.out.format("Setting wrist: %.2f\n", speed);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
