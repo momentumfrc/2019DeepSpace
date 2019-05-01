@@ -94,8 +94,7 @@ public class Wrist extends Subsystem {
 
   /// Allows the wrist to be controlled with raw input
   public void setWristNoLimits(double speed) {
-    // speed = -speed; // Invert speed to make positive down
-    System.out.format("Setting wrist: %.2f\n", speed);
+    // System.out.format("Setting wrist: %.4f\n", speed);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
     m_Wrist.set(speed);
@@ -126,6 +125,7 @@ public class Wrist extends Subsystem {
     m_Wrist.setIdleMode(IdleMode.kBrake);
     p_Wrist.setReference(posRequest, ControlType.kSmartMotion, smartMotionSlot);
     limitSwitch.enableLimitSwitch(false); // must disable due to bad interaction with SmartMotion
+    // System.out.format("Wrist reference: %.4f\n", posRequest);
   }
 
   public void setWristMotor(double speed) {

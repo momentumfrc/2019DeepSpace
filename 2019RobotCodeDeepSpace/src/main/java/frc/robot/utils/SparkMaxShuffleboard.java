@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class SparkMaxShuffleboard {
 
-  private static final int WIDTH = 1;
+  private static final int WIDTH = 2;
   private static final int HEIGHT = 13;
 
   private int slotid = 0;

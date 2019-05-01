@@ -139,6 +139,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    arm.value_display.update();
+    wrist.value_display.update();
   }
 
   /**
