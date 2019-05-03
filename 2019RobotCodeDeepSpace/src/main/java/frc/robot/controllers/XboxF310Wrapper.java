@@ -37,7 +37,7 @@ public class XboxF310Wrapper implements DriveController {
 
   @Override
   public double getMoveRequest() {
-    double moveRequest = xbox.getY(XboxController.Hand.kLeft);
+    double moveRequest = -xbox.getY(XboxController.Hand.kLeft);
     moveRequest = deadzone(moveRequest, DEADZONE);
     moveRequest = curve(moveRequest, MOVE_CURVE);
     return moveRequest;

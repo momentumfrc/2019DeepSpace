@@ -36,8 +36,6 @@ public class DriveSubsystem extends Subsystem {
 
   public DriveSubsystem() {
     super("Drive Subsytem");
-    leftside.setInverted(true); // Invert both sides to make robot go forward
-    rightside.setInverted(true);
     drive = new DifferentialDrive(leftside, rightside);
     drive.setDeadband(0);
     addChild("Left Side", leftside);
