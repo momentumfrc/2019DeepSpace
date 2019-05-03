@@ -98,6 +98,7 @@ public class Wrist extends Subsystem {
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
     m_Wrist.set(speed);
+    // p_Wrist.setReference(speed, ControlType.kVelocity, smartMotionSlot);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
