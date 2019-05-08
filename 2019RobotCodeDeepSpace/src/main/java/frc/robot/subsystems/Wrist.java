@@ -31,52 +31,41 @@ public class Wrist extends Subsystem {
   // PID coefficients
   // These are based on the underlying PID engine and are not affected by the
   // GEAR_RATIO
-  // private static final double kP = 5e-5;
-  // private static final double kI = 1e-6;
-  // private static final double kD = 0;
-  // private static final double kIz = 0;
-  // private static final double kFF = 0.000156;
-  // private static final double kMaxOutput = 1;
-  // private static final double kMinOutput = -1;
-  // private static final double allowedErr = 0;
+  private static final double kP = 5e-5;
+  private static final double kI = 1e-6;
+  private static final double kD = 0;
+  private static final double kIz = 0;
+  private static final double kFF = 0.000156;
+  private static final double kMaxOutput = 0.3; // 1;
+  private static final double kMinOutput = -0.3; // -1;
+  private static final double allowedErr = 0;
 
-  public final SparkMaxShuffleboard value_display;
+  // public final SparkMaxShuffleboard value_display;
 
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
-  // private static final double minVel = 0;
-  // private static final double maxVel = 100.0 / GEAR_RATIO;
-  // private static final double maxAcc = 1500.0 / GEAR_RATIO;
+  private static final double minVel = 0;
+  private static final double maxVel = 20.0 / GEAR_RATIO;
+  private static final double maxAcc = 200.0 / GEAR_RATIO;
 
   public Wrist() {
     super("Wrist");
     addChild(m_Wrist);
     e_Wrist.setPositionConversionFactor(GEAR_RATIO);
 
-    value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax", m_Wrist, smartMotionSlot);
+    // value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Wrist SparkMax",
+    // m_Wrist, smartMotionSlot);
     p_Wrist.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
-    /*
-     * p_Wrist.setP(kP, smartMotionSlot);
-     * 
-     * p_Wrist.setI(kI, smartMotionSlot);
-     * 
-     * p_Wrist.setD(kD, smartMotionSlot);
-     * 
-     * p_Wrist.setIZone(kIz, smartMotionSlot);
-     * 
-     * p_Wrist.setFF(kFF, smartMotionSlot);
-     * 
-     * p_Wrist.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
-     * 
-     * p_Wrist.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-     * 
-     * p_Wrist.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-     * 
-     * p_Wrist.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-     * 
-     * p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-     */
+    p_Wrist.setI(kI, smartMotionSlot);
+    p_Wrist.setD(kD, smartMotionSlot);
+    p_Wrist.setIZone(kIz, smartMotionSlot);
+    p_Wrist.setFF(kFF, smartMotionSlot);
+    p_Wrist.setOutputRange(kMinOutput, kMaxOutput, smartMotionSlot);
+    p_Wrist.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    p_Wrist.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    p_Wrist.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
     limitSwitch = m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
     m_Wrist.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);

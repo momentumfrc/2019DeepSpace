@@ -154,6 +154,6 @@ public class Robot extends TimedRobot {
      * hatchPassive.setKick(kick); SmartDashboard.putBoolean("kick", kick);
      */
     arm.value_display.update();
-    wrist.value_display.update();
+    // wrist.value_display.update();
   }
 }
