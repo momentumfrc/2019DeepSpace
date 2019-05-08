@@ -21,7 +21,7 @@ public class Wrist extends Subsystem {
   private CANPIDController p_Wrist = m_Wrist.getPIDController();
   private CANDigitalInput limitSwitch;
 
-  private final NetworkTableEntry zeroWidget;
+  private final NetworkTableEntry zeroWidget, positionWidget;
   private boolean reliableZero = false;
 
   private static final double GEAR_RATIO = (1.0 / 16.0) * (16.0 / 32.0); // 1:16 CIM Sport into 16:32 Sprockets
@@ -72,6 +72,7 @@ public class Wrist extends Subsystem {
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setInverted(RobotMap.wristInverted);
     zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).withPosition(0, 1).getEntry();
+    positionWidget = RobotMap.matchTab.add("Wrist Position", 0.0).withPosition(0, 2).getEntry();
     /*
      * zeroWidget.addListener(notice -> { if (!notice.value.getBoolean()) {
      * reliableZero = false; } }, EntryListenerFlags.kNew |
@@ -86,8 +87,8 @@ public class Wrist extends Subsystem {
     // System.out.format("Setting wrist: %.4f\n", speed);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
-    m_Wrist.set(speed);
-    // p_Wrist.setReference(speed, ControlType.kVelocity, smartMotionSlot);
+    // m_Wrist.set(speed);
+    p_Wrist.setReference(1000 * speed, ControlType.kVelocity, smartMotionSlot);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
@@ -160,6 +161,7 @@ public class Wrist extends Subsystem {
     if (limitSwitch.get())
       zeroWrist();
     zeroWidget.setBoolean(hasReliableZero());
+    positionWidget.setDouble(getWristPos());
   }
 
 }
