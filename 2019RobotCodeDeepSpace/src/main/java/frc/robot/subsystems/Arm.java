@@ -58,7 +58,6 @@ public class Arm extends Subsystem {
 
     // value_display = new SparkMaxShuffleboard(RobotMap.testTab, "Arm SparkMax",
     // m_Arm, smartMotionSlot);
-    p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
     p_arm.setP(kP, smartMotionSlot);
     p_arm.setI(kI, smartMotionSlot);
     p_arm.setD(kD, smartMotionSlot);

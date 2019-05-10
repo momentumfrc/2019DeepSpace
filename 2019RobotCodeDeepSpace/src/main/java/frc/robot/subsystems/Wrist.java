@@ -25,7 +25,6 @@ public class Wrist extends Subsystem {
   private boolean reliableZero = false;
 
   private static final double GEAR_RATIO = (1.0 / 16.0) * (16.0 / 32.0); // 1:16 CIM Sport into 16:32 Sprockets
-  private static final double SOFT_LIMIT_MAX = 0.52;
 
   private static final int smartMotionSlot = 0;
 
@@ -58,6 +57,7 @@ public class Wrist extends Subsystem {
     // m_Wrist, smartMotionSlot);
     p_Wrist.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
+    p_Wrist.setP(kP, smartMotionSlot);
     p_Wrist.setI(kI, smartMotionSlot);
     p_Wrist.setD(kD, smartMotionSlot);
     p_Wrist.setIZone(kIz, smartMotionSlot);
