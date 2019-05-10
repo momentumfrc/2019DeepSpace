@@ -25,6 +25,7 @@ public class Wrist extends Subsystem {
   private boolean reliableZero = false;
 
   private static final double GEAR_RATIO = (1.0 / 16.0) * (16.0 / 32.0); // 1:16 CIM Sport into 16:32 Sprockets
+  private static final double SOFT_LIMIT_MAX = 0.52;
 
   private static final int smartMotionSlot = 0;
 
@@ -83,12 +84,11 @@ public class Wrist extends Subsystem {
   }
 
   /// Allows the wrist to be controlled with raw input
-  public void setWristNoLimits(double speed) {
+  private void setWristNoLimits(double speed) {
     // System.out.format("Setting wrist: %.4f\n", speed);
     limitSwitch.enableLimitSwitch(true);
     m_Wrist.setIdleMode(IdleMode.kBrake);
-    // m_Wrist.set(speed);
-    p_Wrist.setReference(1000 * speed, ControlType.kVelocity, smartMotionSlot);
+    p_Wrist.setReference(250 * speed, ControlType.kVelocity, smartMotionSlot);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
@@ -119,23 +119,17 @@ public class Wrist extends Subsystem {
     // System.out.format("Wrist reference: %.4f\n", posRequest);
   }
 
-  public void setWristMotor(double speed) {
+  public void setWristSpeed(double speed) {
     double wrist_pos = getWristPos();
-    m_Wrist.setIdleMode(IdleMode.kBrake);
     if (Double.isInfinite(wrist_pos) || Double.isNaN(wrist_pos)) {
       System.out.println("Invalid wrist_pos");
-      setWristNoLimits(speed);
-      return;
+    } else if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
+      // System.out.format("Wrist at max rotation: %f\n", wrist_pos);
+      speed = 0;
     }
-    if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
-      System.out.format("Wrist at max rotation (%d)", wrist_pos);
-      m_Wrist.set(0);
-    } else if (speed < 0 && wrist_pos <= MoPrefs.getMinWristRotation()) {
-      System.out.format("Wrist at min rotation (%d)", wrist_pos);
-      m_Wrist.set(0);
-    } else {
-      m_Wrist.set(speed);
-    }
+    // Note: No limit on the MIN side because there is a hard limit switch
+
+    setWristNoLimits(speed);
   }
 
   public void stopWrist() {

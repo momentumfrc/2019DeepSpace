@@ -255,7 +255,7 @@ public class ArmPositioning extends Command {
         arm.setArmMotor(manualArmSpeed); // Use soft limited open-loop control
       else
         arm.setArmNoLimits(manualArmSpeed); // Use unlimited open-loop control
-      wrist.setWristNoLimits(manualWristSpeed);
+      wrist.setWristSpeed(manualWristSpeed);
 
       // Can only save presets from manual mode while not moving anything
       if (savePreset && !manualOverride) {
