@@ -71,5 +71,5 @@ public class RobotMap {
 
   // SHUFFLEBOARD //
   public static final ShuffleboardTab matchTab = Shuffleboard.getTab("Match");
-  public static final ShuffleboardTab testTab = Shuffleboard.getTab("Testing");
+  public static final ShuffleboardTab testTab = Shuffleboard.getTab("Test Tune");
 }

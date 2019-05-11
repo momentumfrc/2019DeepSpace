@@ -54,8 +54,8 @@ public class SparkMaxShuffleboard {
     iErrZone = layout.add("Integral Error Zone", pid.getIZone(slotid)).getEntry();
     kMinOutput = layout.add("Minimum Output", pid.getOutputMin(slotid)).getEntry();
     kMaxOutput = layout.add("Maximum Output", pid.getOutputMax(slotid)).getEntry();
-    maxVel = layout.add("Maximum Velocity", pid.getSmartMotionMaxVelocity(slotid)).getEntry();
     minVel = layout.add("Minimum Velocity", pid.getSmartMotionMinOutputVelocity(slotid)).getEntry();
+    maxVel = layout.add("Maximum Velocity", pid.getSmartMotionMaxVelocity(slotid)).getEntry();
     maxAcc = layout.add("Maximum Acceleration", pid.getSmartMotionMaxAccel(slotid)).getEntry();
     allowedErr = layout.add("Allowed Closed Loop Error", pid.getSmartMotionAllowedClosedLoopError(slotid)).getEntry();
 
@@ -89,9 +89,9 @@ public class SparkMaxShuffleboard {
     kMaxOutput.addListener(
         notice -> pid.setOutputRange(kMinOutput.getDouble(pid.getOutputMin()), notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-    maxVel.addListener(notice -> pid.setSmartMotionMaxVelocity(notice.value.getDouble(), slotid),
-        EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     minVel.addListener(notice -> pid.setSmartMotionMinOutputVelocity(notice.value.getDouble(), slotid),
+        EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+    maxVel.addListener(notice -> pid.setSmartMotionMaxVelocity(notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     maxAcc.addListener(notice -> pid.setSmartMotionMaxAccel(notice.value.getDouble(), slotid),
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
@@ -111,12 +111,22 @@ public class SparkMaxShuffleboard {
 
   }
 
+  private boolean doubleIsValid(double d) {
+    return !(Double.isInfinite(d) || Double.isNaN(d));
+  }
+
   public void update() {
-    position.setDouble(encoder.getPosition());
-    velocity.setDouble(encoder.getVelocity());
-    power.setDouble(max.get());
-    graph.setDoubleArray(
-        new double[] { setpoint.getDouble(0), encoder.getPosition(), encoder.getVelocity(), max.get() });
+    double pow = max.get();
+    double vel = encoder.getVelocity();
+    double pos = encoder.getPosition();
+    double ref = setpoint.getDouble(0);
+
+    if (doubleIsValid(pow) && doubleIsValid(vel) && doubleIsValid(pos) && doubleIsValid(ref)) {
+      position.setDouble(pos);
+      velocity.setDouble(vel);
+      power.setDouble(pow);
+      graph.setDoubleArray(new double[] { ref, pos, vel, pow });
+    }
   }
 
 }

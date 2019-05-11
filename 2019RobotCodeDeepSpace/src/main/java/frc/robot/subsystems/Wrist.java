@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPrefs;
-import frc.robot.utils.SparkMaxShuffleboard;
+//import frc.robot.utils.SparkMaxShuffleboard;
 
 public class Wrist extends Subsystem {
 
