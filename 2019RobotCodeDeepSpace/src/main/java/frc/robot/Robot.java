@@ -22,6 +22,7 @@ import frc.robot.subsystems.HatchFlipper;
 import frc.robot.subsystems.HatchPassive;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
+import frc.robot.utils.MoPrefs;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -53,6 +54,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    MoPrefs.safeForPrefs();
+
     controlChooser = new ControlChooser();
     driveSystem = new DriveSubsystem();
     arm = new Arm();
