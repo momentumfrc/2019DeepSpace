@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class MoPrefs {
 
-  private static Preferences prefs = Preferences.getInstance();
-
   // Number of Encoder ticks in 1 foot of Travel:
   // Encoder dip switch settings (0 1 1 1)
   // = 100 ticks/revolution = pi * 6" = 18.85" = 1.57'
@@ -19,7 +17,20 @@ public class MoPrefs {
 
   public static final double MAX_MOTOR_TEMP = 10;
 
+  private static boolean safePrefs = false;
+
+  public static void safeForPrefs() {
+    safePrefs = true;
+  }
+
+  private static Preferences getPrefs() {
+    if (safePrefs)
+      return Preferences.getInstance();
+    throw new RuntimeException("Do not call preferences before RobotInit()");
+  }
+
   public static double getDouble(String key, double def) {
+    Preferences prefs = getPrefs();
     if (!prefs.containsKey(key)) {
       prefs.putDouble(key, def);
     }
@@ -27,6 +38,7 @@ public class MoPrefs {
   }
 
   public static void setDouble(String key, double value) {
+    Preferences prefs = getPrefs();
     prefs.putDouble(key, value);
   }
 

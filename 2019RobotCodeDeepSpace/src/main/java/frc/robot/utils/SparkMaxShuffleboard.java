@@ -111,17 +111,13 @@ public class SparkMaxShuffleboard {
 
   }
 
-  private boolean doubleIsValid(double d) {
-    return !(Double.isInfinite(d) || Double.isNaN(d));
-  }
-
   public void update() {
     double pow = max.get();
     double vel = encoder.getVelocity();
     double pos = encoder.getPosition();
     double ref = setpoint.getDouble(0);
 
-    if (doubleIsValid(pow) && doubleIsValid(vel) && doubleIsValid(pos) && doubleIsValid(ref)) {
+    if (Double.isFinite(pow) && Double.isFinite(vel) && Double.isFinite(pos) && Double.isFinite(ref)) {
       position.setDouble(pos);
       velocity.setDouble(vel);
       power.setDouble(pow);

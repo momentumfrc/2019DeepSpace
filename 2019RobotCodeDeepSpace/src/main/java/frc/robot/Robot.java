@@ -32,20 +32,20 @@ import frc.robot.subsystems.Arm;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ControlChooser controlChooser = new ControlChooser();
-  public static DriveSubsystem driveSystem = new DriveSubsystem();
-  public static Arm arm = new Arm();
-  public static Wrist wrist = new Wrist();
-  public static CargoIntake cargoIntake = new CargoIntake();
-  public static HatchFlipper hatchActive = new HatchFlipper();
-  public static HatchPassive hatchPassive = new HatchPassive();
-  // public static TestMax testMax = new TestMax();
+  public static ControlChooser controlChooser;
+  public static DriveSubsystem driveSystem;
+  public static Arm arm;
+  public static Wrist wrist;
+  public static CargoIntake cargoIntake;
+  public static HatchFlipper hatchActive;
+  public static HatchPassive hatchPassive;
+  // public static TestMax testMax;
   public static OI m_oi;
 
-  private SandstormChooser sandstormChooser = new SandstormChooser();
+  private SandstormChooser sandstormChooser;
 
-  private Command driveCommand = new DriveCommand();
-  private Command armCommand = new ArmPositioning();
+  private Command driveCommand;
+  private Command armCommand;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -53,7 +53,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    controlChooser = new ControlChooser();
+    driveSystem = new DriveSubsystem();
+    arm = new Arm();
+    wrist = new Wrist();
+    cargoIntake = new CargoIntake();
+    hatchActive = new HatchFlipper();
+    hatchPassive = new HatchPassive();
     m_oi = new OI();
+    sandstormChooser = new SandstormChooser();
+    driveCommand = new DriveCommand();
+    armCommand = new ArmPositioning();
 
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);
@@ -61,6 +71,7 @@ public class Robot extends TimedRobot {
     RobotMap.matchTab.add("Drive Camera", lifecam).withPosition(3, 0).withSize(3, 3)
         .withProperties(Map.of("Show controls", false));
 
+    // testMax = new TestMax();
     // testMax.init();
   }
 

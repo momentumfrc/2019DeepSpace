@@ -121,7 +121,7 @@ public class Wrist extends Subsystem {
 
   public void setWristSpeed(double speed) {
     double wrist_pos = getWristPos();
-    if (Double.isInfinite(wrist_pos) || Double.isNaN(wrist_pos)) {
+    if (!Double.isFinite(wrist_pos)) {
       System.out.println("Invalid wrist_pos");
     } else if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
       // System.out.format("Wrist at max rotation: %f\n", wrist_pos);

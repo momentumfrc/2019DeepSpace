@@ -125,7 +125,7 @@ public class Arm extends Subsystem {
   public void setArmMotor(double speed) {
     m_Arm.setIdleMode(IdleMode.kBrake);
     double arm_pos = getArmPos();
-    if (Double.isInfinite(arm_pos) || Double.isNaN(arm_pos)) {
+    if (!Double.isFinite(arm_pos)) {
       System.out.println("Invalid arm_pos");
       setArmNoLimits(speed);
       return;
