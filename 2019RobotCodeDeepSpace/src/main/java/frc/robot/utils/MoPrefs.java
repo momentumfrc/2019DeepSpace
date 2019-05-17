@@ -36,7 +36,7 @@ public class MoPrefs {
       System.out.format("Prefs default key=%s value=%f\n", key, def);
     }
     double value = prefs.getDouble(key, def);
-    System.out.format("Prefs get key=%s value=%f\n", key, value);
+    // System.out.format("Prefs get key=%s value=%f\n", key, value);
     return value;
   }
 
