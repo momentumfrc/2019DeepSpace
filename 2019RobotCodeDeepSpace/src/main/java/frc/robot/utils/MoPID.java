@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class MoPID {
-  private static final int WIDTH = 2;
-  private static final int HEIGHT = 5;
+  private static final int WIDTH = 3;
+  private static final int HEIGHT = 2;
 
   private NetworkTableEntry wkP, wkI, wkD, wiErrZone, wkFF;
 
@@ -22,6 +22,8 @@ public class MoPID {
   private double lastTime;
 
   public MoPID(ShuffleboardTab tab, String name, double kP, double kI, double kD, double kF, double iErrZone) {
+    System.out.format("Constructing MoPID name=%s kP=%f kI=%f kD=%f kF=%f iErrZone=%f\n", name, kP, kI, kD, kF,
+        iErrZone);
     this.name = name;
     this.iErrZone = iErrZone;
     this.kP = kP;
@@ -29,12 +31,12 @@ public class MoPID {
     this.kD = kD;
     this.kF = kF;
 
-    ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kList).withSize(WIDTH, HEIGHT);
-    wkP = layout.add("kP", kP).getEntry();
-    wkI = layout.add("kI", kI).getEntry();
-    wkD = layout.add("kD", kD).getEntry();
-    wkFF = layout.add("kF", kF).getEntry();
-    wiErrZone = layout.add("Integral Error Zone", iErrZone).getEntry();
+    ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kGrid).withSize(WIDTH, HEIGHT);
+    wkP = layout.add("kP", kP).withPosition(0, 0).getEntry();
+    wkI = layout.add("kI", kI).withPosition(1, 0).getEntry();
+    wkD = layout.add("kD", kD).withPosition(2, 0).getEntry();
+    wkFF = layout.add("kF", kF).withPosition(0, 1).getEntry();
+    wiErrZone = layout.add("Integral Error Zone", iErrZone).withPosition(1, 1).getEntry();
 
     wkP.addListener(notice -> setP(notice.value.getDouble()), EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     wkI.addListener(notice -> setI(notice.value.getDouble()), EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);

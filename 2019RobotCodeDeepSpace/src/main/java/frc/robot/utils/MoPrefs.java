@@ -33,13 +33,17 @@ public class MoPrefs {
     Preferences prefs = getPrefs();
     if (!prefs.containsKey(key)) {
       prefs.putDouble(key, def);
+      System.out.format("Prefs default key=%s value=%f\n", key, def);
     }
-    return prefs.getDouble(key, def);
+    double value = prefs.getDouble(key, def);
+    System.out.format("Prefs get key=%s value=%f\n", key, value);
+    return value;
   }
 
   public static void setDouble(String key, double value) {
     Preferences prefs = getPrefs();
     prefs.putDouble(key, value);
+    System.out.format("set pref: %s=%f\n", key, value);
   }
 
   public static double getDriveEncTicksPerFoot() {
