@@ -21,7 +21,8 @@ public class MoPID {
   private double lastErr;
   private double lastTime;
 
-  public MoPID(ShuffleboardTab tab, String name, double kP, double kI, double kD, double kF, double iErrZone) {
+  public MoPID(ShuffleboardTab tab, String name, int col, int row, double kP, double kI, double kD, double kF,
+      double iErrZone) {
     System.out.format("Constructing MoPID name=%s kP=%f kI=%f kD=%f kF=%f iErrZone=%f\n", name, kP, kI, kD, kF,
         iErrZone);
     this.name = name;
@@ -31,7 +32,8 @@ public class MoPID {
     this.kD = kD;
     this.kF = kF;
 
-    ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kGrid).withSize(WIDTH, HEIGHT);
+    ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kGrid).withPosition(col, row).withSize(WIDTH,
+        HEIGHT);
     wkP = layout.add("kP", kP).withPosition(0, 0).getEntry();
     wkI = layout.add("kI", kI).withPosition(1, 0).getEntry();
     wkD = layout.add("kD", kD).withPosition(2, 0).getEntry();
@@ -126,13 +128,13 @@ public class MoPID {
     return name;
   }
 
-  public static MoPID makePIDFromPrefs(ShuffleboardTab tab, String name) {
+  public static MoPID makePIDFromPrefs(ShuffleboardTab tab, String name, int col, int row) {
     double p = MoPrefs.getDouble(name + "_p", 0);
     double i = MoPrefs.getDouble(name + "_i", 0);
     double d = MoPrefs.getDouble(name + "_d", 0);
     double f = MoPrefs.getDouble(name + "_f", 0);
     double iErrZone = MoPrefs.getDouble(name + "_iErrZone", 0);
-    return new MoPID(tab, name, p, i, d, f, iErrZone);
+    return new MoPID(tab, name, col, row, p, i, d, f, iErrZone);
   }
 
   public void savePrefs() {

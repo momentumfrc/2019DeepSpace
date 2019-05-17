@@ -46,8 +46,8 @@ public class DriveSubsystem extends Subsystem {
     leftEnc.setDistancePerPulse(1.0 / MoPrefs.getDriveEncTicksPerFoot());
     rightEnc.setDistancePerPulse(1.0 / MoPrefs.getDriveEncTicksPerFoot());
 
-    movePID = MoPID.makePIDFromPrefs(RobotMap.testTab, "MoveRatePID");
-    turnPID = MoPID.makePIDFromPrefs(RobotMap.testTab, "TurnRatePID");
+    movePID = MoPID.makePIDFromPrefs(RobotMap.testTab, "MoveRatePID", 0, 0);
+    turnPID = MoPID.makePIDFromPrefs(RobotMap.testTab, "TurnRatePID", 4, 0);
 
     pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withPosition(8, 0)
         .withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
