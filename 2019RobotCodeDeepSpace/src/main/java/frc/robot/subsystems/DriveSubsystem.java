@@ -32,7 +32,7 @@ public class DriveSubsystem extends Subsystem {
 
   private final MoPID movePID, turnPID;
   private final NetworkTableEntry pidWidget;
-  private boolean pidEnabled;
+  private boolean pidEnabled = true;
 
   public DriveSubsystem() {
     super("Drive Subsytem");
@@ -49,7 +49,7 @@ public class DriveSubsystem extends Subsystem {
     movePID = MoPID.makePIDFromPrefs(RobotMap.testTab, "MoveRatePID", 0, 0);
     turnPID = MoPID.makePIDFromPrefs(RobotMap.testTab, "TurnRatePID", 4, 0);
 
-    pidWidget = RobotMap.matchTab.add("Drive PID Enabled", true).withPosition(8, 0)
+    pidWidget = RobotMap.matchTab.add("Drive PID Enabled", pidEnabled).withPosition(8, 0)
         .withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
     pidWidget.addListener(notice -> {
       pidEnabled = notice.value.getBoolean();
