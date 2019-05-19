@@ -14,7 +14,6 @@ public class MoPID {
   private NetworkTableEntry wkP, wkI, wkD, wiErrZone, wkFF;
 
   private double kP, kI, kD, kF, iErrZone;
-  private double result = 0;
   private String name;
 
   private double totalErr;
@@ -71,12 +70,7 @@ public class MoPID {
     lastErr = err;
 
     // Combine all the parts
-    // kF * result is feedforward used for velocity PID
-    // kF is usually 0 or 1
-    result = kF * result + kP * err + kI * totalErr + kD * dErr;
-
-    // Return the result
-    return result;
+    return kF * target + kP * err + kI * totalErr + kD * dErr;
   }
 
   public double getP() {

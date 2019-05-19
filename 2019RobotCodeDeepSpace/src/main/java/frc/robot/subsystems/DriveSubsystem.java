@@ -62,16 +62,20 @@ public class DriveSubsystem extends Subsystem {
   }
 
   public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
-    // Get the PID corrections
-    double moveCorrection = pidEnabled ? movePID.calculate(moveRequest, getMoveRate()) : 0;
-    double turnCorrection = pidEnabled ? turnPID.calculate(turnRequest, getTurnRate()) : 0;
+    // Scale requests to speedLimit
+    moveRequest *= speedLimiter;
+    turnRequest *= speedLimiter;
 
-    // Calculate final drive
-    double move = moveRequest + moveCorrection;
-    double turn = turnRequest + turnCorrection;
+    // Scale getMoveRate to match moveRequest. Likewise for turn.
+    double moveRate = getMoveRate() / 12.0; // TODO measure actual max rate
+    double turnRate = getTurnRate() / 12.0; // TODO measure actual max rate
 
-    double m_r = Utils.clip(move, -1, 1) * speedLimiter;
-    double t_r = Utils.clip(turn, -1, 1) * speedLimiter;
+    // Calculate drive
+    double move = pidEnabled ? movePID.calculate(moveRequest, moveRate) : moveRequest;
+    double turn = pidEnabled ? turnPID.calculate(turnRequest, turnRate) : turnRequest;
+
+    double m_r = Utils.clip(move, -speedLimiter, speedLimiter);
+    double t_r = Utils.clip(turn, -speedLimiter, speedLimiter);
     drive.arcadeDrive(m_r, t_r, false);
   }
 
