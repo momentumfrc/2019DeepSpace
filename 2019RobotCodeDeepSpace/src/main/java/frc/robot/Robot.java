@@ -20,7 +20,8 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HatchFlipper;
 import frc.robot.subsystems.HatchPassive;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.vision.Limelight;
+import frc.robot.subsystems.vision.LimelightData;;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPrefs;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
   public static HatchFlipper hatchActive;
   public static HatchPassive hatchPassive;
   public static Limelight limelight;
+  public static LimelightData limelightData;
   // public static TestMax testMax;
   public static OI m_oi;
 
@@ -70,6 +72,7 @@ public class Robot extends TimedRobot {
     driveCommand = new DriveCommand();
     armCommand = new ArmPositioning();
     limelight = new Limelight();
+    limelightData = new LimelightData();
 
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);

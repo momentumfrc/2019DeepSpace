@@ -3,13 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.vision.Limelight;
+import frc.robot.subsystems.vision.LimelightData;
 
 public class VisionDrive extends Command {
   private DriveSubsystem drive = Robot.driveSystem;
   private Limelight limelight = Robot.limelight;
+  private LimelightData data = Robot.limelightData;
 
-  public double[] posData;
   public double posX;
   public double posY;
   public double dist;
@@ -31,10 +32,8 @@ public class VisionDrive extends Command {
   }
 
   protected void execute() {
-    posData = limelight.targetPos();
-    posX = posData[0];
-    posY = posData[1];
-    dist = posData[2];
+    posX = data.xCoord();
+    dist = data.dist();
 
     double turnRequest = posX * TURN_K;
     double moveRequest = dist * MOVE_K;
