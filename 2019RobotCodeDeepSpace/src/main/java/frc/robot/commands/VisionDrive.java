@@ -43,7 +43,7 @@ public class VisionDrive extends Command {
 
   @Override
   protected boolean isFinished() {
-    return limelight.atTarget();
+    return limelight.targetMet();
   }
 
   public void end() {

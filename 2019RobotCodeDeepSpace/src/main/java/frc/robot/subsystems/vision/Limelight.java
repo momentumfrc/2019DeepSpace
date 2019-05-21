@@ -10,38 +10,31 @@ public class Limelight extends Subsystem {
 
   public static final double RANGE_X = 29.8; // The range of values given by "tx" is from -29.8 to 29.8 degrees
   public static final double RANGE_Y = 24.85; // The range of values given by "ty" is from -24.85 to 24.85 degrees
-  public static final double MIN_DIST = 0; // This is the closest that something could get to the camera
+
+  public static final double TARGET_DIST = 1; // This is the distance that the robot should be at for the target to be
+                                              // met
+  public static final double DIST_ERR = .1; // This is an arbitrary number(for now) that the distance value of the robot
+                                            // should be off by when at the target
+  public static final double X_ERR = 1; // This is an arbitrary number(for now) that the x value of the robot should be
+                                        // off by when at the target
+  public static final double Y_ERR = 1; // This is an arbitrary number(for now) that the y value of the robot should be
+                                        // off by when at the target
 
   @Override
   protected void initDefaultCommand() {
 
   }
 
-  /* detects whether at target is valid or not */
-  public boolean targetIsValid() {
-    if (validTarget == 1 && Math.abs(data.xCoord()) <= RANGE_X && Math.abs(data.yCoord()) <= RANGE_Y
-        && data.dist() > MIN_DIST) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /*
-   * checks whether or not the Limelight has detected a valid target and returns
-   * the position of the target in an array of [x, y, z]
-   */
-
-  /*
-   * public double[] targetPos() { if (targetIsValid()) { double[] pos = {
-   * Data.xCoord(), Data.yCoord(), targetDistance }; return pos; } else { return
-   * null; } }
-   */
-
-  public boolean atTarget() {
-    if (data.xCoord() == 0 && data.dist() == MIN_DIST) {
-      return true;
+  public boolean targetMet() {
+    if (data.valid()) {
+      double x = Math.abs(data.xCoord());
+      double y = Math.abs(data.yCoord());
+      double d = data.dist();
+      if (x <= X_ERR && y <= Y_ERR && d + DIST_ERR <= TARGET_DIST || d - DIST_ERR >= TARGET_DIST) {
+        return true;
+      }
     }
     return false;
   }
+
 }

@@ -7,6 +7,7 @@ public class LimelightData {
   private double yCoord = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   private double targetArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
   private double skew = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+  private double valid = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 
   // Estimating distance Constants//
   private static final double CAMERA_ANGLE = 0;
@@ -40,6 +41,16 @@ public class LimelightData {
   public double skew() {
     skew = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
     return skew;
+  }
+
+  public boolean valid() {
+    valid = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+
+    if (valid == 1) {
+      return true;
+    }
+    return false;
+
   }
 
 }
