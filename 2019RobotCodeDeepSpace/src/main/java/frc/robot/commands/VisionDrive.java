@@ -5,13 +5,17 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.vision.Limelight;
 import frc.robot.subsystems.vision.LimelightData;
+import frc.robot.utils.Utils;
 
 public class VisionDrive extends Command {
   private DriveSubsystem drive = Robot.driveSystem;
   private Limelight limelight = Robot.limelight;
   private LimelightData data = Robot.limelightData;
 
-  public double posX;
+  public static final double RANGE_X = 29.8; // The range of values given by "tx" is from -29.8 to 29.8 degrees
+  public static final double RANGE_Y = 24.85; // The range of values given by "ty" is from -24.85 to 24.85 degrees
+
+  public double turnErr;
   public double posY;
   public double dist;
   public double limelightTurn;
@@ -32,11 +36,11 @@ public class VisionDrive extends Command {
   }
 
   protected void execute() {
-    posX = data.xCoord();
+    turnErr = data.xCoord();
     dist = data.dist();
 
-    double turnRequest = posX * TURN_K;
-    double moveRequest = dist * MOVE_K;
+    double turnRequest = Utils.map(turnErr, -RANGE_X, RANGE_X, -1.0, 1.0);
+    double moveRequest = Utils.map(dist, -RANGE_Y, RANGE_Y, -1.0, 1.0);
 
     drive.arcadeDrive(moveRequest, turnRequest, MAX_DRIVE);
   }

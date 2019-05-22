@@ -1,13 +1,12 @@
 package frc.robot.subsystems.vision;
 
-import edu.wpi.first.networktables.*;
-
 public class LimelightData {
-  private double xCoord = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-  private double yCoord = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-  private double targetArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-  private double skew = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
-  private double valid = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+
+  private final double xCoord;
+  private final double yCoord;
+  private final double valid;
+  private final boolean validTarget;
+  private final double dist;
 
   // Estimating distance Constants//
   private static final double CAMERA_ANGLE = 0;
@@ -15,42 +14,30 @@ public class LimelightData {
   private static final double TARGET_HEIGHT = 0;
   // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
 
-  public double dist() {
-    double targetAngle = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+  LimelightData(double valid, double xCoord, double yCoord) {
+    this.valid = valid;
+    this.xCoord = xCoord;
+    this.yCoord = yCoord;
+    validTarget = valid == 1;
+
     double height = TARGET_HEIGHT - CAMERA_HEIGHT;
-    double angle = Math.tan(CAMERA_ANGLE + targetAngle);
-    double dist = (height) / (angle);
+    double angle = Math.tan(CAMERA_ANGLE + yCoord);
+    dist = (height) / (angle);
+  }
+
+  public double dist() {
     return dist;
   }
 
   public double xCoord() {
-    xCoord = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     return xCoord;
   }
 
   public double yCoord() {
-    yCoord = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     return yCoord;
   }
 
-  public double targetArea() {
-    targetArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-    return targetArea;
-  }
-
-  public double skew() {
-    skew = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
-    return skew;
-  }
-
   public boolean valid() {
-    valid = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-
-    if (valid == 1) {
-      return true;
-    }
-    return false;
-
+    return validTarget;
   }
-
 }
