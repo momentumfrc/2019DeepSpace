@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.utils.MoPerf;
 import frc.robot.utils.MoPrefs;
 //import frc.robot.utils.SparkMaxShuffleboard;
 
@@ -152,10 +153,13 @@ public class Wrist extends Subsystem {
 
   @Override
   public void periodic() {
-    if (limitSwitch.get())
-      zeroWrist();
-    zeroWidget.setBoolean(hasReliableZero());
-    positionWidget.setDouble(getWristPos());
+    try (MoPerf perf = new MoPerf("Wrist::periodic")) {
+      if (limitSwitch.get())
+        zeroWrist();
+      zeroWidget.setBoolean(hasReliableZero());
+      positionWidget.setDouble(getWristPos());
+    } catch (Exception e) {
+    }
   }
 
 }

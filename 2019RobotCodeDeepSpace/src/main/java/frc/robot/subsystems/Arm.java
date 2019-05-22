@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.utils.MoPerf;
 import frc.robot.utils.MoPrefs;
 //import frc.robot.utils.SparkMaxShuffleboard;
 import frc.robot.utils.Utils;
@@ -165,10 +166,13 @@ public class Arm extends Subsystem {
 
   @Override
   public void periodic() {
-    if (limitSwitch.get()) {
-      zeroArm();
+    try (MoPerf perf = new MoPerf("Arm::periodic")) {
+      if (limitSwitch.get()) {
+        zeroArm();
+      }
+      zeroWidget.setBoolean(hasReliableZero());
+    } catch (Exception e) {
     }
-    zeroWidget.setBoolean(hasReliableZero());
   }
 
 }
