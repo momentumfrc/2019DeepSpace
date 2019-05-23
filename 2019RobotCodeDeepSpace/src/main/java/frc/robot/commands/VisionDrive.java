@@ -11,11 +11,6 @@ public class VisionDrive extends Command {
   private DriveSubsystem drive = Robot.driveSystem;
   private Limelight limelight = Robot.limelight;
 
-  public static final double RANGE_X = Limelight.RANGE_X; // The range of values given by "tx" is from -29.8 to 29.8
-                                                          // degrees
-  public static final double RANGE_Y = Limelight.RANGE_Y; // The range of values given by "ty" is from -24.85 to 24.85
-                                                          // degrees
-
   public double limelightTurn;
   public double limelightMove;
   public boolean met;
@@ -36,16 +31,13 @@ public class VisionDrive extends Command {
 
   protected void execute() {
     LimelightData data = limelight.getData();
-    boolean valid = data.valid();
-    double turnErr = data.xCoord();
-    double dist = data.dist();
     double turnRequest;
     double moveRequest;
     met = data.targetMet();
 
-    if (valid) {
-      turnRequest = Utils.map(turnErr, -RANGE_X, RANGE_X, -1.0, 1.0);
-      moveRequest = Utils.map(dist, -RANGE_Y, RANGE_Y, -1.0, 1.0);
+    if (data.valid()) {
+      turnRequest = Utils.map(data.xCoord(), -Limelight.RANGE_X, Limelight.RANGE_X, -1.0, 1.0);
+      moveRequest = Utils.map(data.dist(), -Limelight.RANGE_Y, Limelight.RANGE_Y, -1.0, 1.0);
     } else {
       turnRequest = 0;
       moveRequest = 0;
