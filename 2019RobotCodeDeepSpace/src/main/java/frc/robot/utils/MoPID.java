@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
+/**
+ * MoPID is a PIDF implementation that automatically saves its parameters and
+ * allows them to be tuned via a Shuffleboard tab.
+ */
 public class MoPID {
   private static final int WIDTH = 3;
   private static final int HEIGHT = 2;
@@ -20,6 +24,21 @@ public class MoPID {
   private double lastErr;
   private double lastTime;
 
+  /**
+   * MoPID is a PIDF implementation that automatically saves its parameters and
+   * allows them to be tuned via a Shuffleboard tab.
+   * 
+   * @param tab      Reference to the Shuffleboard tab to hold the tuning box
+   * @param name     Name of this PIDF. Used to save preferences and label the
+   *                 tuning box.
+   * @param col      Which column of Shuffleboard to position the tuning box
+   * @param row      Which row of Shuffleboard to position the tuning box
+   * @param kP       Initial P coefficient (may be edited by tuner)
+   * @param kI       Initial I coefficient (may be edited by tuner)
+   * @param kD       Initial D coefficient (may be edited by tuner)
+   * @param kF       Initial F coefficient (may be edited by tuner)
+   * @param iErrZone Initial I error zone (may be edited by tuner)
+   */
   public MoPID(ShuffleboardTab tab, String name, int col, int row, double kP, double kI, double kD, double kF,
       double iErrZone) {
     System.out.format("Constructing MoPID name=%s kP=%f kI=%f kD=%f kF=%f iErrZone=%f\n", name, kP, kI, kD, kF,
@@ -49,6 +68,16 @@ public class MoPID {
     lastTime = Timer.getFPGATimestamp() * 1000.0;
   }
 
+  /**
+   * Calculate an output value based on a specific target, the current
+   * position/velocity, and the prior state of these.
+   * 
+   * @param target  The desired state, e.g. position or velocity. Must be in the
+   *                same units and space as current.
+   * @param current The current state, e.g. position or velocity. Must be in the
+   *                same units and space as target.
+   * @return The output of the calculation, typically a motor power.
+   */
   public double calculate(double target, double current) {
     // calculate time for dT
     double now = Timer.getFPGATimestamp() * 1000.0; // FPGA time is in seconds with microsecond resolution
