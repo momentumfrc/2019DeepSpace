@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.vision.Limelight;
-import frc.robot.subsystems.vision.LimelightData;
+import frc.robot.subsystems.vision.Limelight.LimelightData;
 import frc.robot.utils.Utils;
 
 public class VisionDrive extends Command {
   private DriveSubsystem drive = Robot.driveSystem;
   private Limelight limelight = Robot.limelight;
-  private LimelightData data = Robot.limelightData;
+  private LimelightData data;
 
   public static final double RANGE_X = 29.8; // The range of values given by "tx" is from -29.8 to 29.8 degrees
   public static final double RANGE_Y = 24.85; // The range of values given by "ty" is from -24.85 to 24.85 degrees
@@ -36,6 +36,7 @@ public class VisionDrive extends Command {
   }
 
   protected void execute() {
+    limelight.getData();
     turnErr = data.xCoord();
     dist = data.dist();
 
@@ -47,7 +48,7 @@ public class VisionDrive extends Command {
 
   @Override
   protected boolean isFinished() {
-    return limelight.targetMet();
+    return data.targetMet();
   }
 
   public void end() {

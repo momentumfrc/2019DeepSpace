@@ -9,8 +9,6 @@ public class Limelight extends Subsystem {
   private final NetworkTableEntry yCoordEntry = table.getEntry("ty");
   private final NetworkTableEntry validEntry = table.getEntry("tv");
 
-  public LimelightData data;
-
   public static final double RANGE_X = 29.8; // The range of values given by "tx" is from -29.8 to 29.8 degrees
   public static final double RANGE_Y = 24.85; // The range of values given by "ty" is from -24.85 to 24.85 degrees
 
@@ -32,32 +30,6 @@ public class Limelight extends Subsystem {
   @Override
   protected void initDefaultCommand() {
 
-  }
-
-  public boolean targetMet() {
-    data = new LimelightData(valid, xCoord, yCoord);
-    if (data.valid()) {
-      double x = Math.abs(data.xCoord());
-      double y = Math.abs(data.yCoord());
-      double d = data.dist();
-      if (x <= X_ERR && y <= Y_ERR && d + Math.abs(DIST_ERR) <= TARGET_DIST) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean targetMet() {
-    data = new LimelightData(valid, xCoord, yCoord);
-    if (data.valid()) {
-      double x = Math.abs(data.xCoord());
-      double y = Math.abs(data.yCoord());
-      double d = data.dist();
-      if (x <= X_ERR && y <= Y_ERR && d + Math.abs(DIST_ERR) <= TARGET_DIST) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public LimelightData getData() {
@@ -99,8 +71,16 @@ public class Limelight extends Subsystem {
       return validTarget;
     }
 
-    public boolean targetMet(){
-      if()
+    public boolean targetMet() {
+      if (valid()) {
+        double x = Math.abs(xCoord());
+        double y = Math.abs(yCoord());
+        double d = Math.abs(dist() - DIST_ERR);
+        if (x <= X_ERR && y <= Y_ERR && d <= TARGET_DIST) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 
