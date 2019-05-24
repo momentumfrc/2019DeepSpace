@@ -124,16 +124,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Scheduler.getInstance().removeAll();
+    perfMon.start();
+    try (MoPerfMon.Period period = perfMon.newPeriod("autonomousInit")) {
+      Scheduler.getInstance().removeAll();
 
-    switch (sandstormChooser.getSelected()) {
-    case DEFAULT_PATH:
-      // Do path stuff
-      // break; // Commented so that it will just fall through to the teleop mode
-    case TELEOP:
-    default:
-      driveCommand.start();
-      armCommand.start();
+      switch (sandstormChooser.getSelected()) {
+      case DEFAULT_PATH:
+        // Do path stuff
+        // break; // Commented so that it will just fall through to the teleop mode
+      case TELEOP:
+      default:
+        driveCommand.start();
+        armCommand.start();
+      }
     }
   }
 
@@ -142,16 +145,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    try (MoPerfMon.Period period = perfMon.newPeriod("autonomousPeriodic")) {
+      Scheduler.getInstance().run();
+    }
   }
 
   @Override
   public void teleopInit() {
     perfMon.start();
-    LiveWindow.disableAllTelemetry();
-    Scheduler.getInstance().removeAll();
-    driveCommand.start();
-    armCommand.start();
+    try (MoPerfMon.Period period = perfMon.newPeriod("teleopInit")) {
+      LiveWindow.disableAllTelemetry();
+      Scheduler.getInstance().removeAll();
+      driveCommand.start();
+      armCommand.start();
+    }
   }
 
   /**
@@ -159,9 +166,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-    // arm.value_display.update();
-    // wrist.value_display.update();
+    try (MoPerfMon.Period period = perfMon.newPeriod("teleopPeriodic")) {
+      Scheduler.getInstance().run();
+      // arm.value_display.update();
+      // wrist.value_display.update();
+    }
   }
 
   /**

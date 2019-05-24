@@ -14,7 +14,7 @@ public class MoPerfMon {
     try {
       this.name = name + ".aat";
       file = new FileWriter(this.name);
-      file.write("1000");
+      file.write("1000000\n");
     } catch (IOException e) {
       System.err.format("Failed to open MoPerfMon file: %s\n", this.name);
       this.name = null;
@@ -41,7 +41,7 @@ public class MoPerfMon {
   private synchronized void post(String label, int value) {
     if (file != null) {
       try {
-        file.write(String.format("%s,%d,%d\n", label, (int) (Timer.getFPGATimestamp() * 1000), value));
+        file.write(String.format("%s,%d,%d\n", label, (int) (Timer.getFPGATimestamp() * 1000000), value));
       } catch (IOException e) {
       }
     }
@@ -51,17 +51,21 @@ public class MoPerfMon {
     post(label, value);
   }
 
+  public Period newPeriod(String label) {
+    return new Period(label);
+  }
+
   public class Period implements Closeable {
 
     private String label;
 
-    Period(String label) {
+    private Period(String label) {
       this.label = label;
       post(this.label, 1);
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
       post(this.label, 0);
     }
 

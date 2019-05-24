@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.robot.commands.DriveCommand;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.utils.MoPID;
+import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
 import frc.robot.utils.Utils;
 
@@ -62,21 +64,23 @@ public class DriveSubsystem extends Subsystem {
   }
 
   public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
-    // Scale requests to speedLimit
-    moveRequest *= speedLimiter;
-    turnRequest *= speedLimiter;
+    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("DriveSubsystem::arcadeDrive")) {
+      // Scale requests to speedLimit
+      moveRequest *= speedLimiter;
+      turnRequest *= speedLimiter;
 
-    // Scale getMoveRate to match moveRequest. Likewise for turn.
-    double moveRate = getMoveRate() / 12.0; // TODO measure actual max rate
-    double turnRate = getTurnRate() / 12.0; // TODO measure actual max rate
+      // Scale getMoveRate to match moveRequest. Likewise for turn.
+      double moveRate = getMoveRate() / 12.0; // TODO measure actual max rate
+      double turnRate = getTurnRate() / 12.0; // TODO measure actual max rate
 
-    // Calculate drive
-    double move = pidEnabled ? movePID.calculate(moveRequest, moveRate) : moveRequest;
-    double turn = pidEnabled ? turnPID.calculate(turnRequest, turnRate) : turnRequest;
+      // Calculate drive
+      double move = pidEnabled ? movePID.calculate(moveRequest, moveRate) : moveRequest;
+      double turn = pidEnabled ? turnPID.calculate(turnRequest, turnRate) : turnRequest;
 
-    double m_r = Utils.clip(move, -speedLimiter, speedLimiter);
-    double t_r = Utils.clip(turn, -speedLimiter, speedLimiter);
-    drive.arcadeDrive(m_r, t_r, false);
+      double m_r = Utils.clip(move, -speedLimiter, speedLimiter);
+      double t_r = Utils.clip(turn, -speedLimiter, speedLimiter);
+      drive.arcadeDrive(m_r, t_r, false);
+    }
   }
 
   public void resetEncoders() {
