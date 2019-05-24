@@ -158,7 +158,6 @@ public class Wrist extends Subsystem {
         zeroWrist();
       zeroWidget.setBoolean(hasReliableZero());
       positionWidget.setDouble(getWristPos());
-    } catch (Exception e) {
     }
   }
 

@@ -171,7 +171,6 @@ public class Arm extends Subsystem {
         zeroArm();
       }
       zeroWidget.setBoolean(hasReliableZero());
-    } catch (Exception e) {
     }
   }
 
