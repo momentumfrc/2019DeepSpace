@@ -14,8 +14,6 @@ public class ControlChooser extends SendableChooser<DriveController> {
     setDefaultOption("Xbox Drive/Arm, F310 Wrist/Intake", new XboxF310Wrapper());
     addOption("Xbox Drive, F310 Arm/Wrist/Intake", new XboxF310Wrapper2());
 
-    RobotMap.matchTab.add(NAME, this).withPosition(7, 0).withWidget(BuiltInWidgets.kSplitButtonChooser);
-
+    RobotMap.matchTab.add(NAME, this).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(6, 0).withSize(2, 1);
   }
-
 }

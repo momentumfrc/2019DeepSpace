@@ -14,7 +14,6 @@ public class SandstormChooser extends SendableChooser<SandstormMode> {
     setDefaultOption("Teleop Control", SandstormMode.TELEOP);
     addOption("Default", SandstormMode.DEFAULT_PATH);
 
-    RobotMap.matchTab.add(NAME, this).withPosition(7, 2).withWidget(BuiltInWidgets.kSplitButtonChooser);
+    RobotMap.matchTab.add(NAME, this).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(6, 1).withSize(2, 1);
   }
-
 }
