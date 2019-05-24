@@ -23,6 +23,7 @@ import frc.robot.subsystems.HatchFlipper;
 import frc.robot.subsystems.HatchPassive;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
+import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
 import frc.robot.subsystems.Arm;
 
@@ -34,6 +35,8 @@ import frc.robot.subsystems.Arm;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static final MoPerfMon perfMon = new MoPerfMon();
+
   public static ControlChooser controlChooser;
   public static DriveSubsystem driveSystem;
   public static Arm arm;
@@ -99,6 +102,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    perfMon.stop();
   }
 
   @Override
@@ -143,6 +147,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    perfMon.start();
     LiveWindow.disableAllTelemetry();
     Scheduler.getInstance().removeAll();
     driveCommand.start();
