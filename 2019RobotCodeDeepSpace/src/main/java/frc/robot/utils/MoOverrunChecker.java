@@ -4,12 +4,12 @@ import java.io.Closeable;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class MoPerf implements Closeable {
+public class MoOverrunChecker implements Closeable {
 
   private final Timer timer = new Timer();
   private final String name;
 
-  public MoPerf(String name) {
+  public MoOverrunChecker(String name) {
     this.name = name;
     timer.start();
   }
