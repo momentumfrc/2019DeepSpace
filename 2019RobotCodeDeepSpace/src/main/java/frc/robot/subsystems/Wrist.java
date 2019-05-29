@@ -12,7 +12,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
 //import frc.robot.utils.SparkMaxShuffleboard;
 
@@ -90,12 +89,10 @@ public class Wrist extends Subsystem {
 
   /// Allows the wrist to be controlled with raw input
   private void setWristNoLimits(double speed) {
-    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("Wrist::setWristNoLimits")) {
-      // System.out.format("Setting wrist: %.4f\n", speed);
-      enableLimit = true;
-      brake();
-      p_Wrist.setReference(250 * speed, ControlType.kVelocity, smartMotionSlot);
-    }
+    // System.out.format("Setting wrist: %.4f\n", speed);
+    enableLimit = true;
+    brake();
+    p_Wrist.setReference(250 * speed, ControlType.kVelocity, smartMotionSlot);
   }
 
   /// Get the current position of the Wrist relative to the offset/zero position
@@ -109,10 +106,8 @@ public class Wrist extends Subsystem {
 
   /// Defines the current position of the Wrist as the specified positon
   public void setWristPos(double pos) {
-    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("Wrist::setWristPos")) {
-      e_Wrist.setPosition(pos);
-      reliableZero = true;
-    }
+    e_Wrist.setPosition(pos);
+    reliableZero = true;
   }
 
   /// Defines the current position of the Wrist as the offset/zero positon
@@ -122,27 +117,23 @@ public class Wrist extends Subsystem {
 
   /// Request a specific position using SmartMotion
   public void setSmartPosition(double posRequest) {
-    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("Wrist::setSmartPosition")) {
-      brake();
-      p_Wrist.setReference(posRequest, ControlType.kSmartMotion, smartMotionSlot);
-      enableLimit = false; // must disable due to bad interaction with SmartMotion
-      // System.out.format("Wrist reference: %.4f\n", posRequest);
-    }
+    brake();
+    p_Wrist.setReference(posRequest, ControlType.kSmartMotion, smartMotionSlot);
+    enableLimit = false; // must disable due to bad interaction with SmartMotion
+    // System.out.format("Wrist reference: %.4f\n", posRequest);
   }
 
   public void setWristSpeed(double speed) {
-    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("Wrist::setWristSpeed")) {
-      double wrist_pos = getWristPos();
-      if (!Double.isFinite(wrist_pos)) {
-        System.out.println("Invalid wrist_pos");
-      } else if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
-        // System.out.format("Wrist at max rotation: %f\n", wrist_pos);
-        speed = 0;
-      }
-      // Note: No limit on the MIN side because there is a hard limit switch
-
-      setWristNoLimits(speed);
+    double wrist_pos = getWristPos();
+    if (!Double.isFinite(wrist_pos)) {
+      System.out.println("Invalid wrist_pos");
+    } else if (speed > 0 && wrist_pos >= MoPrefs.getMaxWristRotation()) {
+      // System.out.format("Wrist at max rotation: %f\n", wrist_pos);
+      speed = 0;
     }
+    // Note: No limit on the MIN side because there is a hard limit switch
+
+    setWristNoLimits(speed);
   }
 
   public void stopWrist() {
@@ -163,16 +154,14 @@ public class Wrist extends Subsystem {
 
   @Override
   public void periodic() {
-    try (MoPerfMon.Period period = Robot.perfMon.newPeriod("Wrist::periodic")) {
-      wristPos = e_Wrist.getPosition();
-      m_Wrist.setIdleMode(idleMode);
-      limitSwitch.enableLimitSwitch(enableLimit);
+    wristPos = e_Wrist.getPosition();
+    m_Wrist.setIdleMode(idleMode);
+    limitSwitch.enableLimitSwitch(enableLimit);
 
-      if (limitSwitch.get())
-        zeroWrist();
-      zeroWidget.setBoolean(hasReliableZero());
-      positionWidget.setDouble(getWristPos());
-    }
+    if (limitSwitch.get())
+      zeroWrist();
+    zeroWidget.setBoolean(hasReliableZero());
+    positionWidget.setDouble(getWristPos());
   }
 
 }

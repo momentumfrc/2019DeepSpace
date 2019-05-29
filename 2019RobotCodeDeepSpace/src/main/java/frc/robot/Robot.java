@@ -124,7 +124,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    perfMon.start();
+    // perfMon.start();
     try (MoPerfMon.Period period = perfMon.newPeriod("autonomousInit")) {
       Scheduler.getInstance().removeAll();
 
@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    perfMon.start();
+    // perfMon.start();
     try (MoPerfMon.Period period = perfMon.newPeriod("teleopInit")) {
       LiveWindow.disableAllTelemetry();
       Scheduler.getInstance().removeAll();
