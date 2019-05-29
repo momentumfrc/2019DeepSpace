@@ -14,7 +14,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
@@ -154,7 +153,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // perfMon.start();
     try (MoPerfMon.Period period = perfMon.newPeriod("teleopInit")) {
-      LiveWindow.disableAllTelemetry();
       Scheduler.getInstance().removeAll();
       driveCommand.start();
       armCommand.start();
