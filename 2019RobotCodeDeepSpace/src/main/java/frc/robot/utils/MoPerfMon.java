@@ -12,11 +12,13 @@ public class MoPerfMon {
 
   public synchronized void start(String name) {
     try {
-      this.name = name + ".aat";
+      this.name = String.format("/home/lvuser/%s.aat", name);
+      System.err.format("Started PerfMon to file: %s\n", this.name);
       file = new FileWriter(this.name);
       file.write("1000000\n");
     } catch (IOException e) {
       System.err.format("Failed to open MoPerfMon file: %s\n", this.name);
+      System.err.println(e.getMessage());
       this.name = null;
       file = null;
     }

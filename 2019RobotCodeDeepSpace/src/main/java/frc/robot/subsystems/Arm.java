@@ -25,6 +25,9 @@ public class Arm extends Subsystem {
 
   private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false; // the arm has a reliable zero setpoint
+  private double armPos = 0;
+  private IdleMode idleMode = IdleMode.kCoast;
+  private boolean enableLimit = true;
 
   private static final double GEAR_RATIO = (1.0 / 36.0) * (18.0 / 84.0); // 1:36 CIM Sport into a 18:84 Gear Ratio
 
@@ -71,7 +74,7 @@ public class Arm extends Subsystem {
     p_arm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
-    limitSwitch.enableLimitSwitch(true);
+    limitSwitch.enableLimitSwitch(enableLimit);
     m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Arm.setInverted(RobotMap.armInverted);
     zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).withPosition(0, 0).getEntry();
@@ -81,13 +84,14 @@ public class Arm extends Subsystem {
      * EntryListenerFlags.kUpdate);
      */
 
-    coast(); // Coast at startup to enable hand positioning of arm
+    // Coast at startup to enable hand positioning of arm
+    m_Arm.setIdleMode(IdleMode.kCoast);
   }
 
   /// Allows the wrist to be controlled with raw input
   public void setArmNoLimits(double speed) {
-    limitSwitch.enableLimitSwitch(true);
-    m_Arm.setIdleMode(IdleMode.kBrake);
+    enableLimit = true;
+    brake();
 
     // Enforce a power ramp on the arm to limit acceleration
     double curr = m_Arm.get();
@@ -98,7 +102,7 @@ public class Arm extends Subsystem {
 
   /// Gets the current arm position
   public double getArmPos() {
-    return e_arm.getPosition();
+    return armPos;
   }
 
   public boolean hasReliableZero() {
@@ -118,13 +122,13 @@ public class Arm extends Subsystem {
 
   /// Request a specific position using SmartMotion
   public void setSmartPosition(double posRequest) {
-    m_Arm.setIdleMode(IdleMode.kBrake);
+    brake();
     p_arm.setReference(posRequest, ControlType.kSmartMotion, smartMotionSlot);
-    limitSwitch.enableLimitSwitch(false); // must disable limit switches due to bad interaction with SmartMotion
+    enableLimit = false; // must disable limit switches due to bad interaction with SmartMotion
   }
 
   public void setArmMotor(double speed) {
-    m_Arm.setIdleMode(IdleMode.kBrake);
+    brake();
     double arm_pos = getArmPos();
     if (!Double.isFinite(arm_pos)) {
       System.out.println("Invalid arm_pos");
@@ -151,13 +155,11 @@ public class Arm extends Subsystem {
   }
 
   public void coast() {
-    m_Arm.setIdleMode(IdleMode.kCoast);
-    stop();
+    idleMode = IdleMode.kCoast;
   }
 
   public void brake() {
-    m_Arm.setIdleMode(IdleMode.kBrake);
-    stop();
+    idleMode = IdleMode.kBrake;
   }
 
   @Override
@@ -166,12 +168,14 @@ public class Arm extends Subsystem {
 
   @Override
   public void periodic() {
-    try (MoOverrunChecker perf = new MoOverrunChecker("Arm::periodic")) {
-      if (limitSwitch.get()) {
-        zeroArm();
-      }
-      zeroWidget.setBoolean(hasReliableZero());
+    armPos = e_arm.getPosition();
+    m_Arm.setIdleMode(idleMode);
+    limitSwitch.enableLimitSwitch(enableLimit);
+
+    if (limitSwitch.get()) {
+      zeroArm();
     }
+    zeroWidget.setBoolean(hasReliableZero());
   }
 
 }
