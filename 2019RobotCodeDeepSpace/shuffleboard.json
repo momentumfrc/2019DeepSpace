@@ -9,41 +9,7 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
-        "tiles": {
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Controls",
-              "_title": "Controls"
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Sandstorm",
-              "_title": "Sandstorm"
-            }
-          },
-          "2,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Robot Preferences",
-              "_title": "Robot Preferences",
-              "Miscellaneous/Show search box": true
-            }
-          }
-        }
+        "tiles": {}
       }
     },
     {
