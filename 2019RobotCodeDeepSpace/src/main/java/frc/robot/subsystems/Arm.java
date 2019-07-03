@@ -15,12 +15,20 @@ import frc.robot.utils.MoPrefs;
 //import frc.robot.utils.SparkMaxShuffleboard;
 import frc.robot.utils.Utils;
 
+/*
+Positive away from limit switch
+Wire to reverse limit switch if motor is not inverted.
+Wire to forward limit switch if motor is inverted. <--
+
+Invert motor in code in RobotMap.
+*/
+
 public class Arm extends Subsystem {
 
   private CANSparkMax m_Arm = RobotMap.armMotor;
   private CANEncoder e_arm = m_Arm.getEncoder();
   private CANPIDController p_arm = m_Arm.getPIDController();
-  private CANDigitalInput limitSwitch = m_Arm.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+  private CANDigitalInput limitSwitch;
 
   private final NetworkTableEntry zeroWidget;
   private boolean reliableZero = false; // the arm has a reliable zero setpoint
@@ -28,20 +36,23 @@ public class Arm extends Subsystem {
   private IdleMode idleMode = IdleMode.kCoast;
   private boolean enableLimit = true;
 
-  private static final double GEAR_RATIO = (1.0 / 36.0) * (18.0 / 84.0); // 1:36 CIM Sport into a 18:84 Gear Ratio
+  private static final double GEAR_RATIO = (1.0 / 100.0) * (12.0 / 60.0); // 1:100 CIM Sport into a 12:60 Gear Ratio
 
   private static final int smartMotionSlot = 0;
 
   // PID coefficients
   // These are based on the underlying PID engine and are not affected by the
   // GEAR_RATIO
+  // DON'T TOUCH
   private static final double kP = 5e-5;
   private static final double kI = 1e-6;
   private static final double kD = 0;
   private static final double kIz = 0;
   private static final double kFF = 0.000156;
-  private static final double kMaxOutput = 1;
-  private static final double kMinOutput = -1;
+
+  // Adjust maxoutput & minoutput
+  private static final double kMaxOutput = 0.2; // adjust this
+  private static final double kMinOutput = -0.2; // adjust this
   private static final double allowedErr = 0;
 
   // public final SparkMaxShuffleboard value_display;
@@ -49,8 +60,9 @@ public class Arm extends Subsystem {
   // Smart Motion Coefficients
   // These are affected by the GEAR_RATIO
   private static final double minVel = 0;
-  private static final double maxVel = 100.0 / GEAR_RATIO;
-  private static final double maxAcc = 1500.0 / GEAR_RATIO;
+  // maxvel = (output RPM) / GEAR RATIO
+  private static final double maxVel = 10.0 / GEAR_RATIO; // adjust this
+  private static final double maxAcc = 100.0 / GEAR_RATIO; // adjust this
 
   private static final double MAX_POWER_DELTA = 0.03;
 
@@ -73,8 +85,9 @@ public class Arm extends Subsystem {
     p_arm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
+    limitSwitch = m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
     limitSwitch.enableLimitSwitch(enableLimit);
-    m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    m_Arm.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Arm.setInverted(RobotMap.armInverted);
     zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).withPosition(0, 0).getEntry();
     /*

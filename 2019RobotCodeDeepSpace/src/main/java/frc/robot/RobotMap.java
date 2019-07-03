@@ -40,7 +40,7 @@ public class RobotMap {
 
   // ARM//
   public static final CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);
-  public static final boolean armInverted = false;
+  public static final boolean armInverted = true;
 
   // WRIST//
   public static final CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
