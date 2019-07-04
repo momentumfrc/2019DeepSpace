@@ -51,8 +51,8 @@ public class Arm extends Subsystem {
   private static final double kFF = 0.000156;
 
   // Adjust maxoutput & minoutput
-  private static final double kMaxOutput = 0.2; // adjust this
-  private static final double kMinOutput = -0.2; // adjust this
+  private static final double kMaxOutput = 0.6; // adjust this
+  private static final double kMinOutput = -0.6; // adjust this
   private static final double allowedErr = 0;
 
   // public final SparkMaxShuffleboard value_display;
@@ -148,16 +148,16 @@ public class Arm extends Subsystem {
       return;
     }
     if (speed > 0 && arm_pos >= MoPrefs.getMaxArmRotation()) {
-      System.out.format("Arm at max rotation (%d)\n", arm_pos);
+      System.out.format("Arm at max rotation (%f)\n", arm_pos);
       m_Arm.set(0);
     } else if (speed < 0 && arm_pos <= MoPrefs.getMinArmRotation()) {
-      System.out.format("Arm at min rotation (%d)", arm_pos);
+      System.out.format("Arm at min rotation (%f)", arm_pos);
       m_Arm.set(0);
     } else {
       double curr = m_Arm.get();
       double delta = speed - curr;
       delta = Utils.clip(delta, -MAX_POWER_DELTA, MAX_POWER_DELTA);
-
+      // System.out.format("Arm: %.2f\n", curr + delta);
       m_Arm.set(curr + delta);
     }
   }
