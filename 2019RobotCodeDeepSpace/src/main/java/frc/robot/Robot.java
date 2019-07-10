@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 
   public static ControlChooser controlChooser;
   public static DriveSubsystem driveSystem;
+  public static Command visionDrive;
   public static Arm arm;
   public static Wrist wrist;
   public static CargoIntake cargoIntake;
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
     driveCommand = new DriveCommand();
     armCommand = new ArmPositioning();
     limelight = new Limelight();
+    visionDrive = new VisionDrive();
 
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);
@@ -133,6 +135,10 @@ public class Robot extends TimedRobot {
       Scheduler.getInstance().removeAll();
 
       switch (sandstormChooser.getSelected()) {
+      case VISION_DRIVE:
+        visionDrive.start();
+        break;
+
       case DEFAULT_PATH:
         // Do path stuff
         // break; // Commented so that it will just fall through to the teleop mode

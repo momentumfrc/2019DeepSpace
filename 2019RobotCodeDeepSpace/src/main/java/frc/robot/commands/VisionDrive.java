@@ -18,7 +18,7 @@ public class VisionDrive extends Command {
   // TODO Tune these values
   public static final double TURN_K = .01;
   public static final double MOVE_K = .01;
-  public static final double MAX_DRIVE = .8;
+  public static final double MAX_DRIVE = .3;
 
   public VisionDrive() {
     requires(drive);
@@ -36,14 +36,15 @@ public class VisionDrive extends Command {
 
     if (data.valid()) {
       turnRequest = Utils.map(data.xCoord(), -Limelight.RANGE_X, Limelight.RANGE_X, -1.0, 1.0);
-      moveRequest = Utils.map(data.dist(), -Limelight.RANGE_Y, Limelight.RANGE_Y, -1.0, 1.0);
-      met = data.targetMet();
+      moveRequest = 0; // Utils.map(data.dist(), -Limelight.RANGE_Y, Limelight.RANGE_Y, -1.0, 1.0);
+      met = false; // data.targetMet();
 
     } else {
       turnRequest = 0;
       moveRequest = 0;
       met = false;
     }
+    System.out.format("turnRequest:%.02f  moveRequest:%.02f\n", turnRequest, moveRequest);
     drive.arcadeDrive(moveRequest, turnRequest, MAX_DRIVE);
   }
 
