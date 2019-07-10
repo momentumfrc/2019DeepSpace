@@ -70,8 +70,8 @@ public class Wrist extends Subsystem {
     p_Wrist.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     p_Wrist.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
-    limitSwitch = m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
-    m_Wrist.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    limitSwitch = m_Wrist.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+    m_Wrist.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     limitSwitch.enableLimitSwitch(enableLimit);
     m_Wrist.setInverted(RobotMap.wristInverted);
     zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).withPosition(0, 1).getEntry();

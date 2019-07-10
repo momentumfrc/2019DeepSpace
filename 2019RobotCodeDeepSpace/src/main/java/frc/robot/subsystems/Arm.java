@@ -61,8 +61,8 @@ public class Arm extends Subsystem {
   // These are affected by the GEAR_RATIO
   private static final double minVel = 0;
   // maxvel = (output RPM) / GEAR RATIO
-  private static final double maxVel = 10.0 / GEAR_RATIO; // adjust this
-  private static final double maxAcc = 100.0 / GEAR_RATIO; // adjust this
+  private static final double maxVel = 50.0 / GEAR_RATIO; // adjust this
+  private static final double maxAcc = 500.0 / GEAR_RATIO; // adjust this
 
   private static final double MAX_POWER_DELTA = 0.03;
 

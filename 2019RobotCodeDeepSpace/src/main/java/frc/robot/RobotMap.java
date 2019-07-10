@@ -25,14 +25,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class RobotMap {
   // DRIVE//
-  public static final SpeedController leftFrontMotor = new PWMVictorSPX(0);
-  public static final SpeedController leftBackMotor = new PWMVictorSPX(1);
-  public static final SpeedController rightFrontMotor = new PWMVictorSPX(2);
-  public static final SpeedController rightBackMotor = new PWMVictorSPX(3);
+  public static final SpeedController rightBackMotor = new PWMVictorSPX(0); // leftFront
+  public static final SpeedController rightFrontMotor = new PWMVictorSPX(1); // leftBack
+  public static final SpeedController leftBackMotor = new PWMVictorSPX(2); // rightFront
+  public static final SpeedController leftFrontMotor = new PWMVictorSPX(3); // rightBack
 
   // ENCODERS//
-  public static final Encoder leftDriveEncoder = new Encoder(0, 1, false);
-  public static final Encoder rightDriveEncoder = new Encoder(2, 3, true);
+  public static final Encoder rightDriveEncoder = new Encoder(0, 1, true); // left, false
+  public static final Encoder leftDriveEncoder = new Encoder(2, 3, false); // right, true
 
   // CONTROLLERS//
   public static final XboxController xbox = new XboxController(0);
@@ -44,7 +44,7 @@ public class RobotMap {
 
   // WRIST//
   public static final CANSparkMax wristMotor = new CANSparkMax(13, MotorType.kBrushless);
-  public static final boolean wristInverted = true;
+  public static final boolean wristInverted = false;
 
   // CARGO INTAKE//
   public static final SpeedController intakeMotorTop = new VictorSP(4);

@@ -85,7 +85,7 @@ public class XboxF310Wrapper implements DriveController {
     right_wrist = curve(right_wrist, WRIST_CURVE);
     double wristspeed = left_wrist + right_wrist;
     wristspeed = clip(wristspeed, -1, 1);
-    return -wristspeed;
+    return wristspeed;
   }
 
   @Override
