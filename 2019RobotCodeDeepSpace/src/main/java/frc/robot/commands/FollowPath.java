@@ -25,7 +25,7 @@ public class FollowPath extends Command {
 
   private static final double POWER_LIMIT = 0.4;
 
-  private static final double TRAJECTORY_DT = 0.05; // seconds
+  private static final double TRAJECTORY_DT = 0.02; // seconds
   private static final double MAX_PLANNED_ACCELERATION = 2.0; // feet per second ^ 2
   private static final double MAX_PLANNED_JERK = 60.0; // feet per second ^ 3
 
