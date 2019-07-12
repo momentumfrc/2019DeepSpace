@@ -66,6 +66,7 @@ public class DriveSubsystem extends Subsystem {
   public void arcadeDrive(double moveRequest, double turnRequest, double speedLimiter) {
     try (MoPerfMon.Period period = Robot.perfMon.newPeriod("DriveSubsystem::arcadeDrive")) {
       // Scale requests to speedLimit
+      speedLimiter = Utils.clip(speedLimiter, 0, 1);
       moveRequest *= speedLimiter;
       turnRequest *= speedLimiter;
 
@@ -81,6 +82,15 @@ public class DriveSubsystem extends Subsystem {
       double t_r = Utils.clip(turn, -speedLimiter, speedLimiter);
       drive.arcadeDrive(m_r, t_r, false);
     }
+  }
+
+  public void tankDriveNoPID(double left_moveRequest, double right_moveRequest, double speedLimiter) {
+    speedLimiter = Utils.clip(speedLimiter, 0, 1);
+
+    left_moveRequest *= speedLimiter;
+    right_moveRequest *= speedLimiter;
+
+    drive.tankDrive(left_moveRequest, right_moveRequest, false);
   }
 
   public void resetEncoders() {
