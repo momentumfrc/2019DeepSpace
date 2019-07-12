@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.XboxController;
@@ -20,6 +21,7 @@ import org.usfirst.frc.team4999.controllers.LogitechF310;
 
 import frc.robot.utils.MoPDP;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -33,6 +35,9 @@ public class RobotMap {
   // ENCODERS//
   public static final Encoder rightDriveEncoder = new Encoder(0, 1, true); // left, false
   public static final Encoder leftDriveEncoder = new Encoder(2, 3, false); // right, true
+
+  // GYRO
+  public static final AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
   // CONTROLLERS//
   public static final XboxController xbox = new XboxController(0);
