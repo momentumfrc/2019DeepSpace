@@ -27,6 +27,8 @@ public class VisionDrive extends Command {
 
   protected void initialize() {
 
+    limelight.setLEDMode(Limelight.LED_MODE.DEFAULT);
+
   }
 
   protected void execute() {
@@ -55,6 +57,7 @@ public class VisionDrive extends Command {
 
   public void end() {
     drive.stop();
+    limelight.setLEDMode(Limelight.LED_MODE.OFF);
   }
 
   public void interrupted() {

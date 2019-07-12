@@ -9,6 +9,8 @@ public class Limelight extends Subsystem {
   private final NetworkTableEntry yCoordEntry = table.getEntry("ty");
   private final NetworkTableEntry validEntry = table.getEntry("tv");
 
+  private final NetworkTableEntry ledMode = table.getEntry("ledMode");
+
   public static final double RANGE_X = 29.8; // The range of values given by "tx" is from -29.8 to 29.8 degrees
   public static final double RANGE_Y = 24.85; // The range of values given by "ty" is from -24.85 to 24.85 degrees
 
@@ -26,6 +28,24 @@ public class Limelight extends Subsystem {
   private static final double CAMERA_HEIGHT = 0;
   private static final double TARGET_HEIGHT = 0;
   // http://docs.limelightvision.io/en/latest/cs_estimating_distance.html
+
+  public static enum LED_MODE {
+    DEFAULT(0), OFF(1), BLINK(2), ON(3);
+
+    private int value;
+
+    public int getValue() {
+      return value;
+    }
+
+    private LED_MODE(int value) {
+      this.value = value;
+    }
+  };
+
+  public void setLEDMode(LED_MODE mode) {
+    ledMode.setNumber(mode.getValue());
+  }
 
   @Override
   protected void initDefaultCommand() {
