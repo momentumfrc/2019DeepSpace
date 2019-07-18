@@ -26,6 +26,7 @@ import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
+import frc.robot.utils.NeoPixels;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -50,6 +51,8 @@ public class Robot extends TimedRobot {
   public static LimelightData limelightData;
   // public static TestMax testMax;
   public static OI m_oi;
+
+  public static NeoPixels neoPixels;
 
   private SandstormChooser sandstormChooser;
 
@@ -77,6 +80,8 @@ public class Robot extends TimedRobot {
     armCommand = new ArmPositioning();
     limelight = new Limelight();
     visionDrive = new VisionDrive();
+
+    neoPixels = new NeoPixels();
 
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);

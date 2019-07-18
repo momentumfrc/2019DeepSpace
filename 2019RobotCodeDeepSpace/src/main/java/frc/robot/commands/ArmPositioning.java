@@ -209,10 +209,12 @@ public class ArmPositioning extends Command {
     if (hatchGamepieceSelected) {
       currentPresetGroup = hatchPresetGroup;
       manualMode = true;
+      Robot.neoPixels.selectHatchPresetMode();
     }
     if (cargoGamepieceSelected) {
       currentPresetGroup = cargoPresetGroup;
       manualMode = true;
+      Robot.neoPixels.selectCargoPresetMode();
     }
 
     // Dig into the current preset settings
