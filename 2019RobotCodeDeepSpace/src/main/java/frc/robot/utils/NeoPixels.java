@@ -2,8 +2,13 @@ package frc.robot.utils;
 
 import org.usfirst.frc.team4999.lights.AnimationCoordinator;
 import org.usfirst.frc.team4999.lights.Animator;
+import org.usfirst.frc.team4999.lights.BrightnessFilter;
 import org.usfirst.frc.team4999.lights.Color;
 import org.usfirst.frc.team4999.lights.animations.*;
+
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.RobotMap;
 
 public class NeoPixels {
 
@@ -12,6 +17,8 @@ public class NeoPixels {
 
   private Animator animator;
   private AnimationCoordinator coordinator;
+
+  private NetworkTableEntry brightnessWidget;
 
   /* BEGIN BASE ANIMATION OPTIONS */
 
@@ -43,6 +50,11 @@ public class NeoPixels {
     try {
       animator = new Animator();
       coordinator = new AnimationCoordinator(animator);
+      coordinator.setBase(rainbow);
+      brightnessWidget = RobotMap.outreachTab.add("LED Brightness", 0.4).withPosition(0, 0).withSize(1, 1).getEntry();
+      brightnessWidget.addListener(notice -> {
+        BrightnessFilter.setBrightness(notice.value.getDouble());
+      }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     } catch (Exception e) {
       e.printStackTrace();
       if (animator != null) {

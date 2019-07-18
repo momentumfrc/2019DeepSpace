@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.choosers.ControlChooser;
+import frc.robot.choosers.LEDAnimationChooser;
 import frc.robot.choosers.SandstormChooser;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
 
   public static NeoPixels neoPixels;
+  public static LEDAnimationChooser animationChooser;
 
   private SandstormChooser sandstormChooser;
 
@@ -82,6 +84,7 @@ public class Robot extends TimedRobot {
     visionDrive = new VisionDrive();
 
     neoPixels = new NeoPixels();
+    animationChooser = new LEDAnimationChooser();
 
     UsbCamera lifecam = CameraServer.getInstance().startAutomaticCapture();
     lifecam.setResolution(320, 240);
@@ -104,6 +107,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    animationChooser.poll();
   }
 
   /**
