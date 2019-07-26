@@ -50,7 +50,7 @@ public class NeoPixels {
     try {
       animator = new Animator();
       coordinator = new AnimationCoordinator(animator);
-      coordinator.setBase(rainbow);
+      setBaseAnimation(rainbow);
       brightnessWidget = RobotMap.outreachTab.add("LED Brightness", 0.4).withPosition(0, 0).withSize(1, 1).getEntry();
       brightnessWidget.addListener(notice -> {
         BrightnessFilter.setBrightness(notice.value.getDouble());
@@ -67,7 +67,8 @@ public class NeoPixels {
   public void setBaseAnimation(Animation animation) {
     if (coordinator == null)
       return;
-    coordinator.setBase(animation);
+    coordinator.popAnimation("Base");
+    coordinator.pushAnimation("Base", animation, 0, false);
   }
 
   public void selectHatchPresetMode() {
@@ -76,7 +77,7 @@ public class NeoPixels {
     if (coordinator.hasAnimation("cargo_preset_mode"))
       coordinator.popAnimation("cargo_preset_mode");
     if (!coordinator.hasAnimation("hatch_preset_mode"))
-      coordinator.pushAnimation("hatch_preset_mode", hatch_preset_mode_overlay, true);
+      coordinator.pushAnimation("hatch_preset_mode", hatch_preset_mode_overlay, 10, true);
   }
 
   public void selectCargoPresetMode() {
@@ -85,7 +86,7 @@ public class NeoPixels {
     if (coordinator.hasAnimation("hatch_preset_mode"))
       coordinator.popAnimation("hatch_preset_mode");
     if (!coordinator.hasAnimation("cargo_preset_mode"))
-      coordinator.pushAnimation("cargo_preset_mode", cargo_preset_mode_overlay, true);
+      coordinator.pushAnimation("cargo_preset_mode", cargo_preset_mode_overlay, 10, true);
   }
 
 }
