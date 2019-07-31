@@ -28,6 +28,7 @@ import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
 import frc.robot.utils.NeoPixels;
+import jaci.pathfinder.Waypoint;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
   public static ControlChooser controlChooser;
   public static DriveSubsystem driveSystem;
   public static Command visionDrive;
+  public static Command pathFollow;
   public static Arm arm;
   public static Wrist wrist;
   public static CargoIntake cargoIntake;
@@ -81,7 +83,9 @@ public class Robot extends TimedRobot {
     driveCommand = new DriveCommand();
     armCommand = new ArmPositioning();
     limelight = new Limelight();
+
     visionDrive = new VisionDrive();
+    pathFollow = new FollowPath(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, 0, 0) }, 1);
 
     neoPixels = new NeoPixels();
     animationChooser = new LEDAnimationChooser();
@@ -147,10 +151,9 @@ public class Robot extends TimedRobot {
       case VISION_DRIVE:
         visionDrive.start();
         break;
-
-      case DEFAULT_PATH:
-        // Do path stuff
-        // break; // Commented so that it will just fall through to the teleop mode
+      case PATH_FOLLOW:
+        pathFollow.start();
+        break;
       case TELEOP:
       default:
         driveCommand.start();
@@ -196,6 +199,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
+    System.out.format("Yaw: %.2f LDist:%.2f RDist:%.2f\n", RobotMap.navx.getAngle(),
+        RobotMap.leftDriveEncoder.getDistance(), RobotMap.rightDriveEncoder.getDistance());
+
     // testMax.periodic();
     /*
      * boolean kick = controlChooser.getSelected().getKick();

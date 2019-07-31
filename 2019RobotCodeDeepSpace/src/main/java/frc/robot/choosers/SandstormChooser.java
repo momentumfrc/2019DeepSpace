@@ -13,7 +13,7 @@ public class SandstormChooser extends SendableChooser<SandstormMode> {
 
     setDefaultOption("Teleop Control", SandstormMode.TELEOP);
     addOption("Vision Drive", SandstormMode.VISION_DRIVE);
-    addOption("Default", SandstormMode.DEFAULT_PATH);
+    addOption("Path Follow", SandstormMode.PATH_FOLLOW);
 
     RobotMap.matchTab.add(NAME, this).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(6, 1).withSize(2, 1);
   }

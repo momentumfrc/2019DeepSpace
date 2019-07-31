@@ -31,7 +31,7 @@ public class FollowPath extends Command {
 
   // TODO: Tune these values
   private static final double MAX_ROBOT_VELOCITY = 12.0; // feet per second
-  private static final double ROBOT_WHEELBASE_WIDTH = 1.5; // feet
+  private static final double ROBOT_WHEELBASE_WIDTH = 1.88541667; // feet
 
   private static final double KP = 1.0;
   private static final double KD = 0.0;
