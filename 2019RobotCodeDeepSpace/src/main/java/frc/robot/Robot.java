@@ -28,6 +28,7 @@ import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPerfMon;
 import frc.robot.utils.MoPrefs;
 import frc.robot.utils.NeoPixels;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 import frc.robot.subsystems.Arm;
 
@@ -85,7 +86,10 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
 
     visionDrive = new VisionDrive();
-    pathFollow = new FollowPath(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, 0, 0) }, 1);
+    pathFollow = new FollowPath(
+        new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, 0, 0), new Waypoint(4.943, 0.943, Pathfinder.d2r(90)),
+            new Waypoint(4, 1.886, Pathfinder.d2r(180)), new Waypoint(0, 0, Pathfinder.d2r(180)) },
+        1);
 
     neoPixels = new NeoPixels();
     animationChooser = new LEDAnimationChooser();

@@ -25,7 +25,7 @@ public class FollowPath extends Command {
 
   private static final double POWER_LIMIT = 0.4;
 
-  private static final double TRAJECTORY_DT = 0.02; // seconds
+  private static final double TRAJECTORY_DT = 0.04; // seconds
   private static final double MAX_PLANNED_ACCELERATION = 2.0; // feet per second ^ 2
   private static final double MAX_PLANNED_JERK = 60.0; // feet per second ^ 3
 
@@ -39,7 +39,7 @@ public class FollowPath extends Command {
 
   // This is the kP multiplied by the heading error to turn the robot
   // Not sure why it's broken up like this, but it's what's in the wiki
-  private static final double K_TURN = 0.8 * (-1.0 / 80.0);
+  private static final double K_TURN = 0.30 * (-1.0 / 80.0);
 
   private Encoder left_encoder = RobotMap.leftDriveEncoder;
   private Encoder right_encoder = RobotMap.rightDriveEncoder;
@@ -72,7 +72,7 @@ public class FollowPath extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
+    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST,
         TRAJECTORY_DT, max_planned_velocity, MAX_PLANNED_ACCELERATION, MAX_PLANNED_JERK);
     trajectory = Pathfinder.generate(points, config);
     modifier = new TankModifier(trajectory).modify(ROBOT_WHEELBASE_WIDTH);
