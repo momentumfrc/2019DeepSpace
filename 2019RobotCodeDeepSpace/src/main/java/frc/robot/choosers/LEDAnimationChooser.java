@@ -14,8 +14,14 @@ public class LEDAnimationChooser extends SendableChooser<Animation> {
   public LEDAnimationChooser() {
     super();
 
+    if (Robot.neoPixels == null) {
+      System.out.println("Robot.neoPixels must be initialized before the LEDAnimationChooser!");
+      return;
+    }
+
     setDefaultOption("Rainbow", Robot.neoPixels.rainbow);
     addOption("Momentum", Robot.neoPixels.momentum);
+    addOption("LED Indexer", Robot.neoPixels.ledIndexer);
 
     RobotMap.outreachTab.add("LED Animation", this).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 1)
         .withSize(1, 2);

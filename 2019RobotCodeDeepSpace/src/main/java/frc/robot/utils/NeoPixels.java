@@ -38,6 +38,8 @@ public class NeoPixels {
               40), },
       new int[] { 5000, 5000, 10000, 5000 });
 
+  public final Animation ledIndexer;
+
   /* END BASE ANIMATION OPTIONS */
 
   private final Animation hatch_preset_mode_overlay = new ClippedAnimation(new Solid(Color.GREEN),
@@ -62,6 +64,15 @@ public class NeoPixels {
         animator = null;
       }
     }
+
+    Color[] indexColors = new Color[10];
+    for (int i = 0; i < 5; i++) {
+      indexColors[i] = Color.WHITE;
+    }
+    for (int i = 5; i < 10; i++) {
+      indexColors[i] = Color.BLACK;
+    }
+    ledIndexer = new Solid(indexColors);
   }
 
   public void setBaseAnimation(Animation animation) {
