@@ -24,7 +24,7 @@ public class LEDAnimationChooser extends SendableChooser<Animation> {
     addOption("LED Indexer", Robot.neoPixels.ledIndexer);
 
     RobotMap.outreachTab.add("LED Animation", this).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 1)
-        .withSize(1, 2);
+        .withSize(2, 1);
 
     currentlySet = getSelected();
   }
@@ -36,5 +36,4 @@ public class LEDAnimationChooser extends SendableChooser<Animation> {
       Robot.neoPixels.setBaseAnimation(selected);
     }
   }
-
 }

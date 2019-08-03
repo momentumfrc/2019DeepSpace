@@ -26,8 +26,8 @@ public class NeoPixels {
       new Color(255, 127, 0), Color.RED };
 
   public final Animation rainbow = new AnimationSequence(new Animation[] { Snake.rainbowSnake(70),
-      Fade.rainbowFade(100, 20), new Bounce(Color.WHITE, rainbowcolors, 20, 50), new Stack(rainbowcolors, 25, 40),
-      new BounceStack(rainbowcolors, 7, 40) }, new int[] { 5000, 5000, 10000, 10000, 10000 });
+      Fade.rainbowFade(100, 20), new Bounce(Color.WHITE, rainbowcolors, 40, 50), new Stack(rainbowcolors, 50, 40),
+      new BounceStack(rainbowcolors, 20, 40) }, new int[] { 5000, 5000, 10000, 10000, 10000 });
 
   public final Animation momentum = new AnimationSequence(
       new Animation[] { Snake.twoColorSnake(Color.MOMENTUM_PURPLE, Color.MOMENTUM_BLUE, 1, 5, 2, 40),
@@ -39,6 +39,8 @@ public class NeoPixels {
       new int[] { 5000, 5000, 10000, 5000 });
 
   public final Animation ledIndexer;
+
+  public final Animation blinkRed = new Blink(new Color[] { Color.RED, Color.BLACK }, 50);
 
   /* END BASE ANIMATION OPTIONS */
 
@@ -85,8 +87,6 @@ public class NeoPixels {
   public void selectHatchPresetMode() {
     if (coordinator == null)
       return;
-    if (coordinator.hasAnimation("cargo_preset_mode"))
-      coordinator.popAnimation("cargo_preset_mode");
     if (!coordinator.hasAnimation("hatch_preset_mode"))
       coordinator.pushAnimation("hatch_preset_mode", hatch_preset_mode_overlay, 10, true);
   }
@@ -94,10 +94,23 @@ public class NeoPixels {
   public void selectCargoPresetMode() {
     if (coordinator == null)
       return;
-    if (coordinator.hasAnimation("hatch_preset_mode"))
-      coordinator.popAnimation("hatch_preset_mode");
     if (!coordinator.hasAnimation("cargo_preset_mode"))
       coordinator.pushAnimation("cargo_preset_mode", cargo_preset_mode_overlay, 10, true);
+  }
+
+  public void disabled() {
+    if (coordinator == null)
+      return;
+    if (coordinator.hasAnimation("hatch_preset_mode"))
+      coordinator.popAnimation("hatch_preset_mode");
+    if (coordinator.hasAnimation("cargo_preset_mode"))
+      coordinator.popAnimation("cargo_preset_mode");
+  }
+
+  public void brownedOut() {
+    if (coordinator == null)
+      return;
+    coordinator.pushAnimation("Brownout", blinkRed, 1000, false);
   }
 
 }

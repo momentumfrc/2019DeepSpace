@@ -7,7 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.triggers.*;
 //import frc.robot.commands.arm.KillArm;
 import frc.robot.commands.hatchactive.*;
@@ -57,6 +59,8 @@ public class OI {
 
   Trigger intake = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getIntakeCargo());
 
+  Trigger brownout = new BooleanTrigger(() -> RobotController.isBrownedOut());
+
   public OI() {
     // overtemp.whenActive(new KillArm());
 
@@ -70,6 +74,12 @@ public class OI {
 
     intake.whenActive(new GrabCargo());
     intake.whenInactive(new HoldCargo());
+
+    brownout.whenActive(new InstantCommand() {
+      protected void initialize() {
+        Robot.neoPixels.brownedOut();
+      }
+    });
 
   }
 }
