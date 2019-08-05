@@ -22,6 +22,7 @@ public class LEDAnimationChooser extends SendableChooser<Animation> {
     setDefaultOption("Rainbow", Robot.neoPixels.rainbow);
     addOption("Momentum", Robot.neoPixels.momentum);
     addOption("LED Indexer", Robot.neoPixels.ledIndexer);
+    addOption("Socket Listener", Robot.neoPixels.socketListener);
 
     RobotMap.outreachTab.add("LED Animation", this).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 1)
         .withSize(2, 1);

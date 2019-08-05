@@ -12,8 +12,10 @@ import frc.robot.RobotMap;
 
 public class NeoPixels {
 
-  private static final int PRESET_MODE_OVERLAY_START = 20;
-  private static final int PRESET_MODE_OVERLAY_LENGTH = 40;
+  private static final int PRESET_MODE_OVERLAY_1_START = 73;
+  private static final int PRESET_MODE_OVERLAY_1_LENGTH = 100 - PRESET_MODE_OVERLAY_1_START;
+  private static final int PRESET_MODE_OVERLAY_2_START = 173;
+  private static final int PRESET_MODE_OVERLAY_2_LENGTH = 240 - PRESET_MODE_OVERLAY_2_START;
 
   private Animator animator;
   private AnimationCoordinator coordinator;
@@ -38,16 +40,20 @@ public class NeoPixels {
               40), },
       new int[] { 5000, 5000, 10000, 5000 });
 
+  public final Animation socketListener = new SocketListener();
+
   public final Animation ledIndexer;
 
   public final Animation blinkRed = new Blink(new Color[] { Color.RED, Color.BLACK }, 50);
 
   /* END BASE ANIMATION OPTIONS */
 
-  private final Animation hatch_preset_mode_overlay = new ClippedAnimation(new Solid(Color.GREEN),
-      PRESET_MODE_OVERLAY_START, PRESET_MODE_OVERLAY_LENGTH);
-  private final Animation cargo_preset_mode_overlay = new ClippedAnimation(new Solid(Color.YELLOW),
-      PRESET_MODE_OVERLAY_START, PRESET_MODE_OVERLAY_LENGTH);
+  private final Animation hatch_preset_mode_overlay = new Overlay(new Animation[] {
+      new ClippedAnimation(new Solid(Color.YELLOW), PRESET_MODE_OVERLAY_1_START, PRESET_MODE_OVERLAY_1_LENGTH),
+      new ClippedAnimation(new Solid(Color.YELLOW), PRESET_MODE_OVERLAY_2_START, PRESET_MODE_OVERLAY_2_LENGTH) });
+  private final Animation cargo_preset_mode_overlay = new Overlay(new Animation[] {
+      new ClippedAnimation(new Solid(Color.RED), PRESET_MODE_OVERLAY_1_START, PRESET_MODE_OVERLAY_1_LENGTH),
+      new ClippedAnimation(new Solid(Color.RED), PRESET_MODE_OVERLAY_2_START, PRESET_MODE_OVERLAY_2_LENGTH) });
 
   public NeoPixels() {
     // Put this in a try-catch because a LED error shouldn't crash the whole robot
@@ -87,15 +93,19 @@ public class NeoPixels {
   public void selectHatchPresetMode() {
     if (coordinator == null)
       return;
-    if (!coordinator.hasAnimation("hatch_preset_mode"))
+    if (!coordinator.hasAnimation("hatch_preset_mode")) {
       coordinator.pushAnimation("hatch_preset_mode", hatch_preset_mode_overlay, 10, true);
+      System.out.println("Set hatch preset mode animation");
+    }
   }
 
   public void selectCargoPresetMode() {
     if (coordinator == null)
       return;
-    if (!coordinator.hasAnimation("cargo_preset_mode"))
+    if (!coordinator.hasAnimation("cargo_preset_mode")) {
       coordinator.pushAnimation("cargo_preset_mode", cargo_preset_mode_overlay, 10, true);
+      System.out.println("Set cargo preset mode animation");
+    }
   }
 
   public void disabled() {
