@@ -40,8 +40,6 @@ public class NeoPixels {
               40), },
       new int[] { 5000, 5000, 10000, 5000 });
 
-  public final Animation socketListener = new SocketListener();
-
   public final Animation ledIndexer;
 
   public final Animation blinkRed = new Blink(new Color[] { Color.RED, Color.BLACK }, 50);
