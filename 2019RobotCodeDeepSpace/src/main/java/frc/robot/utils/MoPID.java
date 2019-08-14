@@ -53,9 +53,9 @@ public class MoPID {
     ShuffleboardLayout layout = tab.getLayout(name, BuiltInLayouts.kGrid).withPosition(col, row).withSize(WIDTH,
         HEIGHT);
     wkP = layout.add("kP", kP).withPosition(0, 0).getEntry();
-    wkI = layout.add("kI", kI).withPosition(1, 0).getEntry();
-    wkD = layout.add("kD", kD).withPosition(2, 0).getEntry();
-    wkFF = layout.add("kF", kF).withPosition(0, 1).getEntry();
+    wkI = layout.add("kI", kI).withPosition(0, 1).getEntry();
+    wkD = layout.add("kD", kD).withPosition(0, 2).getEntry();
+    wkFF = layout.add("kF", kF).withPosition(1, 0).getEntry();
     wiErrZone = layout.add("Integral Error Zone", iErrZone).withPosition(1, 1).getEntry();
 
     wkP.addListener(notice -> setP(notice.value.getDouble()), EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);

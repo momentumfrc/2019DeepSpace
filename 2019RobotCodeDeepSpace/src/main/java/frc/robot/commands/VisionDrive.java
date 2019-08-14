@@ -33,18 +33,21 @@ public class VisionDrive extends Command {
     LimelightData data = limelight.getData();
     double turnRequest;
     double moveRequest;
+    double distance;
 
     if (data.valid()) {
-      turnRequest = Utils.map(data.xCoord(), -Limelight.RANGE_X, Limelight.RANGE_X, -1.0, 1.0);
+      turnRequest = 0; // Utils.map(data.xCoord(), -Limelight.RANGE_X, Limelight.RANGE_X, -1.0, 1.0);
       moveRequest = 0; // Utils.map(data.dist(), -Limelight.RANGE_Y, Limelight.RANGE_Y, -1.0, 1.0);
+      distance = data.dist();
       met = false; // data.targetMet();
 
     } else {
       turnRequest = 0;
       moveRequest = 0;
+      distance = 0;
       met = false;
     }
-    System.out.format("turnRequest:%.02f  moveRequest:%.02f\n", turnRequest, moveRequest);
+    System.out.format("Target Distance:%.02f\n", distance);
     drive.arcadeDrive(moveRequest, turnRequest, MAX_DRIVE);
   }
 

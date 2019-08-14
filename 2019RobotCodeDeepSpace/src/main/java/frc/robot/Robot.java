@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
     sandstormChooser = new SandstormChooser();
     driveCommand = new DriveCommand();
     armCommand = new ArmPositioning();
-    limelight = new Limelight();
+    limelight = new Limelight(RobotMap.testTab, 6, 0);
     visionDrive = new VisionDrive();
 
     neoPixels = new NeoPixels();
