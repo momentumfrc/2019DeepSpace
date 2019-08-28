@@ -30,7 +30,7 @@ public class Arm extends Subsystem {
   private CANPIDController p_arm = m_Arm.getPIDController();
   private CANDigitalInput limitSwitch;
 
-  private final NetworkTableEntry zeroWidget;
+  private final NetworkTableEntry zeroWidget, positionWidget;
   private boolean reliableZero = false; // the arm has a reliable zero setpoint
   private double armPos = 0;
   private IdleMode idleMode = IdleMode.kCoast;
@@ -85,11 +85,12 @@ public class Arm extends Subsystem {
     p_arm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     p_arm.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, smartMotionSlot);
 
-    limitSwitch = m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+    limitSwitch = m_Arm.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
     limitSwitch.enableLimitSwitch(enableLimit);
-    m_Arm.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    m_Arm.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     m_Arm.setInverted(RobotMap.armInverted);
     zeroWidget = RobotMap.matchTab.add("Arm Has Zero", false).withPosition(0, 0).getEntry();
+    positionWidget = RobotMap.testTab.add("Arm Position", 0.0).withPosition(1, 2).getEntry();
     /*
      * zeroWidget.addListener(notice -> { if (!notice.value.getBoolean()) {
      * reliableZero = false; } }, EntryListenerFlags.kNew |
@@ -188,6 +189,7 @@ public class Arm extends Subsystem {
       zeroArm();
     }
     zeroWidget.setBoolean(hasReliableZero());
+    positionWidget.setDouble(getArmPos());
   }
 
 }

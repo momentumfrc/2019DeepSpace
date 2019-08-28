@@ -75,7 +75,7 @@ public class Wrist extends Subsystem {
     limitSwitch.enableLimitSwitch(enableLimit);
     m_Wrist.setInverted(RobotMap.wristInverted);
     zeroWidget = RobotMap.matchTab.add("Wrist Has Zero", false).withPosition(0, 1).getEntry();
-    positionWidget = RobotMap.testTab.add("Wrist Position", 0.0).withPosition(0, 3).getEntry();
+    positionWidget = RobotMap.testTab.add("Wrist Position", 0.0).withPosition(0, 2).getEntry();
     /*
      * zeroWidget.addListener(notice -> { if (!notice.value.getBoolean()) {
      * reliableZero = false; } }, EntryListenerFlags.kNew |
