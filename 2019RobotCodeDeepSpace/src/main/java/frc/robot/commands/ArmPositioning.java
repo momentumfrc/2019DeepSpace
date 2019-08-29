@@ -139,7 +139,7 @@ public class ArmPositioning extends Command {
     void findNextBestPreset(double armPos) {
       for (int i = 0; i < presets.size(); ++i) {
         Preset p = presets.get(i);
-        if (p.isValid() && p.getArmPos() >= armPos) {
+        if (p.isValid() && p.getArmPos() <= armPos) {
           currentIx = i;
           return;
         }
@@ -153,7 +153,7 @@ public class ArmPositioning extends Command {
     void findPrevBestPreset(double armPos) {
       for (int i = presets.size(); --i >= 0;) {
         Preset p = presets.get(i);
-        if (p.isValid() && p.getArmPos() <= armPos) {
+        if (p.isValid() && p.getArmPos() >= armPos) {
           currentIx = i;
           return;
         }
