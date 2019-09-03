@@ -59,7 +59,16 @@ public class OI {
 
   Trigger intake = new BooleanTrigger(() -> Robot.controlChooser.getSelected().getIntakeCargo());
 
-  Trigger brownout = new BooleanTrigger(() -> RobotController.isBrownedOut());
+  long lastBrownOut = System.currentTimeMillis();
+  int brownOutTimeout = 500;
+  Trigger brownout = new BooleanTrigger(() -> {
+    if (RobotController.isBrownedOut()) {
+      return System.currentTimeMillis() - lastBrownOut > brownOutTimeout;
+    } else {
+      lastBrownOut = System.currentTimeMillis();
+      return false;
+    }
+  });
 
   public OI() {
     // overtemp.whenActive(new KillArm());
