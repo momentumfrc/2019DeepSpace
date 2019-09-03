@@ -215,10 +215,14 @@ public class ArmPositioning extends Command {
       manualMode = true;
     }
 
-    if (currentPresetGroup == hatchPresetGroup)
-      Robot.neoPixels.selectHatchPresetMode();
-    else if (currentPresetGroup == cargoPresetGroup)
-      Robot.neoPixels.selectCargoPresetMode();
+    if (manualMode) {
+      Robot.neoPixels.disablePresetIndicator();
+    } else {
+      if (currentPresetGroup == hatchPresetGroup)
+        Robot.neoPixels.selectHatchPresetMode();
+      else if (currentPresetGroup == cargoPresetGroup)
+        Robot.neoPixels.selectCargoPresetMode();
+    }
 
     // Dig into the current preset settings
     Preset preset = currentPresetGroup.getCurrentPreset();

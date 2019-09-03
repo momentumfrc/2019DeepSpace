@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     animationChooser.poll();
+    neoPixels.limitSwitches();
   }
 
   /**
@@ -123,7 +124,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    neoPixels.disabled();
+    neoPixels.disablePresetIndicator();
   }
 
   /**

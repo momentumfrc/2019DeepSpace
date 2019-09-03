@@ -8,14 +8,15 @@ import org.usfirst.frc.team4999.lights.animations.*;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class NeoPixels {
 
-  private static final int PRESET_MODE_OVERLAY_1_START = 73;
-  private static final int PRESET_MODE_OVERLAY_1_LENGTH = 100 - PRESET_MODE_OVERLAY_1_START;
-  private static final int PRESET_MODE_OVERLAY_2_START = 173;
-  private static final int PRESET_MODE_OVERLAY_2_LENGTH = 240 - PRESET_MODE_OVERLAY_2_START;
+  private static final int SUPPORT_OVERLAY_1_START = 0;
+  private static final int SUPPORT_OVERLAY_1_LENGTH = 72 - SUPPORT_OVERLAY_1_START;
+  private static final int SUPPORT_OVERLAY_2_START = 100;
+  private static final int SUPPORT_OVERLAY_2_LENGTH = 180 - SUPPORT_OVERLAY_2_START;
 
   private Animator animator;
   private AnimationCoordinator coordinator;
@@ -48,12 +49,15 @@ public class NeoPixels {
 
   /* END BASE ANIMATION OPTIONS */
 
-  private final Animation hatch_preset_mode_overlay = new Overlay(new Animation[] {
-      new ClippedAnimation(new Solid(Color.YELLOW), PRESET_MODE_OVERLAY_1_START, PRESET_MODE_OVERLAY_1_LENGTH),
-      new ClippedAnimation(new Solid(Color.YELLOW), PRESET_MODE_OVERLAY_2_START, PRESET_MODE_OVERLAY_2_LENGTH) });
-  private final Animation cargo_preset_mode_overlay = new Overlay(new Animation[] {
-      new ClippedAnimation(new Solid(Color.RED), PRESET_MODE_OVERLAY_1_START, PRESET_MODE_OVERLAY_1_LENGTH),
-      new ClippedAnimation(new Solid(Color.RED), PRESET_MODE_OVERLAY_2_START, PRESET_MODE_OVERLAY_2_LENGTH) });
+  private final Animation hatch_preset_mode_overlay = new ClippedAnimation(new Solid(Color.YELLOW),
+      SUPPORT_OVERLAY_1_START, SUPPORT_OVERLAY_1_LENGTH);
+  private final Animation cargo_preset_mode_overlay = new ClippedAnimation(new Solid(Color.GREEN),
+      SUPPORT_OVERLAY_1_START, SUPPORT_OVERLAY_1_LENGTH);
+
+  private final Animation arm_limit_switch_overlay = new ClippedAnimation(new Solid(new Color(139, 0, 255)),
+      SUPPORT_OVERLAY_1_START, SUPPORT_OVERLAY_1_LENGTH);
+  private final Animation wrist_limit_switch_overlay = new ClippedAnimation(new Solid(Color.BLUE),
+      SUPPORT_OVERLAY_2_START, SUPPORT_OVERLAY_2_LENGTH);
 
   public NeoPixels() {
     // Put this in a try-catch because a LED error shouldn't crash the whole robot
@@ -108,13 +112,38 @@ public class NeoPixels {
     }
   }
 
-  public void disabled() {
+  public void disablePresetIndicator() {
     if (coordinator == null)
       return;
     if (coordinator.hasAnimation("hatch_preset_mode"))
       coordinator.popAnimation("hatch_preset_mode");
     if (coordinator.hasAnimation("cargo_preset_mode"))
       coordinator.popAnimation("cargo_preset_mode");
+  }
+
+  public void limitSwitches() {
+    if (coordinator == null)
+      return;
+
+    if (!Robot.arm.hasReliableZero()) {
+      if (!coordinator.hasAnimation("arm_limit_switch")) {
+        coordinator.pushAnimation("arm_limit_switch", arm_limit_switch_overlay, 15, true);
+      }
+    } else {
+      if (coordinator.hasAnimation("arm_limit_switch")) {
+        coordinator.popAnimation("arm_limit_switch");
+      }
+    }
+
+    if (!Robot.wrist.hasReliableZero()) {
+      if (!coordinator.hasAnimation("wrist_limit_switch")) {
+        coordinator.pushAnimation("wrist_limit_switch", wrist_limit_switch_overlay, 16, true);
+      }
+    } else {
+      if (coordinator.hasAnimation("wrist_limit_switch")) {
+        coordinator.popAnimation("wrist_limit_switch");
+      }
+    }
   }
 
   public void brownedOut() {
