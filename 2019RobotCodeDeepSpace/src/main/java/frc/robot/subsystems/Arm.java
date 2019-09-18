@@ -17,8 +17,7 @@ import frc.robot.utils.Utils;
 
 /*
 Positive away from limit switch
-Wire to reverse limit switch if motor is not inverted.
-Wire to forward limit switch if motor is inverted. <--
+Wire to reverse limit switch
 
 Invert motor in code in RobotMap.
 */

@@ -61,6 +61,18 @@
               "imageWidth": -1,
               "imageHeight": -1
             }
+          },
+          "6,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "Preferences",
+              "Miscellaneous/Show search box": true
+            }
           }
         }
       }

@@ -70,8 +70,8 @@ public class DriveSubsystem extends Subsystem {
       turnRequest *= speedLimiter;
 
       // Scale getMoveRate to match moveRequest. Likewise for turn.
-      double moveRate = getMoveRate() / 12.0; // TODO measure actual max rate
-      double turnRate = getTurnRate() / 12.0; // TODO measure actual max rate
+      double moveRate = getMoveRate() / 12.0; // max rate is roughly 12 fps
+      double turnRate = getTurnRate() / 12.0; // max rate is roughly 12 fps
 
       // Calculate drive
       double move = pidEnabled ? movePID.calculate(moveRequest, moveRate) : moveRequest;

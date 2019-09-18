@@ -9,10 +9,10 @@ public class MoPrefs {
   // = 100 ticks/revolution = pi * 6" = 18.85" = 1.57'
   public static final double DRIVE_ENC_TICKS_PER_FOOT = 63.66;
 
-  public static final double MAX_ARM_ROTATION = 0.40; // TODO MAX encoder is in units of rotations
+  public static final double MAX_ARM_ROTATION = 0.660; // MAX encoder is in units of rotations
   public static final double MIN_ARM_ROTATION = 0;
 
-  public static final double MAX_WRIST_ROTATION = 0.52; // MAX encoder is in units of rotations
+  public static final double MAX_WRIST_ROTATION = 0.520; // MAX encoder is in units of rotations
   public static final double MIN_WRIST_ROTATION = 0;
 
   public static final double MAX_MOTOR_TEMP = 10;
