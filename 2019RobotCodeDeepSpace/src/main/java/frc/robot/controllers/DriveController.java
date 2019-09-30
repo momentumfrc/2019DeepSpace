@@ -109,4 +109,22 @@ public interface DriveController {
    */
   public abstract boolean getCargoGamepiecePressed();
 
+  /**
+   * Get if the arm should select a specific preset by name
+   * 
+   * @return If this preset is selected
+   */
+  public abstract boolean getSelectPresetHatchGround();
+
+  public abstract boolean getSelectPresetHatch1();
+
+  public abstract boolean getSelectPresetHatch2();
+
+  public abstract boolean getSelectPresetCargoGround();
+
+  public abstract boolean getSelectPresetCargo1();
+
+  public abstract boolean getSelectPresetCargo2();
+
+  public abstract boolean getSelectPresetCargoBay();
 }

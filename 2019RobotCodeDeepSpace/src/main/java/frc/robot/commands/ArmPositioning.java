@@ -134,6 +134,11 @@ public class ArmPositioning extends Command {
       }
     }
 
+    void selectPreset(int ix) {
+      if (ix >= 0 && ix < presets.size())
+        currentIx = ix;
+    }
+
     /// Search for the next higher preset from the current arm position.
     /// Assumes that arm positions are sorted
     void findNextBestPreset(double armPos) {
@@ -190,6 +195,11 @@ public class ArmPositioning extends Command {
     currentPresetGroup = hatchPresetGroup;
   }
 
+  private void selectPreset(PresetGroup group, int ix) {
+    currentPresetGroup = group;
+    currentPresetGroup.selectPreset(ix);
+  }
+
   @Override
   protected void execute() {
     // Get all the controller inputs
@@ -200,11 +210,20 @@ public class ArmPositioning extends Command {
     boolean cargoGamepieceSelected = controller.getCargoGamepiecePressed();
     boolean presetIncreased = controller.getPresetIncreasedPressed();
     boolean presetDecreased = controller.getPresetDecreasedPressed();
+    boolean selectPresetHatchGround = controller.getSelectPresetHatchGround();
+    boolean selectPresetHatch1 = controller.getSelectPresetHatch1();
+    boolean selectPresetHatch2 = controller.getSelectPresetHatch2();
+    boolean selectPresetCargoGround = controller.getSelectPresetCargoGround();
+    boolean selectPresetCargo1 = controller.getSelectPresetCargo1();
+    boolean selectPresetCargo2 = controller.getSelectPresetCargo2();
+    boolean selectPresetCargoBay = controller.getSelectPresetCargoBay();
     boolean savePreset = controller.getSavePreset();
 
     // Interpret driver initiated changes
     boolean manualOverride = manualArmSpeed != 0.0 || manualWristSpeed != 0.0;
-    boolean presetRequested = presetIncreased || presetDecreased;
+    boolean presetRequested = presetIncreased || presetDecreased || selectPresetHatchGround || selectPresetHatch1
+        || selectPresetHatch2 || selectPresetCargoGround || selectPresetCargo1 || selectPresetCargo2
+        || selectPresetCargoBay;
 
     if (hatchGamepieceSelected) {
       currentPresetGroup = hatchPresetGroup;
@@ -213,15 +232,6 @@ public class ArmPositioning extends Command {
     if (cargoGamepieceSelected) {
       currentPresetGroup = cargoPresetGroup;
       manualMode = true;
-    }
-
-    if (manualMode) {
-      Robot.neoPixels.disablePresetIndicator();
-    } else {
-      if (currentPresetGroup == hatchPresetGroup)
-        Robot.neoPixels.selectHatchPresetMode();
-      else if (currentPresetGroup == cargoPresetGroup)
-        Robot.neoPixels.selectCargoPresetMode();
     }
 
     // Dig into the current preset settings
@@ -239,6 +249,20 @@ public class ArmPositioning extends Command {
           currentPresetGroup.findPrevBestPreset(arm.getArmPos());
         else
           currentPresetGroup.prevPreset();
+      } else if (selectPresetHatchGround) {
+        selectPreset(hatchPresetGroup, 0);
+      } else if (selectPresetHatch1) {
+        selectPreset(hatchPresetGroup, 1);
+      } else if (selectPresetHatch2) {
+        selectPreset(hatchPresetGroup, 2);
+      } else if (selectPresetCargoGround) {
+        selectPreset(cargoPresetGroup, 0);
+      } else if (selectPresetCargo1) {
+        selectPreset(cargoPresetGroup, 1);
+      } else if (selectPresetCargo2) {
+        selectPreset(cargoPresetGroup, 2);
+      } else if (selectPresetCargoBay) {
+        selectPreset(cargoPresetGroup, 3);
       }
 
       /*
@@ -281,6 +305,16 @@ public class ArmPositioning extends Command {
     presetModeWidget.setBoolean(!manualMode);
     presetNameWidget.setString(preset.getName());
     presetValidWidget.setBoolean(preset.isValid());
+
+    // Set LEDs
+    if (manualMode) {
+      Robot.neoPixels.disablePresetIndicator();
+    } else {
+      if (currentPresetGroup == hatchPresetGroup)
+        Robot.neoPixels.selectHatchPresetMode();
+      else if (currentPresetGroup == cargoPresetGroup)
+        Robot.neoPixels.selectCargoPresetMode();
+    }
   }
 
   @Override
