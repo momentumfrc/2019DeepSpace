@@ -2,6 +2,10 @@ package frc.robot.controllers;
 
 public interface DriveController {
 
+  public enum PresetOption {
+    NONE, HATCH_GROUND, HATCH_1, HATCH_2, CARGO_GROUND, CARGO_1, CARGO_2, CARGO_BAY
+  };
+
   /**
    * Gets the current speed the robot should move at
    * 
@@ -110,21 +114,9 @@ public interface DriveController {
   public abstract boolean getCargoGamepiecePressed();
 
   /**
-   * Get if the arm should select a specific preset by name
+   * Get if the arm/wrist should select a specific preset by name
    * 
-   * @return If this preset is selected
+   * @return The preset to select
    */
-  public abstract boolean getSelectPresetHatchGround();
-
-  public abstract boolean getSelectPresetHatch1();
-
-  public abstract boolean getSelectPresetHatch2();
-
-  public abstract boolean getSelectPresetCargoGround();
-
-  public abstract boolean getSelectPresetCargo1();
-
-  public abstract boolean getSelectPresetCargo2();
-
-  public abstract boolean getSelectPresetCargoBay();
+  public abstract PresetOption getSelectedPreset();
 }
