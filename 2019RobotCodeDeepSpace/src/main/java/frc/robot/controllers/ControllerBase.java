@@ -15,9 +15,8 @@ import static frc.robot.utils.Utils.*;
  */
 public class ControllerBase implements DriveController {
 
-  XboxController xbox = RobotMap.xbox;
-  LogitechF310 f310 = RobotMap.f310;
-  ButtonBoard buttonBoard = RobotMap.buttonBoard;
+  protected XboxController xbox = RobotMap.xbox;
+  protected LogitechF310 f310 = RobotMap.f310;
 
   static final double MOVE_CURVE = 2.5;
   static final double TURN_CURVE = 2.5;
@@ -141,38 +140,8 @@ public class ControllerBase implements DriveController {
   }
 
   @Override
-  public boolean getSelectPresetHatchGround() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetHatch1() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetHatch2() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetCargoGround() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetCargo1() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetCargo2() {
-    return false;
-  }
-
-  @Override
-  public boolean getSelectPresetCargoBay() {
-    return false;
+  public PresetOption getSelectedPreset() {
+    return PresetOption.NONE;
   }
 
 }

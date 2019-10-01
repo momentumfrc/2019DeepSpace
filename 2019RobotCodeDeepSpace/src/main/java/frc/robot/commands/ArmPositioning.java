@@ -13,6 +13,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.choosers.ControlChooser;
 import frc.robot.controllers.DriveController;
+import frc.robot.controllers.DriveController.PresetOption;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist;
 import frc.robot.utils.MoPrefs;
@@ -114,8 +115,10 @@ public class ArmPositioning extends Command {
   private class PresetGroup {
     private int currentIx = 0;
     private ArrayList<Preset> presets;
+    private String groupName;
 
     PresetGroup(String groupName, String... presetNames) {
+      this.groupName = groupName;
       presets = new ArrayList<Preset>();
       for (String name : presetNames) {
         presets.add(new Preset(groupName + "_" + name));
@@ -134,9 +137,21 @@ public class ArmPositioning extends Command {
       }
     }
 
+    @SuppressWarnings("unused")
     void selectPreset(int ix) {
       if (ix >= 0 && ix < presets.size())
         currentIx = ix;
+    }
+
+    void selectPreset(String name) {
+      String fullname = groupName + "_" + name;
+      for (int i = 0; i > presets.size(); i++) {
+        Preset p = presets.get(i);
+        if (p.getName().equals(fullname)) {
+          currentIx = i;
+          return;
+        }
+      }
     }
 
     /// Search for the next higher preset from the current arm position.
@@ -195,9 +210,9 @@ public class ArmPositioning extends Command {
     currentPresetGroup = hatchPresetGroup;
   }
 
-  private void selectPreset(PresetGroup group, int ix) {
+  private void selectPreset(PresetGroup group, String name) {
     currentPresetGroup = group;
-    currentPresetGroup.selectPreset(ix);
+    currentPresetGroup.selectPreset(name);
   }
 
   @Override
@@ -210,20 +225,12 @@ public class ArmPositioning extends Command {
     boolean cargoGamepieceSelected = controller.getCargoGamepiecePressed();
     boolean presetIncreased = controller.getPresetIncreasedPressed();
     boolean presetDecreased = controller.getPresetDecreasedPressed();
-    boolean selectPresetHatchGround = controller.getSelectPresetHatchGround();
-    boolean selectPresetHatch1 = controller.getSelectPresetHatch1();
-    boolean selectPresetHatch2 = controller.getSelectPresetHatch2();
-    boolean selectPresetCargoGround = controller.getSelectPresetCargoGround();
-    boolean selectPresetCargo1 = controller.getSelectPresetCargo1();
-    boolean selectPresetCargo2 = controller.getSelectPresetCargo2();
-    boolean selectPresetCargoBay = controller.getSelectPresetCargoBay();
+    PresetOption selectedPreset = controller.getSelectedPreset();
     boolean savePreset = controller.getSavePreset();
 
     // Interpret driver initiated changes
     boolean manualOverride = manualArmSpeed != 0.0 || manualWristSpeed != 0.0;
-    boolean presetRequested = presetIncreased || presetDecreased || selectPresetHatchGround || selectPresetHatch1
-        || selectPresetHatch2 || selectPresetCargoGround || selectPresetCargo1 || selectPresetCargo2
-        || selectPresetCargoBay;
+    boolean presetRequested = presetIncreased || presetDecreased || selectedPreset != PresetOption.NONE;
 
     if (hatchGamepieceSelected) {
       currentPresetGroup = hatchPresetGroup;
@@ -249,20 +256,32 @@ public class ArmPositioning extends Command {
           currentPresetGroup.findPrevBestPreset(arm.getArmPos());
         else
           currentPresetGroup.prevPreset();
-      } else if (selectPresetHatchGround) {
-        selectPreset(hatchPresetGroup, 0);
-      } else if (selectPresetHatch1) {
-        selectPreset(hatchPresetGroup, 1);
-      } else if (selectPresetHatch2) {
-        selectPreset(hatchPresetGroup, 2);
-      } else if (selectPresetCargoGround) {
-        selectPreset(cargoPresetGroup, 0);
-      } else if (selectPresetCargo1) {
-        selectPreset(cargoPresetGroup, 1);
-      } else if (selectPresetCargo2) {
-        selectPreset(cargoPresetGroup, 2);
-      } else if (selectPresetCargoBay) {
-        selectPreset(cargoPresetGroup, 3);
+      } else {
+        switch (selectedPreset) {
+        case HATCH_GROUND:
+          selectPreset(hatchPresetGroup, "Ground");
+          break;
+        case HATCH_1:
+          selectPreset(hatchPresetGroup, "1");
+          break;
+        case HATCH_2:
+          selectPreset(hatchPresetGroup, "2");
+          break;
+        case CARGO_GROUND:
+          selectPreset(cargoPresetGroup, "Ground");
+          break;
+        case CARGO_1:
+          selectPreset(cargoPresetGroup, "1");
+          break;
+        case CARGO_2:
+          selectPreset(cargoPresetGroup, "2");
+          break;
+        case CARGO_BAY:
+          selectPreset(cargoPresetGroup, "Bay");
+          break;
+        default:
+          break;
+        }
       }
 
       /*

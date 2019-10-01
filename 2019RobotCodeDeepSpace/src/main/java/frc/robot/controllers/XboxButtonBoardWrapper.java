@@ -2,6 +2,8 @@ package frc.robot.controllers;
 
 import static frc.robot.utils.Utils.*;
 
+import frc.robot.RobotMap;
+
 /**
  * A class to drive the robot using the Xbox Controller for driving and arm
  * control and the F310 controller for wrist and intake control
@@ -9,6 +11,21 @@ import static frc.robot.utils.Utils.*;
  * @author Jordan
  */
 public class XboxButtonBoardWrapper extends ControllerBase {
+
+  protected ButtonBoard buttonBoard = RobotMap.buttonBoard;
+
+  private static final int INTAKE_BUTTON = 12;
+  private static final int SHOOT_BUTTON = 11;
+  private static final int GRAB_BUTTON = 10;
+  private static final int KICK_BUTTON = 8;
+
+  private static final int PRESET_BUTTON_HATCH_GROUND = 9;
+  private static final int PRESET_BUTTON_HATCH_1 = 6;
+  private static final int PRESET_BUTTON_HATCH_2 = 3;
+  private static final int PRESET_BUTTON_CARGO_GROUND = 7;
+  private static final int PRESET_BUTTON_CARGO_1 = 4;
+  private static final int PRESET_BUTTON_CARGO_2 = 1;
+  private static final int PRESET_BUTTON_CARGO_BAY = 5;
 
   @Override
   public double getWristSpeed() {
@@ -19,57 +36,43 @@ public class XboxButtonBoardWrapper extends ControllerBase {
 
   @Override
   public boolean getIntakeCargo() {
-    return buttonBoard.getButton(12);
+    return buttonBoard.getButton(INTAKE_BUTTON);
   }
 
   @Override
   public boolean getShootCargo() {
-    return buttonBoard.getButton(11);
+    return buttonBoard.getButton(SHOOT_BUTTON);
   }
 
   @Override
   public boolean getGrabHatch() {
-    return buttonBoard.getButton(10);
+    return buttonBoard.getButton(GRAB_BUTTON);
   }
 
   @Override
   public boolean getKick() {
-    return buttonBoard.getButton(8);
+    return buttonBoard.getButton(KICK_BUTTON);
   }
 
   @Override
-  public boolean getSelectPresetHatchGround() {
-    return buttonBoard.getButton(9);
-  }
-
-  @Override
-  public boolean getSelectPresetHatch1() {
-    return buttonBoard.getButton(6);
-  }
-
-  @Override
-  public boolean getSelectPresetHatch2() {
-    return buttonBoard.getButton(3);
-  }
-
-  @Override
-  public boolean getSelectPresetCargoGround() {
-    return buttonBoard.getButton(7);
-  }
-
-  @Override
-  public boolean getSelectPresetCargo1() {
-    return buttonBoard.getButton(4);
-  }
-
-  @Override
-  public boolean getSelectPresetCargo2() {
-    return buttonBoard.getButton(1);
-  }
-
-  @Override
-  public boolean getSelectPresetCargoBay() {
-    return buttonBoard.getButton(5);
+  public PresetOption getSelectedPreset() {
+    if (buttonBoard.getButton(PRESET_BUTTON_HATCH_GROUND)) {
+      return PresetOption.HATCH_GROUND;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_HATCH_1)) {
+      return PresetOption.HATCH_1;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_HATCH_2)) {
+      return PresetOption.HATCH_2;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_CARGO_GROUND)) {
+      return PresetOption.CARGO_GROUND;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_CARGO_1)) {
+      return PresetOption.CARGO_1;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_CARGO_2)) {
+      return PresetOption.CARGO_2;
+    } else if (buttonBoard.getButton(PRESET_BUTTON_CARGO_BAY)) {
+      return PresetOption.CARGO_BAY;
+    } else {
+      return PresetOption.NONE;
+    }
   }
 
 }
