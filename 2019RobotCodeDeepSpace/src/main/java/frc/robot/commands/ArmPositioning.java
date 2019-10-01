@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.usfirst.frc.team4999.utils.Utils;
 
@@ -47,7 +46,6 @@ public class ArmPositioning extends Command {
 
   private final PresetGroup hatchPresetGroup = new PresetGroup("Hatch", "Ground", "1", "2");
   private final PresetGroup cargoPresetGroup = new PresetGroup("Cargo", "Ground", "1", "2", "Bay");
-  private final HashMap<PresetOption, DirectPreset> directPreset = new HashMap<>();
 
   private Arm arm = Robot.arm;
   private Wrist wrist = Robot.wrist;
@@ -117,23 +115,14 @@ public class ArmPositioning extends Command {
   private class PresetGroup {
     private int currentIx = 0;
     private ArrayList<Preset> presets;
-    private String groupPrefix;
+    private String groupName;
 
     PresetGroup(String groupName, String... presetNames) {
-      this.groupPrefix = groupName + "_";
+      this.groupName = groupName;
       presets = new ArrayList<Preset>();
       for (String name : presetNames) {
-        presets.add(new Preset(groupPrefix + name));
+        presets.add(new Preset(groupName + "_" + name));
       }
-    }
-
-    int getIxForName(String name) {
-      String fullName = groupPrefix + name;
-      for (int ix = 0; ix < presets.size(); ++ix) {
-        if (fullName.equals(presets.get(ix).name))
-          return ix;
-      }
-      return -1;
     }
 
     void nextPreset() {
@@ -148,9 +137,21 @@ public class ArmPositioning extends Command {
       }
     }
 
+    @SuppressWarnings("unused")
     void selectPreset(int ix) {
       if (ix >= 0 && ix < presets.size())
         currentIx = ix;
+    }
+
+    void selectPreset(String name) {
+      String fullname = groupName + "_" + name;
+      for (int i = 0; i > presets.size(); i++) {
+        Preset p = presets.get(i);
+        if (p.getName().equals(fullname)) {
+          currentIx = i;
+          return;
+        }
+      }
     }
 
     /// Search for the next higher preset from the current arm position.
@@ -186,28 +187,9 @@ public class ArmPositioning extends Command {
     }
   }
 
-  private class DirectPreset {
-    DirectPreset(PresetGroup group, String name) {
-      this.group = group;
-      this.ix = group.getIxForName(name);
-    }
-
-    PresetGroup group;
-    int ix;
-  }
-
   public ArmPositioning() {
     requires(arm);
     requires(wrist);
-
-    directPreset.put(PresetOption.NONE, null);
-    directPreset.put(PresetOption.HATCH_GROUND, new DirectPreset(hatchPresetGroup, "Ground"));
-    directPreset.put(PresetOption.HATCH_1, new DirectPreset(hatchPresetGroup, "1"));
-    directPreset.put(PresetOption.HATCH_2, new DirectPreset(hatchPresetGroup, "2"));
-    directPreset.put(PresetOption.CARGO_GROUND, new DirectPreset(cargoPresetGroup, "Ground"));
-    directPreset.put(PresetOption.CARGO_1, new DirectPreset(cargoPresetGroup, "1"));
-    directPreset.put(PresetOption.CARGO_2, new DirectPreset(cargoPresetGroup, "2"));
-    directPreset.put(PresetOption.CARGO_BAY, new DirectPreset(cargoPresetGroup, "Bay"));
 
     ShuffleboardTab tab = RobotMap.matchTab;
     presetModeWidget = tab.add("Preset Active", false).withPosition(2, 0).withSize(1, 2).getEntry();
@@ -228,12 +210,9 @@ public class ArmPositioning extends Command {
     currentPresetGroup = hatchPresetGroup;
   }
 
-  private void selectPreset(PresetOption selectedPreset) {
-    if (selectedPreset != null) {
-      DirectPreset preset = directPreset.get(selectedPreset);
-      currentPresetGroup = preset.group;
-      currentPresetGroup.selectPreset(preset.ix);
-    }
+  private void selectPreset(PresetGroup group, String name) {
+    currentPresetGroup = group;
+    currentPresetGroup.selectPreset(name);
   }
 
   @Override
@@ -278,7 +257,31 @@ public class ArmPositioning extends Command {
         else
           currentPresetGroup.prevPreset();
       } else {
-        selectPreset(selectedPreset);
+        switch (selectedPreset) {
+        case HATCH_GROUND:
+          selectPreset(hatchPresetGroup, "Ground");
+          break;
+        case HATCH_1:
+          selectPreset(hatchPresetGroup, "1");
+          break;
+        case HATCH_2:
+          selectPreset(hatchPresetGroup, "2");
+          break;
+        case CARGO_GROUND:
+          selectPreset(cargoPresetGroup, "Ground");
+          break;
+        case CARGO_1:
+          selectPreset(cargoPresetGroup, "1");
+          break;
+        case CARGO_2:
+          selectPreset(cargoPresetGroup, "2");
+          break;
+        case CARGO_BAY:
+          selectPreset(cargoPresetGroup, "Bay");
+          break;
+        default:
+          break;
+        }
       }
 
       /*
@@ -292,9 +295,7 @@ public class ArmPositioning extends Command {
     }
 
     // Always check for manual override or invalid automation last
-    if (manualOverride || !(preset.isValid() && arm.hasReliableZero() && wrist.hasReliableZero()))
-
-    {
+    if (manualOverride || !(preset.isValid() && arm.hasReliableZero() && wrist.hasReliableZero())) {
       // Switch to manual mode if selected by the driver or if there is any
       // problem with the automation.
       manualMode = true;

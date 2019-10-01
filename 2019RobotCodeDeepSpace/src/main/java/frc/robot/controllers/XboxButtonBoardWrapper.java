@@ -29,7 +29,7 @@ public class XboxButtonBoardWrapper extends ControllerBase {
 
   @Override
   public double getWristSpeed() {
-    double wristspeed = buttonBoard.getY();
+    double wristspeed = buttonBoard.getRawAxis(1);
     wristspeed = clip(wristspeed, -1, 1);
     return wristspeed;
   }
@@ -70,9 +70,9 @@ public class XboxButtonBoardWrapper extends ControllerBase {
       return PresetOption.CARGO_2;
     } else if (buttonBoard.getButton(PRESET_BUTTON_CARGO_BAY)) {
       return PresetOption.CARGO_BAY;
+    } else {
+      return PresetOption.NONE;
     }
-
-    return PresetOption.NONE;
   }
 
 }
