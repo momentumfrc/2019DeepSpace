@@ -1,10 +1,15 @@
 package frc.robot.subsystems.vision;
 
+import java.util.Map;
+
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.RobotMap;
 
 public class Limelight extends Subsystem {
   private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -44,6 +49,9 @@ public class Limelight extends Subsystem {
     wv = layout.add("Valid", 0).withPosition(0, 2).getEntry();
     wa = layout.add("Angle", 0).withPosition(1, 0).getEntry();
     wd = layout.add("Distance", 0).withPosition(1, 1).getEntry();
+
+    RobotMap.matchTab.add(new HttpCamera("Limelight", "http://10.49.99.11:5800/", HttpCameraKind.kMJPGStreamer))
+        .withPosition(6, 0).withSize(3, 3).withProperties(Map.of("Show controls", false));
   }
 
   public LimelightData getData() {

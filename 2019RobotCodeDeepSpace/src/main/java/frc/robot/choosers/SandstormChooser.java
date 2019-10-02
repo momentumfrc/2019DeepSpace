@@ -15,6 +15,6 @@ public class SandstormChooser extends SendableChooser<SandstormMode> {
     addOption("Vision Drive", SandstormMode.VISION_DRIVE);
     addOption("Default", SandstormMode.DEFAULT_PATH);
 
-    RobotMap.matchTab.add(NAME, this).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(6, 1).withSize(2, 1);
+    RobotMap.matchTab.add(NAME, this).withWidget(BuiltInWidgets.kSplitButtonChooser).withPosition(0, 3).withSize(2, 1);
   }
 }
